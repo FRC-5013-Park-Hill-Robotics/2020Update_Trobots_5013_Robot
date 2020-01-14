@@ -7,12 +7,33 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  /**
-   * Creates a new Drivetrain.
-   */
+  private WPI_TalonFX leftMotor1;
+  private WPI_TalonFX leftMotor2;
+  private WPI_TalonFX rightMotor1;
+  private WPI_TalonFX rightMotor2;
+
+  private SpeedControllerGroup leftMotorGroup;
+  private SpeedControllerGroup rightMotorGroup;
+
+
+  public Drivetrain(){
+    this.leftMotor1 = new WPI_TalonFX(Constants.LEFT_MOTOR_1_ID);
+    this.leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2_ID);
+    this.rightMotor1 = new WPI_TalonFX(Constants.RIGHT_MOTOR_1_ID);
+    this.rightMotor2 = new WPI_TalonFX(Constants.ROGHT_MOTOR_2_ID);
+
+    this.leftMotorGroup = new SpeedControllerGroup(leftMotor1, leftMotor2);
+    this.rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
+    
+    
+  }
 
   @Override
   public void periodic() {
