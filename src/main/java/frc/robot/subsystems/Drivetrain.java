@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,6 +23,7 @@ public class Drivetrain extends SubsystemBase {
   private SpeedControllerGroup leftMotorGroup;
   private SpeedControllerGroup rightMotorGroup;
 
+  private DifferentialDrive mainDrive;
 
   public Drivetrain(){
     this.leftMotor1 = new WPI_TalonFX(Constants.LEFT_MOTOR_1_ID);
@@ -31,8 +33,9 @@ public class Drivetrain extends SubsystemBase {
 
     this.leftMotorGroup = new SpeedControllerGroup(leftMotor1, leftMotor2);
     this.rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
-    
-    
+
+    this.mainDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+    this.mainDrive.setDeadband(Constants.DEADBAND_VALUE);
   }
 
   @Override

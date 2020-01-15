@@ -24,4 +24,11 @@ public final class Constants {
     public static final int LEFT_MOTOR_2_ID = 1;
     public static final int RIGHT_MOTOR_1_ID = 2;
     public static final int ROGHT_MOTOR_2_ID = 3;
+
+
+
+
+    //=====================Controller Constants=====================
+    public static final double DEADBAND_VALUE = .3;
+
 }
