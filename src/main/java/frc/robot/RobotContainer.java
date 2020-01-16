@@ -27,7 +27,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final Drivetrain m_driveTrain = new Drivetrain();
-
+  private final ArcadeDrive m_arcadeDrive = new ArcadeDrive(m_driveTrain);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
