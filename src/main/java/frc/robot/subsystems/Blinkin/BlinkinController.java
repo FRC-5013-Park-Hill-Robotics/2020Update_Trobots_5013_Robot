@@ -7,18 +7,18 @@
 
 package frc.robot.subsystems.Blinkin;
 
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BlinkinController extends SubsystemBase {
   
-  private Servo servo;
+  private PWM pwm;
   /**
    * Creates a new BlinkinController.
    */
-  public BlinkinController(  Servo servo) {
+  public BlinkinController( PWM servo) {
     super();
-    this.servo = servo;
+    this.pwm = servo;
   }
 
   @Override
@@ -27,6 +27,6 @@ public class BlinkinController extends SubsystemBase {
   }
 
   public void setColorPattern(int color){
-    servo.setPosition(color);
+    pwm.setPosition(color);
   }
 }
