@@ -7,7 +7,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -19,6 +21,7 @@ public class ArcadeDrive extends CommandBase {
   private final Drivetrain m_driveTrain;
   private double throttle;
   private double rotation;
+
   
   /**
    * Creates a new ArcadeDrive.
@@ -42,11 +45,11 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putString("ArcadeExecute", "ArcadeDrive.execute");
+    SmartDashboard.putString("Throttle", "Throttle = " + this.throttle);
     this.throttle = applyDeadBand(this.throttle);
     this.rotation = applyDeadBand(this.rotation);
-
     m_driveTrain.getDrive().arcadeDrive(this.throttle, this.rotation);
-
   }
 
   // Called once the command ends or is interrupted.

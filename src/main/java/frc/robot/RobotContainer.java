@@ -14,7 +14,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -68,6 +68,7 @@ public class RobotContainer {
     return m_autoCommand;
   }
   public CommandBase getTeleop() {
+    SmartDashboard.putString("RobotContainer Teleop","RobotContainer Teleop called");
     this.m_arcadeDrive = new ArcadeDrive(this.m_driveTrain, this.throttle, this.rotation);
     m_driveTrain.setDefaultCommand(this.m_arcadeDrive);
     return m_arcadeDrive;

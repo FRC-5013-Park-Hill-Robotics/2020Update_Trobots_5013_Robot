@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,5 +42,9 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public DifferentialDrive getDrive(){return this.mainDrive;}
+  public DifferentialDrive getDrive()
+    {
+      SmartDashboard.putString("DRivetrain","GEt Drive");
+        return this.mainDrive;
+    }
 }
