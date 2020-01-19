@@ -27,6 +27,6 @@ public class BlinkinController extends SubsystemBase {
   }
 
   public void setColorPattern(int color){
-    pwm.setPosition(color);
+    pwm.setRaw(color);
   }
 }
