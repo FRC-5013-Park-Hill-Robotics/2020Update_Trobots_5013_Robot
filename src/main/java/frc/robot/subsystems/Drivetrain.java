@@ -29,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
     this.leftMotor1 = new WPI_TalonFX(Constants.LEFT_MOTOR_1_ID);
     this.leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2_ID);
     this.rightMotor1 = new WPI_TalonFX(Constants.RIGHT_MOTOR_1_ID);
-    this.rightMotor2 = new WPI_TalonFX(Constants.ROGHT_MOTOR_2_ID);
+    this.rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2_ID);
 
     this.leftMotorGroup = new SpeedControllerGroup(leftMotor1, leftMotor2);
     this.rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
