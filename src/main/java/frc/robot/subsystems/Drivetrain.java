@@ -35,11 +35,11 @@ public class Drivetrain extends SubsystemBase {
     this.rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
 
     this.mainDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
-    this.mainDrive.setDeadband(Constants.DEADBAND_VALUE);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  public DifferentialDrive getDrive(){return this.mainDrive;}
 }

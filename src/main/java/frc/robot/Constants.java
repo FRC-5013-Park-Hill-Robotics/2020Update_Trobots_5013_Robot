@@ -30,6 +30,12 @@ public final class Constants {
 
     //=====================Controller Constants=====================
     public static final double DEADBAND_VALUE = .3;
+    public static final int XBOX_ID = 0;
+    public static final int Y_LJOY_ID = 1;
+    public static final int X_RJOY_ID = 4;
+
+
+
     
 
 }
