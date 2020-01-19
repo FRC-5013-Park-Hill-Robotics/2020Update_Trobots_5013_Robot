@@ -20,15 +20,22 @@ package frc.robot;
 
 public final class Constants {
     //=====================Motor IDS=====================
-    public static final int LEFT_MOTOR_1_ID = 0;
-    public static final int LEFT_MOTOR_2_ID = 1;
-    public static final int RIGHT_MOTOR_1_ID = 2;
-    public static final int ROGHT_MOTOR_2_ID = 3;
+    public static final int LEFT_MOTOR_1_ID = 1;
+    public static final int LEFT_MOTOR_2_ID = 2;
+    public static final int RIGHT_MOTOR_1_ID = 3;
+    public static final int ROGHT_MOTOR_2_ID = 4;
 
 
 
 
     //=====================Controller Constants=====================
     public static final double DEADBAND_VALUE = .3;
+    public static final int XBOX_ID = 0;
+    public static final int Y_LJOY_ID = 1;
+    public static final int X_RJOY_ID = 4;
+
+
+
+    
 
 }
