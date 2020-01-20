@@ -63,7 +63,7 @@ public class Drivetrain extends SubsystemBase implements IDriveTrain {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
+    return (Math.abs(leftEncoder.getDistance()) + Math.abs(rightEncoder.getDistance())) / 2.0;
   }
 
   /**
