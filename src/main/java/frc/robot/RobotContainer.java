@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.IDriveTrain;
+import frc.robot.subsystems.PracticeDrivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -24,17 +26,18 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private XboxController m_Controller;
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final IDriveTrain m_driveTrain = new Drivetrain();
+  //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
+  private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
 
-  private final Drivetrain m_driveTrain = new Drivetrain();
+  
 
   
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_Controller = new XboxController(Constants.XBOX_ID);
+    m_Controller = new XboxController(ControllerConstants.XBOX_ID);
     
     // Configure the button bindings
     configureButtonBindings();
@@ -42,14 +45,14 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_driveTrain.arcadeDrive(
-            this.applyDeadband(m_Controller.getRawAxis(Constants.Y_LJOY_ID)),
-            this.applyDeadband(m_Controller.getRawAxis(Constants.X_RJOY_ID))),
+            this.applyDeadband(m_Controller.getRawAxis(ControllerConstants.Y_LJOY_ID)),
+            this.applyDeadband(m_Controller.getRawAxis(ControllerConstants.X_RJOY_ID))),
             m_driveTrain));
   }
 
   public double applyDeadband(double throttle){
     double result = 0;
-    if (throttle > Constants.DEADBAND_VALUE){
+    if (throttle > ControllerConstants.DEADBAND_VALUE){
       result = throttle;
     }
     return result;

@@ -7,35 +7,36 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.CompetitionDriveConstants;
+import frc.robot.Constants.PracticeDriveConstants;
 
-public class Drivetrain extends SubsystemBase implements IDriveTrain {
-  private WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
-  private WPI_TalonFX leftMotor2 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_2_ID);
-  private WPI_TalonFX rightMotor1 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_1_ID);;
-  private WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
+public class PracticeDrivetrain extends SubsystemBase implements IDriveTrain {
+  private PWMSparkMax leftMotor1 = new PWMSparkMax(PracticeDriveConstants.LEFT_MOTOR_1_ID);
+  private PWMSparkMax leftMotor2 = new PWMSparkMax(PracticeDriveConstants.LEFT_MOTOR_2_ID);
+  private PWMSparkMax rightMotor1 = new PWMSparkMax(PracticeDriveConstants.RIGHT_MOTOR_1_ID);
+  private PWMSparkMax rightMotor2 = new PWMSparkMax(PracticeDriveConstants.RIGHT_MOTOR_2_ID);
+
+  SpeedControllerGroup leftMotorGroup = new SpeedControllerGroup(leftMotor1, leftMotor2);
+  SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
 
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
 
   // The left-side drive encoder
-  private final Encoder leftEncoder = new Encoder(CompetitionDriveConstants.LEFT_ENCODER_PORTS[0], CompetitionDriveConstants.LEFT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.LEFT_REVERSED);
+  private final Encoder leftEncoder = new Encoder(PracticeDriveConstants.LEFT_ENCODER_PORTS[0], PracticeDriveConstants.LEFT_ENCODER_PORTS[1],
+      PracticeDriveConstants.LEFT_REVERSED);
 
   // The right-side drive encoder
-  private final Encoder rightEncoder = new Encoder(CompetitionDriveConstants.RIGHT_ENCODER_PORTS[0], CompetitionDriveConstants.RIGHT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.RIGHT_REVERSED);
+  private final Encoder rightEncoder = new Encoder(PracticeDriveConstants.RIGHT_ENCODER_PORTS[0], PracticeDriveConstants.RIGHT_ENCODER_PORTS[1],
+      PracticeDriveConstants.RIGHT_REVERSED);
 
-  public Drivetrain() {
-    leftEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    rightEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
-    rightMotor2.set(ControlMode.Follower,  CompetitionDriveConstants.RIGHT_MOTOR_1_ID);
+  public PracticeDrivetrain() {
+    leftEncoder.setDistancePerPulse(PracticeDriveConstants.DISTANCE_PER_PULSE);
+    rightEncoder.setDistancePerPulse(PracticeDriveConstants.DISTANCE_PER_PULSE);
   }
 
  
