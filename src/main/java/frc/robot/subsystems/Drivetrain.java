@@ -29,17 +29,20 @@ public class Drivetrain extends SubsystemBase {
     this.leftMotor1 = new WPI_TalonFX(Constants.LEFT_MOTOR_1_ID);
     this.leftMotor2 = new WPI_TalonFX(Constants.LEFT_MOTOR_2_ID);
     this.rightMotor1 = new WPI_TalonFX(Constants.RIGHT_MOTOR_1_ID);
-    this.rightMotor2 = new WPI_TalonFX(Constants.ROGHT_MOTOR_2_ID);
+    this.rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2_ID);
 
-    this.leftMotorGroup = new SpeedControllerGroup(leftMotor1, leftMotor2);
-    this.rightMotorGroup = new SpeedControllerGroup(rightMotor1, rightMotor2);
+    this.leftMotorGroup = new SpeedControllerGroup(this.leftMotor1, this.leftMotor2);
+    this.rightMotorGroup = new SpeedControllerGroup(this.rightMotor1, this.rightMotor2);
 
-    this.mainDrive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+    this.mainDrive = new DifferentialDrive(this.leftMotorGroup, this.rightMotorGroup);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
   }
-  public DifferentialDrive getDrive(){return this.mainDrive;}
+  public DifferentialDrive getDrive(){
+    return this.mainDrive;
+  }
 }

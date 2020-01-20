@@ -50,10 +50,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    this.throttle = m_Controller.getRawAxis(Constants.Y_LJOY_ID);
-    this.rotation = m_Controller.getRawAxis(Constants.X_RJOY_ID);
-
-
 
   }
 
@@ -68,8 +64,12 @@ public class RobotContainer {
     return m_autoCommand;
   }
   public CommandBase getTeleop() {
+    this.throttle = m_Controller.getRawAxis(Constants.Y_LJOY_ID);
+    this.rotation = m_Controller.getRawAxis(Constants.X_RJOY_ID);
+
     this.m_arcadeDrive = new ArcadeDrive(this.m_driveTrain, this.throttle, this.rotation);
     m_driveTrain.setDefaultCommand(this.m_arcadeDrive);
+    
     return m_arcadeDrive;
   }
 }
