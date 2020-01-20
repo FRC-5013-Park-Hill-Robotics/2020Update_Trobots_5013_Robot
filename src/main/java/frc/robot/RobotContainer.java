@@ -41,10 +41,20 @@ public class RobotContainer {
     m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
-        new RunCommand(() -> m_driveTrain
-            .arcadeDrive(m_Controller.getRawAxis(Constants.Y_LJOY_ID),
-            m_Controller.getRawAxis(Constants.X_RJOY_ID)), m_driveTrain));
+        new RunCommand(() -> m_driveTrain.arcadeDrive(
+            this.applyDeadband(m_Controller.getRawAxis(Constants.Y_LJOY_ID)),
+            this.applyDeadband(m_Controller.getRawAxis(Constants.X_RJOY_ID))),
+            m_driveTrain));
   }
+
+  public double applyDeadband(double throttle){
+    double result = 0;
+    if (throttle > Constants.DEADBAND_VALUE){
+      result = throttle;
+    }
+    return result;
+  }
+
 
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by

@@ -7,10 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,28 +20,22 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX rightMotor1 = new WPI_TalonFX(Constants.RIGHT_MOTOR_1_ID);;
   private WPI_TalonFX rightMotor2 = new WPI_TalonFX(Constants.RIGHT_MOTOR_2_ID);;
 
-  // The motors on the left side of the drive.
-  private final SpeedControllerGroup leftMotorGroup =  new SpeedControllerGroup(leftMotor1,leftMotor2);
-
-  // The motors on the right side of the drive.
-  private final SpeedControllerGroup rightMotorGroup = new SpeedControllerGroup(rightMotor1,rightMotor2);
-
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotorGroup, rightMotorGroup);
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
   // The left-side drive encoder
-  private final Encoder leftEncoder =
-    new Encoder(Constants.LEFT_ENCODER_PORTS[0], Constants.LEFT_ENCODER_PORTS[1],
-    Constants.LEFT_REVERSED);
+  private final Encoder leftEncoder = new Encoder(Constants.LEFT_ENCODER_PORTS[0], Constants.LEFT_ENCODER_PORTS[1],
+      Constants.LEFT_REVERSED);
 
   // The right-side drive encoder
-  private final Encoder rightEncoder =
-    new Encoder(Constants.RIGHT_ENCODER_PORTS[0], Constants.RIGHT_ENCODER_PORTS[1],
-    Constants.RIGHT_REVERSED);
+  private final Encoder rightEncoder = new Encoder(Constants.RIGHT_ENCODER_PORTS[0], Constants.RIGHT_ENCODER_PORTS[1],
+      Constants.RIGHT_REVERSED);
 
-  public Drivetrain(){
+  public Drivetrain() {
     leftEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     rightEncoder.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+    leftMotor2.set(ControlMode.Follower, Constants.LEFT_MOTOR_1_ID);
+    rightMotor2.set(ControlMode.Follower,  Constants.RIGHT_MOTOR_1_ID);
   }
 
  
