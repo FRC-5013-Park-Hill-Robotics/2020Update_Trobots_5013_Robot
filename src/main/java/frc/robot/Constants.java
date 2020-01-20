@@ -22,8 +22,8 @@ public final class Constants {
     //=====================Motor IDS=====================
     public static final int LEFT_MOTOR_1_ID = 1;
     public static final int LEFT_MOTOR_2_ID = 2;
-    public static final int RIGHT_MOTOR_1_ID = 3;
-    public static final int RIGHT_MOTOR_2_ID = 4;
+    public static final int RIGHT_MOTOR_1_ID = 6;
+    public static final int RIGHT_MOTOR_2_ID = 7;
 
 
 
@@ -34,8 +34,17 @@ public final class Constants {
     public static final int Y_LJOY_ID = 1;
     public static final int X_RJOY_ID = 4;
 
+    public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
+    public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
 
+    public static final boolean LEFT_REVERSED = false;
+    public static final boolean RIGHT_REVERSED = true;
 
+    public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
+    public static final double WHEEL_DIAMETER_INCHES = 8;
+    public static final double DISTANCE_PER_PULSE =
+        // Assumes the encoders are directly mounted on the wheel shafts
+        (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
     
 
 }
