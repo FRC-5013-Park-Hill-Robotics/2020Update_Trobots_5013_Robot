@@ -52,7 +52,7 @@ public class RobotContainer {
 
   public double applyDeadband(double throttle){
     double result = 0;
-    if (throttle > ControllerConstants.DEADBAND_VALUE){
+    if (Math.abs(throttle) > ControllerConstants.DEADBAND_VALUE){
       result = throttle;
     }
     return result;

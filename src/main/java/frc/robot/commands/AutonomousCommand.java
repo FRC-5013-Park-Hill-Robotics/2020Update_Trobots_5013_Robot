@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IDriveTrain;
 
 public class AutonomousCommand extends CommandBase {
+  private boolean finished = false;
   /**
    * Creates a new AutonomousCommand.
    */
@@ -24,15 +25,19 @@ public class AutonomousCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.driveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while(this.driveTrain.getAverageEncoderDistance() < 3.0){
-      this.driveTrain.arcadeDrive(.3, 0);
+    while((this.driveTrain.getAverageEncoderDistance()) < 3.0){
+      this.driveTrain.arcadeDrive(.5, 0);
+      System.out.println(this.driveTrain.getAverageEncoderDistance());
     }
+    
     this.driveTrain.arcadeDrive(0, 0);
+    this.finished = true;
     
   }
 
@@ -44,6 +49,6 @@ public class AutonomousCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.finished;
   }
 }
