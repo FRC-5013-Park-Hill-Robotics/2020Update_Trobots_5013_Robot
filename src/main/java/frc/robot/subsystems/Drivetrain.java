@@ -11,10 +11,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
+import com.ctre.phoenix.motorcontrol.InvertType;
 
-public class Drivetrain extends SubsystemBase implements IDriveTrain {
+public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   private WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
   private WPI_TalonFX leftMotor2 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_2_ID);
   private WPI_TalonFX rightMotor1 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_1_ID);;
@@ -34,37 +34,39 @@ public class Drivetrain extends SubsystemBase implements IDriveTrain {
   public Drivetrain() {
     leftEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
     rightEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
+
+    /* factory default values */
+    rightMotor1.configFactoryDefault();
+    rightMotor2.configFactoryDefault();
+    leftMotor1.configFactoryDefault();
+    leftMotor2.configFactoryDefault(); 
+
+       /* set up followers */
     leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
     rightMotor2.set(ControlMode.Follower,  CompetitionDriveConstants.RIGHT_MOTOR_1_ID);
-  }
 
- 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
-  }
+    /* [3] flip values so robot moves forward when stick-forward/LEDs-green */
+    rightMotor1.setInverted(CompetitionDriveConstants.RIGHT_REVERSED); // !< Update this
+    leftMotor1.setInverted(CompetitionDriveConstants.LEFT_REVERSED); // !< Update this
 
-  /**
-   * Resets the drive encoders to currently read a position of 0.
-   */
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
+    /*
+      * set the invert of the followers to match their respective master controllers
+      */
+    rightMotor2.setInverted(InvertType.FollowMaster);
+    leftMotor2.setInverted(InvertType.FollowMaster);
 
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance() {
-    return (Math.abs(leftEncoder.getDistance()) + Math.abs(rightEncoder.getDistance())) / 2.0;
-  }
+    /*
+      * [4] adjust sensor phase so sensor moves positive when Talon LEDs are green
+      */
+    rightMotor1.setSensorPhase(true);
+    leftMotor1.setSensorPhase(true);
+
+    /*
+      * WPI drivetrain classes defaultly assume left and right are opposite. call
+      * this so we can apply + to both sides when moving forward. DO NOT CHANGE
+      */
+    m_drive.setRightSideInverted(false);
+}
 
   /**
    * Gets the left drive encoder.
@@ -84,12 +86,7 @@ public class Drivetrain extends SubsystemBase implements IDriveTrain {
     return rightEncoder;
   }
 
-  /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
-    m_drive.setMaxOutput(maxOutput);
+  public DifferentialDrive getDrive(){
+    return m_drive;
   }
 }
