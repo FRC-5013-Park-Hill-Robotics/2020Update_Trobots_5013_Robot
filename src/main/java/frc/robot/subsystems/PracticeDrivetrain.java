@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PracticeDriveConstants;
 
-public class PracticeDrivetrain extends SubsystemBase implements IDriveTrain {
+public class PracticeDrivetrain extends AbstractDrivetrain implements IDriveTrain {
   private PWMSparkMax leftMotor1 = new PWMSparkMax(PracticeDriveConstants.LEFT_MOTOR_1_ID);
   private PWMSparkMax leftMotor2 = new PWMSparkMax(PracticeDriveConstants.LEFT_MOTOR_2_ID);
   private PWMSparkMax rightMotor1 = new PWMSparkMax(PracticeDriveConstants.RIGHT_MOTOR_1_ID);
@@ -39,34 +39,6 @@ public class PracticeDrivetrain extends SubsystemBase implements IDriveTrain {
     rightEncoder.setDistancePerPulse(PracticeDriveConstants.DISTANCE_PER_PULSE);
   }
 
- 
-  /**
-   * Drives the robot using arcade controls.
-   *
-   * @param fwd the commanded forward movement
-   * @param rot the commanded rotation
-   */
-  public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
-  }
-
-  /**
-   * Resets the drive encoders to currently read a position of 0.
-   */
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
-
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance() {
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
-  }
-
   /**
    * Gets the left drive encoder.
    *
@@ -84,13 +56,7 @@ public class PracticeDrivetrain extends SubsystemBase implements IDriveTrain {
   public Encoder getRightEncoder() {
     return rightEncoder;
   }
-
-  /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
-   *
-   * @param maxOutput the maximum output to which the drive will be constrained
-   */
-  public void setMaxOutput(double maxOutput) {
-    m_drive.setMaxOutput(maxOutput);
+  public DifferentialDrive getDrive(){
+    return m_drive;
   }
 }
