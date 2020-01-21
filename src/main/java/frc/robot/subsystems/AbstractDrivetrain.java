@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ControllerConstants;
 
 public abstract class AbstractDrivetrain extends SubsystemBase implements IDriveTrain {
 
@@ -35,9 +36,16 @@ public abstract class AbstractDrivetrain extends SubsystemBase implements IDrive
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
-    getDrive().arcadeDrive(fwd, rot);
+    getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
   }
 
+  public double applyDeadband(double throttle){
+    double result = 0;
+    if (Math.abs(throttle) > ControllerConstants.DEADBAND_VALUE){
+      result = throttle;
+    }
+    return result;
+  }
   /**
    * Resets the drive encoders to currently read a position of 0.
    */

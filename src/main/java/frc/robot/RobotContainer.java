@@ -45,18 +45,12 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_driveTrain.arcadeDrive(
-            this.applyDeadband(m_Controller.getRawAxis(ControllerConstants.Y_LJOY_ID)),
-            this.applyDeadband(m_Controller.getRawAxis(ControllerConstants.X_RJOY_ID))),
+            m_Controller.getRawAxis(ControllerConstants.Y_LJOY_ID),
+            m_Controller.getRawAxis(ControllerConstants.X_RJOY_ID)),
             m_driveTrain));
   }
 
-  public double applyDeadband(double throttle){
-    double result = 0;
-    if (Math.abs(throttle) > ControllerConstants.DEADBAND_VALUE){
-      result = throttle;
-    }
-    return result;
-  }
+
 
 
   /**
