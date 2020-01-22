@@ -60,5 +60,9 @@ public interface IDriveTrain extends Subsystem{
 
   public DifferentialDrive getDrive();
 
+  /**
+   * Moves the drivetrain forward that many inches
+   * @param Inches
+   */
   public void moveTo(double Inches);
 }
