@@ -31,12 +31,7 @@ public class AutonomousCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while((this.driveTrain.getAverageEncoderDistance()) < 3.0){
-      this.driveTrain.arcadeDrive(.5, 0);
-      System.out.println(this.driveTrain.getAverageEncoderDistance());
-    }
-    
-    this.driveTrain.arcadeDrive(0, 0);
+    this.driveTrain.moveTo(3.0);
     this.finished = true;
     
   }

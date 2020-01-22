@@ -59,4 +59,6 @@ public interface IDriveTrain extends Subsystem{
   public void setMaxOutput(double maxOutput); 
 
   public DifferentialDrive getDrive();
+
+  public void moveTo(double Inches);
 }
