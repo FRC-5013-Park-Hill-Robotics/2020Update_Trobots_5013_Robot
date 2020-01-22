@@ -59,4 +59,10 @@ public class PracticeDrivetrain extends AbstractDrivetrain implements IDriveTrai
   public DifferentialDrive getDrive(){
     return m_drive;
   }
+
+  @Override
+  public void moveTo(double Inches) {
+    // TODO Auto-generated method stub
+
+  }
 }
