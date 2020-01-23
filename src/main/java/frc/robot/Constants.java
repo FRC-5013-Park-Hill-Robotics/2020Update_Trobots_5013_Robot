@@ -64,4 +64,18 @@ public final class Constants {
             (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
     }
 
+    public static final class ClimberConstants {
+        public static final int LEFT_MOTOR = 0;
+        public static final int RIGHT_MOTOR = 0;
+        public static final int LEFT_LOWER_LIMIT = 0;
+        public static final int RIGHT_LOWER_LIMIT = 0;
+        public static final int LEFT_ENCODER = 0;
+        public static final int RIGHT_ENCODER = 0;
+    }
+    public static final class ShooterConstants {
+        public static final int SHOOTER_MOTOR = 0;
+        public static final int ELEVATION_MOTOR = 0;
+        public static final int ELEVATION_LOWER_LIMIT = 0;
+        public static final int ELEVATION_ENCODER = 0;
+    }
 }
