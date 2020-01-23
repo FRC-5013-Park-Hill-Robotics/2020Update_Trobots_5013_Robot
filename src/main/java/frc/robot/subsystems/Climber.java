@@ -21,4 +21,17 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void fullyExtend(){
+    //TODO
+  }
+  public void fullyRetract(){
+    //TODO
+  }
+
+  // negative values are down positive up, values 0...1 used as motor percent
+  // must obey limit switches
+  public void manualExtenstion(double throttle){
+
+  }
 }
