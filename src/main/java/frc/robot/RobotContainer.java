@@ -10,13 +10,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IDriveTrain;
 import frc.robot.subsystems.PracticeDrivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -29,6 +34,8 @@ public class RobotContainer {
   private XboxController driverController;
   private XboxController operatorController;
   private final IDriveTrain m_driveTrain = new Drivetrain();
+  private final Conveyor conveyor = new Conveyor();
+  private final Intake intake = new Intake();
   
   //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
@@ -63,7 +70,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-  
+
+    //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(intake::dropIntake, intake));
   }
 
 
