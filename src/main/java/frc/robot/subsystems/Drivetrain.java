@@ -67,50 +67,36 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
       * this so we can apply + to both sides when moving forward. DO NOT CHANGE
       */
     m_drive.setRightSideInverted(false);
+    setPIDValues(rightMotor1);
+    setPIDValues(leftMotor1);
 
-    /* Set relevant frame periods to be at least as fast as periodic rate */
-    rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
-    rightMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
-   
-    leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
-		leftMotor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
-
-		/* Set the peak and nominal outputs */
-		rightMotor1.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
-		rightMotor1.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
-		rightMotor1.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
-    rightMotor1.configPeakOutputReverse(-1, CompetitionDriveConstants.kTimeoutMs);
-
-    leftMotor1.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
-		leftMotor1.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
-		leftMotor1.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
-    leftMotor1.configPeakOutputReverse(-1, CompetitionDriveConstants.kTimeoutMs);
-    
-      /* Set Motion Magic gains in slot0 - see documentation */
-    rightMotor1.selectProfileSlot(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kPIDLoopIdx);
-    rightMotor1.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF, CompetitionDriveConstants.kTimeoutMs);
-    rightMotor1.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP, CompetitionDriveConstants.kTimeoutMs);
-    rightMotor1.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI, CompetitionDriveConstants.kTimeoutMs);
-		rightMotor1.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD, CompetitionDriveConstants.kTimeoutMs);
-
-    leftMotor1.selectProfileSlot(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kPIDLoopIdx);
-    leftMotor1.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF, CompetitionDriveConstants.kTimeoutMs);
-    leftMotor1.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP, CompetitionDriveConstants.kTimeoutMs);
-    leftMotor1.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI, CompetitionDriveConstants.kTimeoutMs);
-		leftMotor1.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD, CompetitionDriveConstants.kTimeoutMs);
-
-		/* Set acceleration and vcruise velocity - see documentation */
-		rightMotor1.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
-    rightMotor1.configMotionAcceleration(6000, CompetitionDriveConstants.kTimeoutMs);
-    
-    leftMotor1.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
-    leftMotor1.configMotionAcceleration(6000, CompetitionDriveConstants.kTimeoutMs);
-
-    /* Zero the sensor once on robot boot up */
-    rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
-    leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
 }
 
+  private void setPIDValues(WPI_TalonFX motor){
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
+    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
+
+		/* Set the peak and nominal outputs */
+		motor.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
+		motor.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
+		motor.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
+    motor.configPeakOutputReverse(-1, CompetitionDriveConstants.kTimeoutMs);
+    
+    /* Set Motion Magic gains in slot0 - see documentation */
+    motor.selectProfileSlot(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kPIDLoopIdx);
+    motor.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD, CompetitionDriveConstants.kTimeoutMs);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		motor.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
+    motor.configMotionAcceleration(6000, CompetitionDriveConstants.kTimeoutMs);
+
+    /* Zero the sensor once on robot boot up */
+    motor.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
+  }
   /**
    * Gets the left drive encoder.
    *
