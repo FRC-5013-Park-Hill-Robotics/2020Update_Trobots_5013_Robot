@@ -37,6 +37,7 @@ public class Intake extends SubsystemBase {
     if (!intakeSolenoid.isFwdSolenoidBlackListed()){
       intakeSolenoid.set(DoubleSolenoid.Value.kForward);
       intakeMotor.set(ControlMode.PercentOutput,1.0);
+      intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
   }
@@ -45,6 +46,7 @@ public class Intake extends SubsystemBase {
     if (!intakeSolenoid.isRevSolenoidBlackListed()){
       intakeMotor.set(ControlMode.PercentOutput,0.0);
       intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+      intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
   }
 }

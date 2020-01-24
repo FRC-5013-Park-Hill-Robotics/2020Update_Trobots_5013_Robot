@@ -39,7 +39,7 @@ public class Shooter extends SubsystemBase {
   public int calculateHeight(Limelight limelight){
     int result = 0;
 //TODO 
-    return 0;
+    return result;
   }
 
   public void fire(){
