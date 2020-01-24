@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriverControllerConstants;
 
 public abstract class AbstractDrivetrain extends SubsystemBase implements IDriveTrain {
 
@@ -41,7 +41,7 @@ public abstract class AbstractDrivetrain extends SubsystemBase implements IDrive
 
   public double applyDeadband(double throttle){
     double result = 0;
-    if (Math.abs(throttle) > ControllerConstants.DEADBAND_VALUE){
+    if (Math.abs(throttle) > DriverControllerConstants.DEADBAND_VALUE){
       result = throttle;
     }
     return result;

@@ -21,13 +21,20 @@ package frc.robot;
 public final class Constants {
     //TODO set id
     public static final int PCM_ID = 0;
-    public static final class ControllerConstants{
-            //=====================Controller Constants=====================
-            public static final double DEADBAND_VALUE = .01;
-            public static final int XBOX_ID = 0;
-            public static final int Y_LJOY_ID = 1;
-            public static final int X_RJOY_ID = 4;
+    public static final class DriverControllerConstants{
+        //=====================Controller Constants=====================
+        public static final double DEADBAND_VALUE = .01;
+        public static final int XBOX_ID = 0;
+        public static final int Y_LJOY_ID = 1;
+        public static final int X_RJOY_ID = 4;
     }
+    public static final class OperatorControllerConstants{
+        //=====================Controller Constants=====================
+        public static final double DEADBAND_VALUE = .01;
+        public static final int XBOX_ID = 1;
+        public static final int Y_LJOY_ID = 1;
+        public static final int X_RJOY_ID = 4;
+}
     public static final class CompetitionDriveConstants {
         //=====================Motor IDS=====================
         public static final int LEFT_MOTOR_1_ID = 1;
