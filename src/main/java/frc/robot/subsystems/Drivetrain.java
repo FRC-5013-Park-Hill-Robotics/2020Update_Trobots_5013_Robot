@@ -68,6 +68,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
       * this so we can apply + to both sides when moving forward. DO NOT CHANGE
       */
     m_drive.setRightSideInverted(false);
+
     setPIDValues(rightMotor1);
     setPIDValues(leftMotor1);
 
