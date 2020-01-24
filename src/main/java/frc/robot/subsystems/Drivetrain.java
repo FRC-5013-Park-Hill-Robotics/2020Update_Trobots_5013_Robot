@@ -126,5 +126,6 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   public void moveTo(double inches) {
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
     leftMotor1.set(ControlMode.MotionMagic, targetPos);
+    rightMotor1.set(ControlMode.MotionMagic, targetPos);
   }
 }
