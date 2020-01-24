@@ -19,6 +19,8 @@ package frc.robot;
 
 
 public final class Constants {
+    //TODO set id
+    public static final int PCM_ID = 0;
     public static final class ControllerConstants{
             //=====================Controller Constants=====================
             public static final double DEADBAND_VALUE = .01;
@@ -65,17 +67,27 @@ public final class Constants {
     }
 
     public static final class ClimberConstants {
+        //TODO set ids
         public static final int LEFT_MOTOR = 0;
         public static final int RIGHT_MOTOR = 0;
         public static final int LEFT_LOWER_LIMIT = 0;
         public static final int RIGHT_LOWER_LIMIT = 0;
         public static final int LEFT_ENCODER = 0;
         public static final int RIGHT_ENCODER = 0;
+        public static final int RATCHED_SOLENOID_CHANNEL = 0;
     }
     public static final class ShooterConstants {
+        //TODO set ids
         public static final int SHOOTER_MOTOR = 0;
         public static final int ELEVATION_MOTOR = 0;
         public static final int ELEVATION_LOWER_LIMIT = 0;
         public static final int ELEVATION_ENCODER = 0;
+        public static final int GATE_SOLENOID_CHANNEL = 0;
+    }
+    public static final class IntakeConstants {
+        //TODO set ids
+        public static final int INTAKE_MOTOR = 0;
+        public static final int LIFT_INTAKE_SOLENOID_CHANNEL = 0;
+        public static final int DROP_INTAKE_SOLENOID_CHANNEL = 0;
     }
 }
