@@ -64,7 +64,7 @@ public final class Constants {
         public static final int kSlotIdx = 0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30; //et to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails.
-        public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
+        public static final Gains kGains = new Gains(0.0, 0.0, 0.0, 0.0, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
     }
     public static final class PracticeDriveConstants {
         //=====================Motor IDS=====================
