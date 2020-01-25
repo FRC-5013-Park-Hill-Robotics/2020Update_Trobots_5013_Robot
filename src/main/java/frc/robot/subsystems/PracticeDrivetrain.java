@@ -64,4 +64,9 @@ public class PracticeDrivetrain extends AbstractDrivetrain implements IDriveTrai
     // NO-OP not implementing for practice drivtrain
 
   }
+
+  @Override
+  public void resetEncoders(){
+    
+  }
 }
