@@ -31,7 +31,7 @@ public class AutonomousCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.driveTrain.moveTo(3.0);
+    this.driveTrain.moveTo(36.0);
     this.finished = true;
     
   }

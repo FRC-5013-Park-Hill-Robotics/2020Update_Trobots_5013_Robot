@@ -46,8 +46,8 @@ public final class Constants {
         public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
         public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
 
-        public static final boolean LEFT_REVERSED = true;
-        public static final boolean RIGHT_REVERSED = false;
+        public static final boolean LEFT_REVERSED = false;
+        public static final boolean RIGHT_REVERSED = true;
 
         public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
         public static final double WHEEL_DIAMETER_INCHES = 8;
@@ -64,7 +64,7 @@ public final class Constants {
         public static final int kSlotIdx = 0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30; //et to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails.
-        public static final Gains kGains = new Gains(0.0, 0.0, 0.0, 0.0, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
+        public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
     }
     public static final class PracticeDriveConstants {
         //=====================Motor IDS=====================

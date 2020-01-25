@@ -13,6 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.CompetitionDriveConstants;
+import frc.robot.Constants.DriverControllerConstants;
+
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
@@ -25,18 +27,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
-  // The left-side drive encoder
-  private final Encoder leftEncoder = new Encoder(CompetitionDriveConstants.LEFT_ENCODER_PORTS[0], CompetitionDriveConstants.LEFT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.LEFT_REVERSED);
-
-  // The right-side drive encoder
-  private final Encoder rightEncoder = new Encoder(CompetitionDriveConstants.RIGHT_ENCODER_PORTS[0], CompetitionDriveConstants.RIGHT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.RIGHT_REVERSED);
-
   public Drivetrain() {
-    leftEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    rightEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-
     /* factory default values */
     rightMotor1.configFactoryDefault();
     rightMotor2.configFactoryDefault();
@@ -76,7 +67,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
 
   private void setPIDValues(WPI_TalonFX motor){
 
-    motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+    motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
     /* Set relevant frame periods to be at least as fast as periodic rate */
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
@@ -101,23 +92,6 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
     /* Zero the sensor once on robot boot up */
     motor.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
   }
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public Encoder getLeftEncoder() {
-    return leftEncoder;
-  }
-
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public Encoder getRightEncoder() {
-    return rightEncoder;
-  }
 
   public DifferentialDrive getDrive(){
     return m_drive;
@@ -127,5 +101,29 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
     leftMotor1.set(ControlMode.MotionMagic, targetPos);
     rightMotor1.set(ControlMode.MotionMagic, targetPos);
+  }
+
+  public void arcadeDrive(double fwd, double rot) {
+    super.arcadeDrive(fwd, rot);
+    System.out.println("After Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+  }
+
+  @Override
+  public Encoder getLeftEncoder() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Encoder getRightEncoder() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void resetEncoders(){
+    rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+    leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
   }
 }
