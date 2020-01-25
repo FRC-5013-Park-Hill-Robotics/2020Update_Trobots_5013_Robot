@@ -49,12 +49,8 @@ public final class Constants {
         public static final boolean LEFT_REVERSED = false;
         public static final boolean RIGHT_REVERSED = true;
 
-        public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
-        public static final double WHEEL_DIAMETER_INCHES = 8;
-        public static final double DISTANCE_PER_PULSE =
-            // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
-
+        public static final double DISTANCE_PER_PULSE = .0009029;
+        
         //PID VALUES
         /**
          * Which PID slot to pull gains from. Starting 2018, you can choose from

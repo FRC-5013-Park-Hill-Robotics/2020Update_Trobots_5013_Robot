@@ -7,13 +7,12 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.CompetitionDriveConstants;
-import frc.robot.Constants.DriverControllerConstants;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
@@ -102,29 +101,20 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
     System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
     System.out.println("moveTo:TargetPos:" + targetPos);
-    leftMotor1.set(ControlMode.MotionMagic, targetPos);
-    rightMotor1.set(ControlMode.MotionMagic, targetPos);
+    while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
+      + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx))/2 < targetPos ){
+      leftMotor1.set(ControlMode.MotionMagic, targetPos);
+      rightMotor1.set(ControlMode.MotionMagic, targetPos);
+    }
     System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
     System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
  
   }
-
+  
   public void arcadeDrive(double fwd, double rot) {
     super.arcadeDrive(fwd, rot);
     System.out.println("After Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
     System.out.println("AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-  }
-
-  @Override
-  public Encoder getLeftEncoder() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public Encoder getRightEncoder() {
-    // TODO Auto-generated method stub
-    return null;
   }
 
   @Override

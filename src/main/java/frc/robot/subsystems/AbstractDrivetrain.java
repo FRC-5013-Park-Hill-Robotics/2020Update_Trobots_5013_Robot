@@ -21,14 +21,7 @@ public abstract class AbstractDrivetrain extends SubsystemBase implements IDrive
     getDrive().setMaxOutput(maxOutput);
   }
 
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance() {
-    return (Math.abs(getLeftEncoder().getDistance()) + Math.abs(getRightEncoder().getDistance())) / 2.0;
-  }
+
   /**
    * Drives the robot using arcade controls.
    *
@@ -65,8 +58,5 @@ public abstract class AbstractDrivetrain extends SubsystemBase implements IDrive
   /**
    * Resets the drive encoders to currently read a position of 0.
    */
-  public void resetEncoders() {
-    getLeftEncoder().reset();
-    getRightEncoder().reset();
-  }
+  public abstract void resetEncoders(); 
 }

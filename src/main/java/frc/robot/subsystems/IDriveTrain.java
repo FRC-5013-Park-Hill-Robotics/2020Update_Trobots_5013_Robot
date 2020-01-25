@@ -30,26 +30,6 @@ public interface IDriveTrain extends Subsystem{
    */
   public void resetEncoders(); 
 
-  /**
-   * Gets the average distance of the two encoders.
-   *
-   * @return the average of the two encoder readings
-   */
-  public double getAverageEncoderDistance();
-
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public Encoder getLeftEncoder(); 
-
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public Encoder getRightEncoder(); 
 
   /**
    * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
