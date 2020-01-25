@@ -98,9 +98,15 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   }
   @Override
   public void moveTo(double inches) {
+    System.out.println("moveTo:Before Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
+    System.out.println("moveTo:TargetPos:" + targetPos);
     leftMotor1.set(ControlMode.MotionMagic, targetPos);
     rightMotor1.set(ControlMode.MotionMagic, targetPos);
+    System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+ 
   }
 
   public void arcadeDrive(double fwd, double rot) {
