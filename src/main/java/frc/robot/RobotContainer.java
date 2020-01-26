@@ -16,8 +16,6 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IDriveTrain;
-import frc.robot.subsystems.PracticeDrivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -33,7 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private XboxController driverController;
   private XboxController operatorController;
-  private final IDriveTrain m_driveTrain = new Drivetrain();
+  private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
   

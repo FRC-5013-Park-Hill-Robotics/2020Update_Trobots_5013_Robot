@@ -7,21 +7,27 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.PigeonIMU;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
+import frc.robot.Constants.DriverControllerConstants;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
-public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
+public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
   private WPI_TalonFX leftMotor2 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_2_ID);
   private WPI_TalonFX rightMotor1 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_1_ID);;
   private WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
+  private TalonSRX pigeonTalon = new TalonSRX(CompetitionDriveConstants.PIGEON_ID);
+  private PigeonIMU pigeonIMU = new PigeonIMU(pigeonTalon);
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
@@ -32,6 +38,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
     rightMotor2.configFactoryDefault();
     leftMotor1.configFactoryDefault();
     leftMotor2.configFactoryDefault(); 
+  
 
        /* set up followers */
     leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
@@ -59,6 +66,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
       */
     m_drive.setRightSideInverted(false);
 
+  
     setPIDValues(rightMotor1);
     setPIDValues(leftMotor1);
 
@@ -95,31 +103,61 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   public DifferentialDrive getDrive(){
     return m_drive;
   }
-  @Override
+ 
   public void moveTo(double inches) {
-    System.out.println("moveTo:Before Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+   // System.out.println("moveTo:Before Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+   // System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    System.out.println("moveTo:TargetPos:" + targetPos);
+  //  System.out.println("moveTo:TargetPos:" + targetPos);
     while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
       + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx))/2 < targetPos ){
       leftMotor1.set(ControlMode.MotionMagic, targetPos);
       rightMotor1.set(ControlMode.MotionMagic, targetPos);
     }
-    System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+   // System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+  //  System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
  
   }
   
   public void arcadeDrive(double fwd, double rot) {
-    super.arcadeDrive(fwd, rot);
-    System.out.println("After Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    System.out.println("AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+    getDrive().arcadeDrive(applyDeadband(fwd),applyDeadband(rot));
   }
 
-  @Override
   public void resetEncoders(){
     rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
     leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+  }
+
+  /**
+   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+   *
+   * @param maxOutput the maximum output to which the drive will be constrained
+   */
+  public void setMaxOutput(double maxOutput) {
+    getDrive().setMaxOutput(maxOutput);
+  }
+
+  public double applyDeadband(double throttle){
+    double result = 0;
+    if (Math.abs(throttle) > DriverControllerConstants.DEADBAND_VALUE){
+      result = throttle;
+    }
+    return result;
+  }
+
+  public double exponentControl(double throttle){
+    int sign = 1;
+    if (throttle < 0){
+      sign = -1;
+    }
+    return sign * Math.pow(throttle, 2);
+  }
+
+  public double capControl(double throttle){
+    double result = throttle;
+    if (throttle > 0.9){
+      result = 0.9;
+    }
+    return result;
   }
 }
