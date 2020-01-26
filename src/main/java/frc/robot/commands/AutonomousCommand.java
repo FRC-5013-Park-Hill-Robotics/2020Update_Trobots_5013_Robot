@@ -32,7 +32,7 @@ public class AutonomousCommand extends CommandBase {
   @Override
   public void execute() {
     System.out.println("Auto Begin");
-    this.driveTrain.moveTo(3.0);
+    this.driveTrain.moveTo(60.0);
     this.finished = true;
     System.out.println("Auto End");
   }

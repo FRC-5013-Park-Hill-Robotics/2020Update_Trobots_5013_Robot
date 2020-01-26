@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PracticeDriveConstants;
 
 public class PracticeDrivetrain extends AbstractDrivetrain implements IDriveTrain {
@@ -62,7 +61,12 @@ public class PracticeDrivetrain extends AbstractDrivetrain implements IDriveTrai
 
   @Override
   public void moveTo(double Inches) {
-    // TODO Auto-generated method stub
+    // NO-OP not implementing for practice drivtrain
 
+  }
+
+  @Override
+  public void resetEncoders(){
+    
   }
 }

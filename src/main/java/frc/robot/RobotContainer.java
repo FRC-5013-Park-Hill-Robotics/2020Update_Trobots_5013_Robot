@@ -9,13 +9,19 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IDriveTrain;
 import frc.robot.subsystems.PracticeDrivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,8 +31,12 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private XboxController m_Controller;
+  private XboxController driverController;
+  private XboxController operatorController;
   private final IDriveTrain m_driveTrain = new Drivetrain();
+  private final Conveyor conveyor = new Conveyor();
+  private final Intake intake = new Intake();
+  
   //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
 
@@ -37,16 +47,16 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    m_Controller = new XboxController(ControllerConstants.XBOX_ID);
-    
+    driverController = new XboxController(DriverControllerConstants.XBOX_ID);
+    operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_driveTrain.arcadeDrive(
-            m_Controller.getRawAxis(ControllerConstants.Y_LJOY_ID),
-            m_Controller.getRawAxis(ControllerConstants.X_RJOY_ID)),
+          -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
+          driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
             m_driveTrain));
   }
 
@@ -60,7 +70,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-  
+
+    //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(intake::dropIntake, intake));
   }
 
 

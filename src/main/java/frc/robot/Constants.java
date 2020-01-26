@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import frc.robot.Gains;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -17,21 +18,29 @@ package frc.robot;
  */
 
 
-
 public final class Constants {
-    public static final class ControllerConstants{
-            //=====================Controller Constants=====================
-            public static final double DEADBAND_VALUE = .01;
-            public static final int XBOX_ID = 0;
-            public static final int Y_LJOY_ID = 1;
-            public static final int X_RJOY_ID = 4;
+    //TODO set id
+    public static final int PCM_ID = 0;
+    public static final class DriverControllerConstants{
+        //=====================Controller Constants=====================
+        public static final double DEADBAND_VALUE = .01;
+        public static final int XBOX_ID = 0;
+        public static final int Y_LJOY_ID = 1;
+        public static final int X_RJOY_ID = 4;
     }
+    public static final class OperatorControllerConstants{
+        //=====================Controller Constants=====================
+        public static final double DEADBAND_VALUE = .01;
+        public static final int XBOX_ID = 1;
+        public static final int Y_LJOY_ID = 1;
+        public static final int X_RJOY_ID = 4;
+}
     public static final class CompetitionDriveConstants {
         //=====================Motor IDS=====================
-        public static final int LEFT_MOTOR_1_ID = 1;
-        public static final int LEFT_MOTOR_2_ID = 2;
-        public static final int RIGHT_MOTOR_1_ID = 3;
-        public static final int RIGHT_MOTOR_2_ID = 4;
+        public static final int LEFT_MOTOR_1_ID = 3;
+        public static final int LEFT_MOTOR_2_ID = 4;
+        public static final int RIGHT_MOTOR_1_ID = 1;
+        public static final int RIGHT_MOTOR_2_ID = 2;
 
         public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
         public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
@@ -39,18 +48,25 @@ public final class Constants {
         public static final boolean LEFT_REVERSED = false;
         public static final boolean RIGHT_REVERSED = true;
 
-        public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
-        public static final double WHEEL_DIAMETER_INCHES = 8;
-        public static final double DISTANCE_PER_PULSE = 
-            // Assumes the encoders are directly mounted on the wheel shafts
-            (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
+        public static final double DISTANCE_PER_PULSE = .0009029;
+        
+        //PID VALUES
+        /**
+         * Which PID slot to pull gains from. Starting 2018, you can choose from
+         * 0,1,2 or 3. Only the first two (0,1) are visible in web-based
+         * configuration.
+         */
+        public static final int kSlotIdx = 0;
+        public static final int kPIDLoopIdx = 0;
+        public static final int kTimeoutMs = 30; //et to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails.
+        public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
     }
     public static final class PracticeDriveConstants {
         //=====================Motor IDS=====================
-        public static final int LEFT_MOTOR_1_ID = 1;
-        public static final int LEFT_MOTOR_2_ID = 2;
-        public static final int RIGHT_MOTOR_1_ID = 3;
-        public static final int RIGHT_MOTOR_2_ID = 4;
+        public static final int LEFT_MOTOR_1_ID = 3;
+        public static final int LEFT_MOTOR_2_ID = 4;
+        public static final int RIGHT_MOTOR_1_ID = 1;
+        public static final int RIGHT_MOTOR_2_ID = 2;
 
         public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
         public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
@@ -64,4 +80,32 @@ public final class Constants {
             (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
     }
 
+    public static final class ClimberConstants {
+        //TODO set ids
+        public static final int LEFT_MOTOR = 6;
+        public static final int RIGHT_MOTOR = 7;
+        public static final int LEFT_LOWER_LIMIT = 0;
+        public static final int RIGHT_LOWER_LIMIT = 0;
+        public static final int LEFT_ENCODER = 0;
+        public static final int RIGHT_ENCODER = 0;
+        public static final int RATCHED_SOLENOID_CHANNEL = 0;
+    }
+    public static final class ShooterConstants {
+        //TODO set ids
+        public static final int SHOOTER_MOTOR = 5;
+        public static final int ELEVATION_MOTOR = 0;
+        public static final int ELEVATION_LOWER_LIMIT = 0;
+        public static final int ELEVATION_ENCODER = 0;
+        public static final int GATE_SOLENOID_CHANNEL = 0;
+    }
+    public static final class IntakeConstants {
+        //TODO set ids
+        public static final int INTAKE_MOTOR = 8;
+        public static final int LIFT_INTAKE_SOLENOID_CHANNEL = 0;
+        public static final int DROP_INTAKE_SOLENOID_CHANNEL = 0;
+    }
+    public static final class ConveyorConstants {
+        public static final int LEFT_CONVEYOR_MOTOR = 9;
+        public static final int RIGHT_CONVEYOR_MOTOR = 10;
+    }
 }

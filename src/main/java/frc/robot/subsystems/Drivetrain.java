@@ -7,12 +7,15 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.CompetitionDriveConstants;
+
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   private WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
@@ -23,18 +26,7 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
-  // The left-side drive encoder
-  private final Encoder leftEncoder = new Encoder(CompetitionDriveConstants.LEFT_ENCODER_PORTS[0], CompetitionDriveConstants.LEFT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.LEFT_REVERSED);
-
-  // The right-side drive encoder
-  private final Encoder rightEncoder = new Encoder(CompetitionDriveConstants.RIGHT_ENCODER_PORTS[0], CompetitionDriveConstants.RIGHT_ENCODER_PORTS[1],
-      CompetitionDriveConstants.RIGHT_REVERSED);
-
   public Drivetrain() {
-    leftEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    rightEncoder.setDistancePerPulse(CompetitionDriveConstants.DISTANCE_PER_PULSE);
-
     /* factory default values */
     rightMotor1.configFactoryDefault();
     rightMotor2.configFactoryDefault();
@@ -66,24 +58,38 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
       * this so we can apply + to both sides when moving forward. DO NOT CHANGE
       */
     m_drive.setRightSideInverted(false);
+
+    setPIDValues(rightMotor1);
+    setPIDValues(leftMotor1);
+
 }
 
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public Encoder getLeftEncoder() {
-    return leftEncoder;
-  }
+  private void setPIDValues(WPI_TalonFX motor){
 
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public Encoder getRightEncoder() {
-    return rightEncoder;
+    motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+    /* Set relevant frame periods to be at least as fast as periodic rate */
+    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
+    motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
+
+		/* Set the peak and nominal outputs */
+		motor.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
+		motor.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
+		motor.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
+    motor.configPeakOutputReverse(-1, CompetitionDriveConstants.kTimeoutMs);
+    
+    /* Set Motion Magic gains in slot0 - see documentation */
+    motor.selectProfileSlot(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kPIDLoopIdx);
+    motor.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD, CompetitionDriveConstants.kTimeoutMs);
+
+		/* Set acceleration and vcruise velocity - see documentation */
+		motor.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
+    motor.configMotionAcceleration(6000, CompetitionDriveConstants.kTimeoutMs);
+
+    /* Zero the sensor once on robot boot up */
+    motor.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
   }
 
   public DifferentialDrive getDrive(){
@@ -93,9 +99,29 @@ public class Drivetrain extends AbstractDrivetrain implements IDriveTrain {
 
   @Override
   public void moveTo(double inches) {
-    // TODO Auto-generated method stub
+    System.out.println("moveTo:Before Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
     double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    System.out.println(targetPos);
-    leftMotor1.set(ControlMode.MotionMagic, targetPos);
+    System.out.println("moveTo:TargetPos:" + targetPos);
+    while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
+      + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx))/2 < targetPos ){
+      leftMotor1.set(ControlMode.MotionMagic, targetPos);
+      rightMotor1.set(ControlMode.MotionMagic, targetPos);
+    }
+    System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+ 
+  }
+  
+  public void arcadeDrive(double fwd, double rot) {
+    super.arcadeDrive(fwd, rot);
+    System.out.println("After Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    System.out.println("AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+  }
+
+  @Override
+  public void resetEncoders(){
+    rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+    leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
   }
 }
