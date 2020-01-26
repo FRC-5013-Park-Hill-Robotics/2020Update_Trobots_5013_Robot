@@ -29,7 +29,7 @@ public abstract class AbstractDrivetrain extends SubsystemBase implements IDrive
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double fwd, double rot) {
-    getDrive().arcadeDrive(applyDeadband(fwd),capControl(exponentControl(applyDeadband(rot))));
+    getDrive().arcadeDrive(applyDeadband(fwd),applyDeadband(rot));
   }
 
   public double applyDeadband(double throttle){
