@@ -43,6 +43,8 @@ public final class Constants {
         public static final int RIGHT_MOTOR_1_ID = 1;
         public static final int RIGHT_MOTOR_2_ID = 2;
 
+        public static final int PIGEON_ID = 5;
+
         public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
         public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
 
