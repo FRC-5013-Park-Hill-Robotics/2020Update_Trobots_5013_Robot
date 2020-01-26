@@ -41,7 +41,7 @@ public final class Constants {
 
         public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
         public static final double WHEEL_DIAMETER_INCHES = 8;
-        public static final double DISTANCE_PER_PULSE =
+        public static final double DISTANCE_PER_PULSE = 
             // Assumes the encoders are directly mounted on the wheel shafts
             (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
     }
