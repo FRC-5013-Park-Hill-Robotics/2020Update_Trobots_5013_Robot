@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   
-  public void turnToTarget(IDriveTrain drivetrain, Limelight limelight){
+  public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
     //TODO 
   }
 

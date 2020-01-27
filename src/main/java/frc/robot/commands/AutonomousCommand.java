@@ -8,15 +8,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IDriveTrain;
+import frc.robot.subsystems.Drivetrain;
 
 public class AutonomousCommand extends CommandBase {
   private boolean finished = false;
   /**
    * Creates a new AutonomousCommand.
    */
-  private IDriveTrain driveTrain;
-  public AutonomousCommand(IDriveTrain drive) {
+  private Drivetrain driveTrain;
+  public AutonomousCommand(Drivetrain drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
     this.driveTrain = drive;
