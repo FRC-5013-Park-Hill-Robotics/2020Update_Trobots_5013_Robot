@@ -15,7 +15,9 @@ import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -34,8 +36,8 @@ public class RobotContainer {
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
-  
-  //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
+  private final Shooter shooter = new Shooter();
+  private final Limelight m_Limelight = new Limelight();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
 
   
@@ -49,13 +51,21 @@ public class RobotContainer {
     operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
+//Comment this out to test the shooter
     m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new RunCommand(() -> m_driveTrain.arcadeDrive(
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
-            m_driveTrain));
+            m_driveTrain));    
+/*
+    //For shooter testing comment out when trying to drive
+    shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
+      -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID)
+      ,driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
+        shooter));
+  */
   }
 
 
@@ -72,6 +82,9 @@ public class RobotContainer {
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
     new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));
+      new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
+
   }
 
 
@@ -84,5 +97,6 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
 
 }

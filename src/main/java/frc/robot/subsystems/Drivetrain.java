@@ -126,7 +126,7 @@ public class Drivetrain extends SubsystemBase {
   public void resetEncoders(){
     rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
     leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
-  }
+   }
 
   /**
    * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
