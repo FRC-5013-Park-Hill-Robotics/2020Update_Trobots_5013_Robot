@@ -27,7 +27,6 @@ public class Intake extends SubsystemBase {
    */
   public Intake() {
     intakeMotor.configFactoryDefault();
-    setDefaultCommand(defaultCommand);
   }
 
   @Override
@@ -36,12 +35,12 @@ public class Intake extends SubsystemBase {
   }
 
   public void dropIntake(){
+    intakeMotor.set(ControlMode.PercentOutput, .5 );
   /*  if (!intakeSolenoid.isFwdSolenoidBlackListed()){
       intakeSolenoid.set(DoubleSolenoid.Value.kForward);
       intakeMotor.set(ControlMode.PercentOutput,1.0);
       intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }*/
-    intakeMotor.set(ControlMode.PercentOutput, .5 );
   }
 
   public void raiseIntake(){
