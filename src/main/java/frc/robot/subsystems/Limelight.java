@@ -62,7 +62,7 @@ public class Limelight extends SubsystemBase {
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
     //TODO 
-    if(/this.table.getEntry("tv") < 1.0){
+    if(this.table.getEntry("tv").getDouble(0.0) < 1.0){
       return false;
     }
     return true;
