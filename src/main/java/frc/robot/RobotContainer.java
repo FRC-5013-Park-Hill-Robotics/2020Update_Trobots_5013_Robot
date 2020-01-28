@@ -82,6 +82,9 @@ public class RobotContainer {
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
     new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));
+      new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
+
   }
 
 

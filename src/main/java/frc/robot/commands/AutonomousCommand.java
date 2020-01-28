@@ -31,9 +31,10 @@ public class AutonomousCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Auto Begin");
     this.driveTrain.moveTo(60.0);
     this.finished = true;
-    
+    System.out.println("Auto End");
   }
 
   // Called once the command ends or is interrupted.
