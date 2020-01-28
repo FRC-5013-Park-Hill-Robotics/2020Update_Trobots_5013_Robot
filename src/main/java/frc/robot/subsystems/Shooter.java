@@ -23,14 +23,14 @@ public class Shooter extends SubsystemBase {
   }
   
   public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
-    //TODO 
+    while(limelight.getTx().getDouble(0.0) != 0){
+      // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot
+      if(limelight.hasTarget()){
+        drivetrain.arcadeDrive(0, limelight.getTx().getDouble(0.0)*0.03);
+      }
   }
+    
 
-  /**Determinse if the Limelight can see the retroreflective target
-   * returns true if it can see the target.
-   */
-  public boolean hasTarget(Limelight limelight){
-    return false;
   }
 
   /** Returns the height the shooter needs to elevate to for the shot based on distance to target
