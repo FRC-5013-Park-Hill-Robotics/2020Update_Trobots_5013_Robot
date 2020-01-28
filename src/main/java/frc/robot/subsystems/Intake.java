@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -17,7 +18,7 @@ import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
   private TalonSRX intakeMotor = new TalonSRX(IntakeConstants.INTAKE_MOTOR);
-
+  
   //Dropping the intake is set up as forward and raising it as reverse, may have to change based on mechanics and wiring.
   //private DoubleSolenoid intakeSolenoid = new DoubleSolenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL, IntakeConstants.LIFT_INTAKE_SOLENOID_CHANNEL);
   
@@ -26,6 +27,7 @@ public class Intake extends SubsystemBase {
    */
   public Intake() {
     intakeMotor.configFactoryDefault();
+    setDefaultCommand(defaultCommand);
   }
 
   @Override
@@ -39,7 +41,7 @@ public class Intake extends SubsystemBase {
       intakeMotor.set(ControlMode.PercentOutput,1.0);
       intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }*/
-
+    intakeMotor.set(ControlMode.PercentOutput, .5 );
   }
 
   public void raiseIntake(){
@@ -48,5 +50,6 @@ public class Intake extends SubsystemBase {
       intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
       intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }*/
+    intakeMotor.set(ControlMode.PercentOutput, 0 );
   }
 }
