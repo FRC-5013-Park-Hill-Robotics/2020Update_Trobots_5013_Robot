@@ -15,6 +15,7 @@ import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,8 +35,8 @@ public class RobotContainer {
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
-  
-  //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
+  private final Shooter shooter = new Shooter();
+
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
 
   
@@ -49,6 +50,7 @@ public class RobotContainer {
     operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
+//Comment this out to test the shooter
     m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -56,6 +58,16 @@ public class RobotContainer {
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
             m_driveTrain));
+            
+    
+/*
+    //For shooter testing comment out when trying to drive
+    shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
+      -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID)
+      ,driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
+        shooter));
+  */
+
   }
 
 
@@ -84,5 +96,6 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return m_autoCommand;
   }
+
 
 }

@@ -7,14 +7,23 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
+  WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
+  WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
-
+    topMotor.setInverted(false);
+    bottomMotor.setInverted(!topMotor.getInverted());
   }
 
   @Override
@@ -42,6 +51,12 @@ public class Shooter extends SubsystemBase {
     return result;
   }
 
+  public void test(double bottom, double top){
+    topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(top, -1.0, 1.0) );
+    bottomMotor.set(ControlMode.PercentOutput,MathUtil.clamp(bottom, -1.0, 1.0) );
+    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+  }
   public void fire(){
     //TODO 
   }
