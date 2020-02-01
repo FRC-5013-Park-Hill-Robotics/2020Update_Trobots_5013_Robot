@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import frc.robot.Gains;
 
 /**
@@ -52,6 +53,7 @@ public final class Constants {
         public static final boolean RIGHT_REVERSED = true;
 
         public static final double DISTANCE_PER_PULSE = .0009029;
+        public static final boolean GYRO_REVERSED = false;
         
         //PID VALUES
         /**
@@ -63,6 +65,22 @@ public final class Constants {
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30; //et to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails.
         public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
+        
+        //drive kinemetics
+        public static final double kTrackwidthMeters = 0.5842;
+        public static final DifferentialDriveKinematics kDriveKinematics =
+            new DifferentialDriveKinematics(kTrackwidthMeters);
+        public static final double kMaxSpeedMetersPerSecond = 3;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kRamseteB = 2;
+        public static final double kRamseteZeta = 0.7;
+
+        public static final double ksVolts =0.338;
+        public static final double kvVoltSecondsPerMeter = 2.25;
+        public static final double kaVoltSecondsSquaredPerMeter =0.121;
+    
+       //TODO figure out velocity
+        public static final double kPDriveVel = 8.5;
     }
 
     public static final class ClimberConstants {
