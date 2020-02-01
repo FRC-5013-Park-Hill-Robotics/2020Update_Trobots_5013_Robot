@@ -9,18 +9,24 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-  WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
-  WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
+  private WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
+  private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
+  private WPI_TalonSRX angleSrx = new WPI_TalonSRX(ShooterConstants.ELEVATION_MOTOR);
+  private DigitalInput lowerLimit1 = new DigitalInput(ShooterConstants.ELEVATION_LOWER_LIMIT);
+  //private Encoder elevationEncoder = new Encoder(ShooterConstants.ELEVATION_ENCODER, ShooterConstants.ELEVATION_ENCODER);
   /**
    * Creates a new Shooter.
-   */
+   */ss
   public Shooter() {
     topMotor.setInverted(false);
     bottomMotor.setInverted(!topMotor.getInverted());
@@ -64,13 +70,22 @@ public class Shooter extends SubsystemBase {
   /** Raises a number of encoder pulses upto the soft max */
   public void raise(int pulses){
     //TODO Raises a number of pulses according to the encoder.  We need to determine a max.
+    /**while(pulses >= Constants.max ){
+      this.angleSrx.set(ControlMode.PercentOutput, 0.12);
+    }
   }
+  */
 
   /**Retracts to full down position using the limit switch as the bottom
    * resets encoder to 0
    */
   public void retract(){
     //TODO retract to bottom using limit switch, reset encoder
+    while(this.lowerLimit1.get() == false){
+      this.angleSrx.set(ControlMode.PercentOutput, 0.12);
+    }
+    
   }
+
 
 }
