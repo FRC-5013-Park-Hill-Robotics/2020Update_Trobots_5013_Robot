@@ -14,6 +14,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
@@ -28,6 +32,10 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
   private TalonSRX pigeonTalon = new TalonSRX(CompetitionDriveConstants.PIGEON_ID);
   private PigeonIMU pigeonIMU = new PigeonIMU(pigeonTalon);
+
+   // Odometry class for tracking robot pose
+   private final DifferentialDriveOdometry m_odometry;
+
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
@@ -67,8 +75,10 @@ public class Drivetrain extends SubsystemBase {
     m_drive.setRightSideInverted(false);
 
   
-    setPIDValues(rightMotor1);
-    setPIDValues(leftMotor1);
+    //setPIDValues(rightMotor1);
+    //setPIDValues(leftMotor1);
+    resetEncoders();
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
 }
 
@@ -160,4 +170,64 @@ public class Drivetrain extends SubsystemBase {
     }
     return result;
   }
-}
+
+    /**
+   * Zeroes the heading of the robot.
+   */
+  public void zeroHeading() {
+    pigeonIMU.setYaw(0);
+  }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+    double [] yprArray = new double[3];
+    pigeonIMU.getYawPitchRoll(yprArray);
+    return Math.IEEEremainder(yprArray[0], 360) * (CompetitionDriveConstants.GYRO_REVERSED ? -1.0 : 1.0);
+  }
+
+    /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+    /**
+   * Returns the current wheel speeds of the robot.
+   * in pulses per 100ms
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(leftMotor1.getSelectedSensorVelocity(),rightMotor1.getSelectedSensorVelocity());
+  }
+
+    /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+  }
+
+    /**
+   * Gets the average distance of the two encoders.
+   *
+   * @return the average of the two encoder readings
+   */
+  public double getAverageEncoderDistance() {
+    return (leftMotor1.getSelectedSensorPosition() + rightMotor1.getSelectedSensorPosition()) / 2.0;
+  }
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    leftMotor1.setVoltage(leftVolts);
+    rightMotor1.setVoltage(-rightVolts);
+    m_drive.feed();
+  }
