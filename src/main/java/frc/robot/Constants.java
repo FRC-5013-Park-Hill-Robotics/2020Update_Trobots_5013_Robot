@@ -79,7 +79,7 @@ public final class Constants {
         public static final double kaVoltSecondsSquaredPerMeter =0.121;
     
        //TODO figure out velocity
-        public static final double kPDriveVel = 1.29;
+        public static final double kPDriveVel = 2.58;
     }
 
     public static final class ClimberConstants {
