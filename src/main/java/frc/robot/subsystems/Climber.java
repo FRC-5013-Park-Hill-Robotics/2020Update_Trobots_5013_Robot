@@ -8,13 +8,33 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ClimberConstants;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends SubsystemBase {
+  private TalonSRX m_climberMotor;
+  private Servo m_climbServo;
+  private double m_targetServoPosition;
+  private WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(ClimberConstants.LEFT_MOTOR);
+  private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ClimberConstants.RIGHT_MOTOR);
   /**
    * Creates a new Climber.
    */
   public Climber() {
-
+    m_climberMotor.setInverted(true);
+    leftMotor1.configFactoryDefault();
+    rightMotor1.configFactoryDefault();
+    leftMotor1.setInverted(true);
+    rightMotor1.setInverted(true);
   }
 
   @Override
@@ -28,6 +48,8 @@ public class Climber extends SubsystemBase {
 
   /**EXtends Climber fully */
   public void fullyExtend(){
+    leftMotor1.set(ControlMode.PercentOutput, 0.25);
+    rightMotor1.set(ControlMode.PercentOutput, 0.25);
     //TODO will need to determine pulses to max height, we don't want to run slack into our rope
   }
 
@@ -41,3 +63,4 @@ public class Climber extends SubsystemBase {
     //TODO dont know if we need this or not, may want to limit throttle if we do though.
   }
 }
+//List of parts: Two Talon SRX's Mag encoder, Rahcet release, Parmeter, Velocity, wpilib import components. Liam
