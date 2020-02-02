@@ -82,6 +82,7 @@ public final class Constants {
         public static final int ELEVATION_LOWER_LIMIT = 0;
         public static final int ELEVATION_ENCODER = 0;
         public static final int GATE_SOLENOID_CHANNEL = 0;
+        public static final double MIN_TURN = 0.05;
     }
     public static final class IntakeConstants {
         //TODO set ids

@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   //private Encoder elevationEncoder = new Encoder(ShooterConstants.ELEVATION_ENCODER, ShooterConstants.ELEVATION_ENCODER);
   /**
    * Creates a new Shooter.
-   */ss
+   */
   public Shooter() {
     topMotor.setInverted(false);
     bottomMotor.setInverted(!topMotor.getInverted());
@@ -38,12 +38,19 @@ public class Shooter extends SubsystemBase {
   }
   
   public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
+    double turn = 0;
+    double min = ShooterConstants.MIN_TURN;
     while(limelight.getTx().getDouble(0.0) != 0){
+      turn = limelight.getTx().getDouble(0.0)*0.03; 
       // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot
       if(limelight.hasTarget()){
-        drivetrain.arcadeDrive(0, limelight.getTx().getDouble(0.0)*0.03);
+        if(limelight.getTx().getDouble(0.0) > 1.0)
+          min = -min;
+        
+        turn += min;
+        drivetrain.arcadeDrive(0, turn);
       }
-  }
+    }
     
 
   }
