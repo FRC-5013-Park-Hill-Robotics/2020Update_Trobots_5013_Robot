@@ -25,7 +25,7 @@ public class Conveyor extends SubsystemBase {
     leftMotor1.configFactoryDefault();
     rightMotor1.configFactoryDefault();
     leftMotor1.setInverted(true);
-    rightMotor1.setInverted(true);
+    rightMotor1.setInverted(false);
   }
 
   @Override
