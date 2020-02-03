@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -16,8 +18,11 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
@@ -26,16 +31,15 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Drivetrain extends SubsystemBase {
-  private WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
-  private WPI_TalonFX leftMotor2 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_2_ID);
-  private WPI_TalonFX rightMotor1 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_1_ID);;
-  private WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
-  private TalonSRX pigeonTalon = new TalonSRX(CompetitionDriveConstants.PIGEON_ID);
-  private PigeonIMU pigeonIMU = new PigeonIMU(pigeonTalon);
+  private final WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
+  private final WPI_TalonFX leftMotor2 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_2_ID);
+  private final WPI_TalonFX rightMotor1 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_1_ID);;
+  private final WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
+  private final TalonSRX pigeonTalon = new TalonSRX(CompetitionDriveConstants.PIGEON_ID);
+  private final PigeonIMU pigeonIMU = new PigeonIMU(pigeonTalon);
 
-   // Odometry class for tracking robot pose
-   private final DifferentialDriveOdometry m_odometry;
-
+  // Odometry class for tracking robot pose
+  private final DifferentialDriveOdometry m_odometry;
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
@@ -45,133 +49,149 @@ public class Drivetrain extends SubsystemBase {
     rightMotor1.configFactoryDefault();
     rightMotor2.configFactoryDefault();
     leftMotor1.configFactoryDefault();
-    leftMotor2.configFactoryDefault(); 
-  
+    leftMotor2.configFactoryDefault();
 
-       /* set up followers */
+    /* set up followers */
     leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
-    rightMotor2.set(ControlMode.Follower,  CompetitionDriveConstants.RIGHT_MOTOR_1_ID);
+    rightMotor2.set(ControlMode.Follower, CompetitionDriveConstants.RIGHT_MOTOR_1_ID);
 
     /* [3] flip values so robot moves forward when stick-forward/LEDs-green */
     rightMotor1.setInverted(CompetitionDriveConstants.RIGHT_REVERSED); // !< Update this
     leftMotor1.setInverted(CompetitionDriveConstants.LEFT_REVERSED); // !< Update this
 
     /*
-      * set the invert of the followers to match their respective master controllers
-      */
+     * set the invert of the followers to match their respective master controllers
+     */
     rightMotor2.setInverted(InvertType.FollowMaster);
     leftMotor2.setInverted(InvertType.FollowMaster);
 
     /*
-      * [4] adjust sensor phase so sensor moves positive when Talon LEDs are green
-      */
+     * [4] adjust sensor phase so sensor moves positive when Talon LEDs are green
+     */
     rightMotor1.setSensorPhase(true);
     leftMotor1.setSensorPhase(true);
 
     /*
-      * WPI drivetrain classes defaultly assume left and right are opposite. call
-      * this so we can apply + to both sides when moving forward. DO NOT CHANGE
-      */
+     * WPI drivetrain classes defaultly assume left and right are opposite. call
+     * this so we can apply + to both sides when moving forward. DO NOT CHANGE
+     */
     m_drive.setRightSideInverted(false);
 
-  
-    //setPIDValues(rightMotor1);
-    //setPIDValues(leftMotor1);
+    // setPIDValues(rightMotor1);
+    // setPIDValues(leftMotor1);
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-}
+  }
 
-  private void setPIDValues(WPI_TalonFX motor){
+  private void setPIDValues(final WPI_TalonFX motor) {
 
-    motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
+    motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, CompetitionDriveConstants.kSlotIdx,
+        CompetitionDriveConstants.kTimeoutMs);
     /* Set relevant frame periods to be at least as fast as periodic rate */
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, CompetitionDriveConstants.kTimeoutMs);
     motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, CompetitionDriveConstants.kTimeoutMs);
 
-		/* Set the peak and nominal outputs */
-		motor.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
-		motor.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
-		motor.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
+    /* Set the peak and nominal outputs */
+    motor.configNominalOutputForward(0, CompetitionDriveConstants.kTimeoutMs);
+    motor.configNominalOutputReverse(0, CompetitionDriveConstants.kTimeoutMs);
+    motor.configPeakOutputForward(1, CompetitionDriveConstants.kTimeoutMs);
     motor.configPeakOutputReverse(-1, CompetitionDriveConstants.kTimeoutMs);
-    
+
     /* Set Motion Magic gains in slot0 - see documentation */
     motor.selectProfileSlot(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kPIDLoopIdx);
-    motor.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF, CompetitionDriveConstants.kTimeoutMs);
-    motor.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP, CompetitionDriveConstants.kTimeoutMs);
-    motor.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI, CompetitionDriveConstants.kTimeoutMs);
-    motor.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD, CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kF(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kF,
+        CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kP(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kP,
+        CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kI(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kI,
+        CompetitionDriveConstants.kTimeoutMs);
+    motor.config_kD(CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kGains.kD,
+        CompetitionDriveConstants.kTimeoutMs);
 
-		/* Set acceleration and vcruise velocity - see documentation */
-		motor.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
+    /* Set acceleration and vcruise velocity - see documentation */
+    motor.configMotionCruiseVelocity(15000, CompetitionDriveConstants.kTimeoutMs);
     motor.configMotionAcceleration(6000, CompetitionDriveConstants.kTimeoutMs);
 
     /* Zero the sensor once on robot boot up */
     motor.setSelectedSensorPosition(0, CompetitionDriveConstants.kPIDLoopIdx, CompetitionDriveConstants.kTimeoutMs);
   }
 
-  public DifferentialDrive getDrive(){
+  public DifferentialDrive getDrive() {
     return m_drive;
   }
- 
-  public void moveTo(double inches) {
-   // System.out.println("moveTo:Before Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-   // System.out.println("moveTo:Before Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-    double targetPos = inches * (1/CompetitionDriveConstants.DISTANCE_PER_PULSE);
-  //  System.out.println("moveTo:TargetPos:" + targetPos);
+
+  public void moveTo(final double inches) {
+    // System.out.println("moveTo:Before Left position:" +
+    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
+    // Right position:" +
+    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    // System.out.println("moveTo:Before Left error:" +
+    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
+    // error:" +
+    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+    final double targetPos = inches * (1 / CompetitionDriveConstants.DISTANCE_PER_PULSE);
+    // System.out.println("moveTo:TargetPos:" + targetPos);
     while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
-      + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx))/2 < targetPos ){
+        + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)) / 2 < targetPos) {
       leftMotor1.set(ControlMode.MotionMagic, targetPos);
       rightMotor1.set(ControlMode.MotionMagic, targetPos);
     }
-   // System.out.println("moveTo:AFter Left position:" + leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + " Right position:" + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-  //  System.out.println("moveTo:AFter Left error:" + leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right error:" + rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
- 
-  }
-  
-  public void arcadeDrive(double fwd, double rot) {
-    getDrive().arcadeDrive(applyDeadband(fwd),applyDeadband(rot));
+    // System.out.println("moveTo:AFter Left position:" +
+    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
+    // Right position:" +
+    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
+    // System.out.println("moveTo:AFter Left error:" +
+    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
+    // error:" +
+    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
+
   }
 
-  public void resetEncoders(){
+  public void arcadeDrive(final double fwd, final double rot) {
+    getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
+  }
+
+  public void resetEncoders() {
     rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
     leftMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
-   }
+  }
 
   /**
-   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+   * Sets the max output of the drive. Useful for scaling the drive to drive more
+   * slowly.
    *
    * @param maxOutput the maximum output to which the drive will be constrained
    */
-  public void setMaxOutput(double maxOutput) {
+  public void setMaxOutput(final double maxOutput) {
     getDrive().setMaxOutput(maxOutput);
   }
 
-  public double applyDeadband(double throttle){
+  public double applyDeadband(final double throttle) {
     double result = 0;
-    if (Math.abs(throttle) > DriverControllerConstants.DEADBAND_VALUE){
+    if (Math.abs(throttle) > DriverControllerConstants.DEADBAND_VALUE) {
       result = throttle;
     }
     return result;
   }
 
-  public double exponentControl(double throttle){
+  public double exponentControl(final double throttle) {
     int sign = 1;
-    if (throttle < 0){
+    if (throttle < 0) {
       sign = -1;
     }
     return sign * Math.pow(throttle, 2);
   }
 
-  public double capControl(double throttle){
+  public double capControl(final double throttle) {
     double result = throttle;
-    if (throttle > 0.9){
+    if (throttle > 0.9) {
       result = 0.9;
     }
     return result;
   }
 
-    /**
+  /**
    * Zeroes the heading of the robot.
    */
   public void zeroHeading() {
@@ -184,12 +204,12 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    double [] yprArray = new double[3];
+    final double[] yprArray = new double[3];
     pigeonIMU.getYawPitchRoll(yprArray);
     return Math.IEEEremainder(yprArray[0], 360) * (CompetitionDriveConstants.GYRO_REVERSED ? -1.0 : 1.0);
   }
 
-    /**
+  /**
    * Returns the currently-estimated pose of the robot.
    *
    * @return The pose.
@@ -198,27 +218,27 @@ public class Drivetrain extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
-    /**
-   * Returns the current wheel speeds of the robot.
-   * in pulses per 100ms
+  /**
+   * Returns the current wheel speeds of the robot. in pulses per 100ms
    *
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftMotor1.getSelectedSensorVelocity(),rightMotor1.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(leftMotor1.getSelectedSensorVelocity(),
+        rightMotor1.getSelectedSensorVelocity());
   }
 
-    /**
+  /**
    * Resets the odometry to the specified pose.
    *
    * @param pose The pose to which to set the odometry.
    */
-  public void resetOdometry(Pose2d pose) {
+  public void resetOdometry(final Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
   }
 
-    /**
+  /**
    * Gets the average distance of the two encoders.
    *
    * @return the average of the two encoder readings
@@ -226,8 +246,44 @@ public class Drivetrain extends SubsystemBase {
   public double getAverageEncoderDistance() {
     return (leftMotor1.getSelectedSensorPosition() + rightMotor1.getSelectedSensorPosition()) / 2.0;
   }
-  public void tankDriveVolts(double leftVolts, double rightVolts) {
+
+  public void tankDriveVolts(final double leftVolts, final double rightVolts) {
     leftMotor1.setVoltage(leftVolts);
     rightMotor1.setVoltage(-rightVolts);
     m_drive.feed();
+  }
+
+  public void generateTrajectory() {
+    var sideStart = new Pose2d(Units.feetToMeters(1.00), Units.feetToMeters(23.00),
+        Rotation2d.fromDegrees(-180));
+    var crossScale = new Pose2d(Units.feetToMeters(23.00), Units.feetToMeters(6.00),
+        Rotation2d.fromDegrees(-160));
+    var interiorWaypoints = new ArrayList<Translation2d>();
+    interiorWaypoints.add(new Translation2d(Units.feetToMeters(14.54), Units.feetToMeters(23.23)));
+    interiorWaypoints.add(new Translation2d(Units.feetToMeters(21.04), Units.feetToMeters(18.23)));
+    
+    TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(12), Units.feetToMeters(12));
+    config.setReversed(true);
+    
+    var trajectory = TrajectoryGenerator.generateTrajectory(
+        sideStart,
+        interiorWaypoints,
+        crossScale,
+        config);
+    double duration = trajectory.getTotalTimeSeconds();  
+    Trajectory.Sample point = trajectory.sample(1.2);
+    
+    }
+    @Override
+public double getMaxVelocityMetersPerSecond(Pose2d poseMeters, double curvatureRadPerMeter,
+                                            double velocityMetersPerSecond) {
+  // Can be updated in the future. When we have the bot. Liam(Jacob) Basically a place holder.
+}
+
+@Override
+public MinMax getMinMaxAccelerationMetersPerSecondSq(Pose2d poseMeters,
+                                                     double curvatureRadPerMeter,
+                                                     double velocityMetersPerSecond) {
+  // Can be updated in the future. When we have the bot. Liam(Jacob) Basically a place holder.
+}
   }
