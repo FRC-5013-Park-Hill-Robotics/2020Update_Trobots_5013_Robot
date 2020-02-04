@@ -79,9 +79,9 @@ public class Shooter extends SubsystemBase {
     //TODO Raises a number of pulses according to the encoder.  We need to determine a max.
     /**while(pulses >= Constants.max ){
       this.angleSrx.set(ControlMode.PercentOutput, 0.12);
-    }
+    }*/
   }
-  */
+  
 
   /**Retracts to full down position using the limit switch as the bottom
    * resets encoder to 0
