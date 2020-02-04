@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.constraint.TrajectoryConstraint.MinMax;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
@@ -270,20 +272,5 @@ public class Drivetrain extends SubsystemBase {
         interiorWaypoints,
         crossScale,
         config);
-    double duration = trajectory.getTotalTimeSeconds();  
-    Trajectory.Sample point = trajectory.sample(1.2);
-    
     }
-    @Override
-public double getMaxVelocityMetersPerSecond(Pose2d poseMeters, double curvatureRadPerMeter,
-                                            double velocityMetersPerSecond) {
-  // Can be updated in the future. When we have the bot. Liam(Jacob) Basically a place holder.
-}
-
-@Override
-public MinMax getMinMaxAccelerationMetersPerSecondSq(Pose2d poseMeters,
-                                                     double curvatureRadPerMeter,
-                                                     double velocityMetersPerSecond) {
-  // Can be updated in the future. When we have the bot. Liam(Jacob) Basically a place holder.
-}
   }
