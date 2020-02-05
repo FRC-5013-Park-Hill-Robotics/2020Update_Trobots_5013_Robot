@@ -25,7 +25,7 @@ public class Conveyor extends SubsystemBase {
     leftMotor1.configFactoryDefault();
     rightMotor1.configFactoryDefault();
     leftMotor1.setInverted(true);
-    rightMotor1.setInverted(true);
+    rightMotor1.setInverted(false);
   }
 
   @Override
@@ -33,8 +33,8 @@ public class Conveyor extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void start() {
-    leftMotor1.set(ControlMode.PercentOutput, 0.25);
-    rightMotor1.set(ControlMode.PercentOutput, 0.25);
+    leftMotor1.set(ControlMode.PercentOutput, 0.5);
+    rightMotor1.set(ControlMode.PercentOutput, 0.5);
   }
   public void stop() {
     leftMotor1.set(ControlMode.PercentOutput, 0.0);

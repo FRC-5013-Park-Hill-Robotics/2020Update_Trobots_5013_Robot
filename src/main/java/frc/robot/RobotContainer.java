@@ -39,7 +39,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter();
   private final Limelight m_Limelight = new Limelight();
-  private final Shooter m_Shooter = new Shooter();
+ // private final Shooter m_Shooter = new Shooter();
   
   //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
@@ -63,13 +63,12 @@ public class RobotContainer {
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
             m_driveTrain));    
-/*
+
     //For shooter testing comment out when trying to drive
-    shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
-      -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID)
-      ,driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
-        shooter));
-  */
+    /*shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
+      -driverController.getRawAxis(1.0),driverController.(getRawAxis(.05)),
+        shooter));*/
+  
   }
 
 
@@ -87,10 +86,17 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Shooter.turnToTarget(m_driveTrain, m_Limelight)) );
-      new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(() -> shooter.turnToTarget(m_driveTrain, m_Limelight)) );
+      new JoystickButton(driverController, XboxController.Button.kB.value)
       .whenReleased(new InstantCommand(intake::raiseIntake, intake));
 
+      new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+      .whenPressed(new InstantCommand(() -> conveyor.start()) );
+      
+      new JoystickButton(driverController, XboxController.Button.kY.value)
+      .whenReleased(new InstantCommand(()->  shooter.changeSpeed(5.0), shooter));
+      new JoystickButton(driverController, XboxController.Button.kX.value)
+      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-5.0), shooter));
   }
 
 
