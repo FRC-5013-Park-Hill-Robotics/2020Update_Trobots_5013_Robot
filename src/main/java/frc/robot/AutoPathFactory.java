@@ -9,13 +9,18 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.CompetitionDriveConstants;
+import frc.robot.Constants.PracticeDriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -23,7 +28,7 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class AutoPathFactory {
 
-    public void generateTrajectory(Drivetrain driveTrain) {
+    public static RamseteCommand generateTrajectory(Drivetrain driveTrain) {
         Pose2d start = driveTrain.getPose();
         Pose2d end = new Pose2d(.8,.8,
         new Rotation2d(8) );
@@ -36,10 +41,24 @@ public class AutoPathFactory {
     
         var trajectory = TrajectoryGenerator.generateTrajectory(start, interiorWaypoints, end, config);
 
-        this.createRamsetteCommand(trajectory, driveTrain);
+        return createRamseteCommand(trajectory, driveTrain);
       }
 
-    public void createRamsetteCommand(Trajectory trajectory, Drivetrain driveTrain){
-
+    public static RamseteCommand createRamseteCommand(Trajectory trajectory, Drivetrain driveTrain){
+        RamseteCommand ramseteCommand = new RamseteCommand(
+            trajectory,
+            driveTrain::getPose,
+            new RamseteController(PracticeDriveConstants.kRamseteB, PracticeDriveConstants.kRamseteZeta),
+            new SimpleMotorFeedforward(PracticeDriveConstants.ksVolts,
+                                    PracticeDriveConstants.kvVoltSecondsPerMeter,
+                                    PracticeDriveConstants.kaVoltSecondsSquaredPerMeter),
+            PracticeDriveConstants.kDriveKinematics,
+            driveTrain::getWheelSpeeds,
+            new edu.wpi.first.wpilibj.controller.PIDController(PracticeDriveConstants.kPDriveVel, 0, 0),
+            new edu.wpi.first.wpilibj.controller.PIDController(PracticeDriveConstants.kPDriveVel, 0, 0),
+            driveTrain::tankDriveVolts,
+            driveTrain
+            );
+            return ramseteCommand;
     }  
 }
