@@ -7,20 +7,26 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -43,7 +49,6 @@ public class RobotContainer {
   
   //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
-
   
 
   
@@ -55,7 +60,6 @@ public class RobotContainer {
     operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
-//Comment this out to test the shooter
     m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -106,9 +110,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public CommandBase getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
+    return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
   }
+
 
 
 }

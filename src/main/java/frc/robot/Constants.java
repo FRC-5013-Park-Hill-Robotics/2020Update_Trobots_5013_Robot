@@ -54,6 +54,13 @@ public final class Constants {
         public static final double DISTANCE_PER_PULSE = .0009029;
         public static final boolean GYRO_REVERSED = false;
         
+        /**
+         * Right now I don't actually know what we want the max velocity and acceleration to be, so I'm just setting them to random values 
+         * Reinart
+         */
+        public static final double MAX_VELOCITY = 1;
+        public static final double MAX_ACCELERATION = 1;
+
         //PID VALUES
         /**
          * Which PID slot to pull gains from. Starting 2018, you can choose from
@@ -64,7 +71,18 @@ public final class Constants {
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30; //et to zero to skip waiting for confirmation, set to nonzero to wait and report to DS if action fails.
         public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.2, 0, 1.0); //Gains(kp, ki, kd, kf, izone, peak output);
-        
+    }
+    public static final class PracticeDriveConstants {
+        //=====================Motor IDS=====================
+        public static final int LEFT_MOTOR_1_ID = 3;
+        public static final int LEFT_MOTOR_2_ID = 4;
+        public static final int RIGHT_MOTOR_1_ID = 1;
+        public static final int RIGHT_MOTOR_2_ID = 2;
+        public static final int[] LEFT_ENCODER_PORTS = new int[]{LEFT_MOTOR_1_ID,LEFT_MOTOR_2_ID};
+        public static final int[] RIGHT_ENCODER_PORTS = new int[]{RIGHT_MOTOR_1_ID, RIGHT_MOTOR_2_ID};
+                
+
+
         //drive kinemetics
         public static final double kTrackwidthMeters = 0.5842;
         public static final DifferentialDriveKinematics kDriveKinematics =
@@ -80,6 +98,14 @@ public final class Constants {
     
        //TODO figure out velocity
         public static final double kPDriveVel = 2.58;
+
+        public static final boolean LEFT_REVERSED = false;
+        public static final boolean RIGHT_REVERSED = true;
+
+        public static final int ENCODER_PULSES_PER_REVOLUTION = 2048;
+        public static final double WHEEL_DIAMETER_INCHES = 6;
+        public static final double DISTANCE_PER_PULSE =
+            (WHEEL_DIAMETER_INCHES * Math.PI) / (double) ENCODER_PULSES_PER_REVOLUTION;
     }
 
     public static final class ClimberConstants {
