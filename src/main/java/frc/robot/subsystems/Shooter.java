@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
 //TODO 
     return result;
   }
-
+//9600 pulses per 100ms good shooter speed lower wheel
   public void test(double bottom, double top){
     topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(top, -1.0, 1.0) );
     bottomMotor.set(ControlMode.PercentOutput,MathUtil.clamp(bottom, -1.0, 1.0) );
