@@ -9,7 +9,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -29,7 +28,7 @@ import frc.robot.subsystems.Drivetrain;
 public class AutoPathFactory {
 
     public static RamseteCommand generateTrajectory(Drivetrain driveTrain) {
-        Pose2d start = driveTrain.getPose();
+        Pose2d start = new Pose2d(0, 0, new Rotation2d(0));
         Pose2d end = new Pose2d(.8,.8,
         new Rotation2d(8) );
     
