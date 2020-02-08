@@ -38,24 +38,7 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   
-  public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
-    double turn = 0;
-    double min = ShooterConstants.MIN_TURN;
-   
-    while(Math.abs(limelight.getTx().getDouble(0.0)) >= 3 ){
-      turn = limelight.getTx().getDouble(0.0)*0.03; 
-      // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot
-      if(limelight.hasTarget()){
-        if(limelight.getTx().getDouble(0.0) > 1.0)
-          min = -min;
-        
-        turn += min;
-        drivetrain.arcadeDrive(0, turn);
-      }
-    }
-    
 
-  }
 
   /** Returns the height the shooter needs to elevate to for the shot based on distance to target
    * as determined by the limelight.   This is based on interpolating between known calebrated points
