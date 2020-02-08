@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ShooterConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -88,6 +89,24 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
-  
+  public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
+    double turn = 0;
+    double min = ShooterConstants.MIN_TURN;
+    boolean check = limelight.hasTarget();
+
+        while(Math.abs(limelight.getTx().getDouble(0.0)) >= 3 && limelight.hasTarget()){
+      turn = limelight.getTx().getDouble(0.0)*0.03; 
+      // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot
+
+      //  if(limelight.getTx().getDouble(0.0) > 1.0)
+      //    min = -min;
+        
+      //  turn += min;
+        drivetrain.getDrive().arcadeDrive(0.1, turn);
+      
+    }
+    
+
+  }
   
 }
