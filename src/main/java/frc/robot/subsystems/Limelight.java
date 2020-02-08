@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.Constants.ShooterConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
@@ -55,17 +56,25 @@ public class Limelight extends SubsystemBase {
   }
 
   /**Returns distance to target in inches */
-  public int distanceToTarget(){
-    //TODO 
-    return 0;
+  public double distanceToTarget(){
+    //TODO
+    double cameraAngle = LimelightConstants.CAMERA_ANGLE; 
+    double angleToTarget = this.ty.getDouble(0.0);
+    double camHeight = LimelightConstants.CAMERA_HEIGHT;
+    double targetHeight = LimelightConstants.TARGET_HEIGHT;
+    double distance =  ((targetHeight-camHeight) / Math.tan(cameraAngle+angleToTarget));
+    
+    return distance;
+    
   }
 
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
     //TODO 
-    if(this.table.getEntry("tv").getDouble(0.0) < 1.0){
+    this.table.getEntry("ledMode").setNumber(3);
+    if(this.table.getEntry("tv").getDouble(0.0) != 1.0)
       return false;
-    }
+
     return true;
   }
 
@@ -89,24 +98,24 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
-  public void turnToTarget(Drivetrain drivetrain, Limelight limelight){
+  public void turnToTarget(Drivetrain drivetrain){
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
-    boolean check = limelight.hasTarget();
-
-        while(Math.abs(limelight.getTx().getDouble(0.0)) >= 3 && limelight.hasTarget()){
-      turn = limelight.getTx().getDouble(0.0)*0.03; 
-      // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot
-
-      //  if(limelight.getTx().getDouble(0.0) > 1.0)
-      //    min = -min;
-        
-      //  turn += min;
-        drivetrain.getDrive().arcadeDrive(0.1, turn);
+    boolean check = hasTarget();
+        while(Math.abs(getTx().getDouble(0.0)) >= 3 && hasTarget()){
+          turn = getTx().getDouble(0.0)*0.03; 
+          // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot        
+          if (Math.abs(turn) < min){
+            turn = turn > 0 ? min:-min;
+          }
+          //drivetrain.getDrive().arcadeDrive(0.0, turn);
+          drivetrain.getDrive().tankDrive(-turn, turn);
       
-    }
+        }
+        this.table.getEntry("ledMode").setNumber(1);
+        SmartDashboard.putString("Turning Complete");
     
 
   }
-  
 }
+

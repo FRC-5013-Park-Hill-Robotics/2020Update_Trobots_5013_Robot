@@ -126,7 +126,7 @@ public final class Constants {
         public static final int ELEVATION_LOWER_LIMIT = 0;
         public static final int ELEVATION_ENCODER = 0;
         public static final int GATE_SOLENOID_CHANNEL = 0;
-        public static final double MIN_TURN = 0.05;
+        public static final double MIN_TURN = 0.15;
     }
     public static final class IntakeConstants {
         //TODO set ids
@@ -137,5 +137,12 @@ public final class Constants {
     public static final class ConveyorConstants {
         public static final int LEFT_CONVEYOR_MOTOR = 9;
         public static final int RIGHT_CONVEYOR_MOTOR = 10;
+    }
+    public static final class LimelightConstants {
+        public static final double CAMERA_ANGLE = 0;
+        public static final double CAMERA_HEIGHT = 0;
+        public static final double TARGET_HEIGHT = 0;
+
+
     }
 }
