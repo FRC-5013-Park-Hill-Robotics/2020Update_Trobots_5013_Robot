@@ -113,7 +113,7 @@ public class Limelight extends SubsystemBase {
       
         }
         this.table.getEntry("ledMode").setNumber(1);
-        SmartDashboard.putString("Turning Complete");
+        SmartDashboard.putString("Turning Complete","Turning Complete");
     
 
   }

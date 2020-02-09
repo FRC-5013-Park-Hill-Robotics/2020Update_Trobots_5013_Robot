@@ -33,12 +33,12 @@ public class Conveyor extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   public void start() {
-    leftMotor1.set(ControlMode.PercentOutput, 0.5);
-    rightMotor1.set(ControlMode.PercentOutput, 0.5);
+    leftMotor1.set(ControlMode.PercentOutput, 0.6);
+    rightMotor1.set(ControlMode.PercentOutput, 0.6);
   }
   public void stop() {
     leftMotor1.set(ControlMode.PercentOutput, 0.0);
     rightMotor1.set(ControlMode.PercentOutput, 0.0);
   }
 }
-//This is Liam's Subsystem.
+

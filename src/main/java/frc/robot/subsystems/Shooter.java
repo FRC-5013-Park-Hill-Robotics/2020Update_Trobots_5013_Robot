@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
   private WPI_TalonSRX angleSrx = new WPI_TalonSRX(ShooterConstants.ELEVATION_MOTOR);
   private DigitalInput lowerLimit1 = new DigitalInput(ShooterConstants.ELEVATION_LOWER_LIMIT);
-  private Encoder elevationEncoder = new Encoder(ShooterConstants.ELEVATION_ENCODER, ShooterConstants.ELEVATION_ENCODER);
+  //private Encoder elevationEncoder = new Encoder(ShooterConstants.ELEVATION_ENCODER, ShooterConstants.ELEVATION_ENCODER);
   private double speed = 0;
   /**
    * Creates a new Shooter.
@@ -32,13 +32,6 @@ public class Shooter extends SubsystemBase {
     topMotor.setInverted(true);
     bottomMotor.setInverted(!topMotor.getInverted());
   }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-  
-
 
   /** Returns the height the shooter needs to elevate to for the shot based on distance to target
    * as determined by the limelight.   This is based on interpolating between known calebrated points
@@ -62,7 +55,7 @@ public class Shooter extends SubsystemBase {
     } else {
       speed = speed + percentChange/100;
     }
-    topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(speed * 0.65, -1.0, 1.0) );
+    topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(speed * 0.50, -1.0, 1.0) );
     bottomMotor.set(ControlMode.PercentOutput,MathUtil.clamp(speed, -1.0, 1.0) );
     SmartDashboard.putString("ShooterPErcent", ""+speed);
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
@@ -90,9 +83,16 @@ public class Shooter extends SubsystemBase {
     while(this.lowerLimit1.get() == false){
       this.angleSrx.set(ControlMode.PercentOutput, 0.12);
     }
-    this.elevationEncoder.reset();
+    //this.elevationEncoder.reset();
     
   }
 
+  @Override
+  public void periodic() {
+    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
+    SmartDashboard.putString("bottomShooterVelocity rpm", ""+bottomMotor.getSelectedSensorVelocity() * 600 / 2048);
+  }
 
 }
