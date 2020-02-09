@@ -27,6 +27,7 @@ public class Intake extends SubsystemBase {
    */
   public Intake() {
     intakeMotor.configFactoryDefault();
+    intakeMotor.setInverted(true);
   }
 
   @Override
@@ -35,7 +36,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void dropIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, .5 );
+    intakeMotor.set(ControlMode.PercentOutput, .75 );
   /*  if (!intakeSolenoid.isFwdSolenoidBlackListed()){
       intakeSolenoid.set(DoubleSolenoid.Value.kForward);
       intakeMotor.set(ControlMode.PercentOutput,1.0);

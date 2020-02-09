@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants.CompetitionDriveConstants;
@@ -43,11 +44,11 @@ public class RobotContainer {
   private XboxController driverController;
   //private XboxController operatorController;
   private final Drivetrain m_driveTrain = new Drivetrain();
-  //private final Conveyor conveyor = new Conveyor();
-  //private final Intake intake = new Intake();
-  //private final Shooter shooter = new Shooter();
+  private final Conveyor conveyor = new Conveyor();
+  private final Intake intake = new Intake();
+  private final Shooter shooter = new Shooter();
   private final Limelight m_Limelight = new Limelight();
- // private final Shooter m_Shooter = new Shooter();
+
   
   //private final IDriveTrain m_driveTrain = new PracticeDrivetrain();
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
@@ -89,20 +90,21 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
-   /* new JoystickButton(driverController, XboxController.Button.kA.value)
-      .whenPressed(new InstantCommand(intake::dropIntake, intake));*/
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(intake::dropIntake, intake));
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain) , m_driveTrain, m_Limelight )).andThen(SmartDashboard.putString("Instant Command Finsihed"));
-    /*  new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whenReleased(new InstantCommand(intake::raiseIntake, intake));*/
+      .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain) , m_driveTrain, m_Limelight ).andThen(
+        new InstantCommand(() -> SmartDashboard.putString("Info", "Instant Command Finsihed"))));
+      new JoystickButton(driverController, XboxController.Button.kB.value)
+      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
 
-     /* new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-      .whenPressed(new InstantCommand(() -> conveyor.start()) );*/
+      new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+      .whenPressed(new InstantCommand(() -> conveyor.start()) );
       
-      /*new JoystickButton(driverController, XboxController.Button.kY.value)
+      new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenReleased(new InstantCommand(()->  shooter.changeSpeed(5.0), shooter));
       new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-5.0), shooter));*/
+      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-5.0), shooter));
   }
 
 
