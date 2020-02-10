@@ -46,7 +46,7 @@ public class RobotContainer {
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
-  private final Shooter shooter = new Shooter();
+  private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
 
   
