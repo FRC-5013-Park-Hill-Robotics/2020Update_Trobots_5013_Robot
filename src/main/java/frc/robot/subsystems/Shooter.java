@@ -19,12 +19,15 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
   private double speed = 0;
   private double m_targetVelocity = 0;
+  private Conveyor m_conveyor;
+
   /**
    * Creates a new Shooter.
    */
-  public Shooter() {
+  public Shooter(Conveyor conveyor) {
     topMotor.setInverted(true);
     bottomMotor.setInverted(!topMotor.getInverted());
+    m_conveyor = conveyor;
   }
 
 //9600 pulses per 100ms good shooter speed lower wheel
@@ -44,20 +47,28 @@ public class Shooter extends SubsystemBase {
   }
   
   public void fire(){
-    //TODO 
+    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
   }
 
   public void fireLow(){
+    setTargetVelocity(ShooterConstants.LOW_VELOCITY);
+  }
 
+  public void stopFiring(){
+    setTargetVelocity(0.0);
   }
 
   @Override
   public void periodic() {
+    //if we want to shoot and we are not at speed we need to stop the conveyor
+    if (getTargetVelocity() > 0 && !atSpeed()){
+      m_conveyor.stop();
+    }
     adjustMotorsToTarget();
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
-    SmartDashboard.putString("bottomShooterVelocity rpm", ""+bottomMotor.getSelectedSensorVelocity() * 600 / 2048);
+    //if we are at speed which we should be, fire away
+    if (getTargetVelocity() > 0 && atSpeed()){
+      m_conveyor.start();
+    }
   }
 
   public void setTargetVelocity(double bottomMotorTarget){
@@ -79,6 +90,10 @@ public class Shooter extends SubsystemBase {
     }
     bottomMotor.set(ControlMode.Velocity, getTargetVelocity());
     topMotor.set(ControlMode.Velocity, getTopTargetVelocity());
+    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
+    SmartDashboard.putString("bottomShooterVelocity rpm", ""+bottomMotor.getSelectedSensorVelocity() * 600 / 2048);
   }
 
 
