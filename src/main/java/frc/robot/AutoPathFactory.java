@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants.CompetitionDriveConstants;
-import frc.robot.Constants.PracticeDriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -48,14 +47,14 @@ public class AutoPathFactory {
         RamseteCommand ramseteCommand = new RamseteCommand(
             trajectory,
             driveTrain::getPose,
-            new RamseteController(PracticeDriveConstants.kRamseteB, PracticeDriveConstants.kRamseteZeta),
-            new SimpleMotorFeedforward(PracticeDriveConstants.ksVolts,
-                                    PracticeDriveConstants.kvVoltSecondsPerMeter,
-                                    PracticeDriveConstants.kaVoltSecondsSquaredPerMeter),
-            PracticeDriveConstants.kDriveKinematics,
+            new RamseteController(CompetitionDriveConstants.kRamseteB, CompetitionDriveConstants.kRamseteZeta),
+            new SimpleMotorFeedforward(CompetitionDriveConstants.ksVolts,
+                                    CompetitionDriveConstants.kvVoltSecondsPerMeter,
+                                    CompetitionDriveConstants.kaVoltSecondsSquaredPerMeter),
+            CompetitionDriveConstants.kDriveKinematics,
             driveTrain::getWheelSpeeds,
-            new PIDController(PracticeDriveConstants.kPDriveVel, 0, 0),
-            new PIDController(PracticeDriveConstants.kPDriveVel, 0, 0),
+            new PIDController(CompetitionDriveConstants.kPDriveVel, 0, 0),
+            new PIDController(CompetitionDriveConstants.kPDriveVel, 0, 0),
             driveTrain::tankDriveVolts,
             driveTrain
             );
