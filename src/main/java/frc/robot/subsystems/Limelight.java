@@ -98,10 +98,14 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
-  public void turnToTarget(Drivetrain drivetrain){
+  public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
+    if (check){
+      //spin shooter up;
+      shooter.setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    }
         while(Math.abs(getTx().getDouble(0.0)) >= 3 && hasTarget()){
           turn = getTx().getDouble(0.0)*0.03; 
           // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot        

@@ -17,7 +17,7 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends SubsystemBase {
   private WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
-  private double speed = 0;
+  private boolean firing = false;
   private double m_targetVelocity = 0;
   private Conveyor m_conveyor;
 
@@ -30,43 +30,39 @@ public class Shooter extends SubsystemBase {
     m_conveyor = conveyor;
   }
 
-//9600 pulses per 100ms good shooter speed lower wheel
-  public void test(double bottom, double top){
-    topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(top, -1.0, 1.0) );
-    bottomMotor.set(ControlMode.PercentOutput,MathUtil.clamp(bottom, -1.0, 1.0) );
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
-  }
-
+  //method for testing.
   public void changeSpeed(double velocity){
     setTargetVelocity(getTargetVelocity() + velocity);
     adjustMotorsToTarget();
-    SmartDashboard.putString("ShooterPErcent", ""+speed);
+    firing = true;
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
   }
   
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    firing = true;
   }
 
   public void fireLow(){
+    firing = true;
     setTargetVelocity(ShooterConstants.LOW_VELOCITY);
   }
 
   public void stopFiring(){
+    firing = false;
     setTargetVelocity(0.0);
   }
 
   @Override
   public void periodic() {
     //if we want to shoot and we are not at speed we need to stop the conveyor
-    if (getTargetVelocity() > 0 && !atSpeed()){
+    if (firing && !atSpeed()){
       m_conveyor.stop();
     }
     adjustMotorsToTarget();
     //if we are at speed which we should be, fire away
-    if (getTargetVelocity() > 0 && atSpeed()){
+    if (firing && atSpeed()){
       m_conveyor.start();
     }
   }
