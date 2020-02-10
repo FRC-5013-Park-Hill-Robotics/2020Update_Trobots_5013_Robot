@@ -93,7 +93,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain) , m_driveTrain, m_Limelight ).andThen(
+      .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain,shooter) , m_driveTrain, m_Limelight, shooter ).andThen(
         new InstantCommand(() -> SmartDashboard.putString("Info", "Instant Command Finsihed"))));
     new JoystickButton(driverController, XboxController.Button.kB.value)
       .whenReleased(new InstantCommand(intake::raiseIntake, intake));
