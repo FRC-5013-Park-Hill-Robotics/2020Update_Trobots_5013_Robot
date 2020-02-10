@@ -95,16 +95,16 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
       .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain) , m_driveTrain, m_Limelight ).andThen(
         new InstantCommand(() -> SmartDashboard.putString("Info", "Instant Command Finsihed"))));
-      new JoystickButton(driverController, XboxController.Button.kB.value)
+    new JoystickButton(driverController, XboxController.Button.kB.value)
       .whenReleased(new InstantCommand(intake::raiseIntake, intake));
 
-      new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> conveyor.start()) );
       
-      new JoystickButton(driverController, XboxController.Button.kY.value)
-      .whenReleased(new InstantCommand(()->  shooter.changeSpeed(5.0), shooter));
-      new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-5.0), shooter));
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+      .whenReleased(new InstantCommand(()->  shooter.changeSpeed(500), shooter));
+    new JoystickButton(driverController, XboxController.Button.kX.value)
+      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
   }
 
 

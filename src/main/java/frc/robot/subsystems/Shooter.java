@@ -9,10 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -21,10 +17,8 @@ import frc.robot.Constants.ShooterConstants;
 public class Shooter extends SubsystemBase {
   private WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
-  private WPI_TalonSRX angleSrx = new WPI_TalonSRX(ShooterConstants.ELEVATION_MOTOR);
-  private DigitalInput lowerLimit1 = new DigitalInput(ShooterConstants.ELEVATION_LOWER_LIMIT);
-  //private Encoder elevationEncoder = new Encoder(ShooterConstants.ELEVATION_ENCODER, ShooterConstants.ELEVATION_ENCODER);
   private double speed = 0;
+  private double m_targetVelocity = 0;
   /**
    * Creates a new Shooter.
    */
@@ -33,14 +27,6 @@ public class Shooter extends SubsystemBase {
     bottomMotor.setInverted(!topMotor.getInverted());
   }
 
-  /** Returns the height the shooter needs to elevate to for the shot based on distance to target
-   * as determined by the limelight.   This is based on interpolating between known calebrated points
-   */
-  public int calculateHeight(Limelight limelight){
-    int result = 0;
-//TODO 
-    return result;
-  }
 //9600 pulses per 100ms good shooter speed lower wheel
   public void test(double bottom, double top){
     topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(top, -1.0, 1.0) );
@@ -49,14 +35,9 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
   }
 
-  public void changeSpeed(double percentChange){
-    if (speed < 0.01){
-      speed = percentChange/100;
-    } else {
-      speed = speed + percentChange/100;
-    }
-    topMotor.set(ControlMode.PercentOutput, MathUtil.clamp(speed * 0.50, -1.0, 1.0) );
-    bottomMotor.set(ControlMode.PercentOutput,MathUtil.clamp(speed, -1.0, 1.0) );
+  public void changeSpeed(double velocity){
+    setTargetVelocity(getTargetVelocity() + velocity);
+    adjustMotorsToTarget();
     SmartDashboard.putString("ShooterPErcent", ""+speed);
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
@@ -66,33 +47,53 @@ public class Shooter extends SubsystemBase {
     //TODO 
   }
 
-  /** Raises a number of encoder pulses upto the soft max */
-  public void raise(int pulses){
-    //TODO Raises a number of pulses according to the encoder.  We need to determine a max.
-    /**while(pulses >= Constants.max ){
-      this.angleSrx.set(ControlMode.PercentOutput, 0.12);
-    }*/
-  }
-  
+  public void fireLow(){
 
-  /**Retracts to full down position using the limit switch as the bottom
-   * resets encoder to 0
-   */
-  public void retract(){
-    //TODO retract to bottom using limit switch, reset encoder
-    while(this.lowerLimit1.get() == false){
-      this.angleSrx.set(ControlMode.PercentOutput, 0.12);
-    }
-    //this.elevationEncoder.reset();
-    
   }
 
   @Override
   public void periodic() {
+    adjustMotorsToTarget();
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
     SmartDashboard.putString("bottomShooterVelocity rpm", ""+bottomMotor.getSelectedSensorVelocity() * 600 / 2048);
   }
 
+  public void setTargetVelocity(double bottomMotorTarget){
+    m_targetVelocity = bottomMotorTarget;
+  }
+
+  public double getTopTargetVelocity(){
+    return m_targetVelocity * ShooterConstants.TOP_PERCENT_OF_BOTTOM;
+  }
+
+  public double getTargetVelocity(){
+    return m_targetVelocity;
+  }
+
+  private void adjustMotorsToTarget(){
+    while (!atSpeed()){
+       adjustMotorToTarget(bottomMotor, getTargetVelocity());
+       adjustMotorToTarget(topMotor, getTopTargetVelocity());
+    }
+    bottomMotor.set(ControlMode.Velocity, getTargetVelocity());
+    topMotor.set(ControlMode.Velocity, getTopTargetVelocity());
+  }
+
+
+  private void adjustMotorToTarget(WPI_TalonFX motor, double target){
+    if (motor.getSelectedSensorVelocity() < target ){
+      //100% output to tet up to speed;
+      motor.set(ControlMode.PercentOutput, 1.0);
+    } else {
+      //maintain velocity
+      motor.set(ControlMode.Velocity, target);
+    }
+  }
+
+  private boolean atSpeed(){
+    return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() &&
+      topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity();
+  }
 }

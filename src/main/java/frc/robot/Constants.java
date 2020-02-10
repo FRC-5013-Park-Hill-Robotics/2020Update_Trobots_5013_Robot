@@ -109,6 +109,9 @@ public final class Constants {
         public static final int ELEVATION_ENCODER = 0;
         public static final int GATE_SOLENOID_CHANNEL = 0;
         public static final double MIN_TURN = 0.15;
+        public static final double HIGH_VELOCITY = 9400.0;
+        public static final double LOW_VELOCITY = 4500.0;
+        public static final double TOP_PERCENT_OF_BOTTOM = 0.5; //50%;
     }
     public static final class IntakeConstants {
         //TODO set ids
