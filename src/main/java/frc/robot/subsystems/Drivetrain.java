@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -39,14 +40,15 @@ public class Drivetrain extends SubsystemBase {
   private final WPI_TalonFX rightMotor2 = new WPI_TalonFX(CompetitionDriveConstants.RIGHT_MOTOR_2_ID);;
   private final TalonSRX pigeonTalon = new TalonSRX(CompetitionDriveConstants.PIGEON_ID);
   private final PigeonIMU pigeonIMU = new PigeonIMU(pigeonTalon);
-
+  private XboxController driverController;
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
-  public Drivetrain() {
+  public Drivetrain(XboxController theDriverController) {
+    this.driverController = theDriverController;
     /* factory default values */
     rightMotor1.configFactoryDefault();
     rightMotor2.configFactoryDefault();
@@ -248,10 +250,16 @@ public class Drivetrain extends SubsystemBase {
   public double getAverageEncoderDistance() {
     return (leftMotor1.getSelectedSensorPosition() + rightMotor1.getSelectedSensorPosition()) / 2.0;
   }
+  @Override
+  public void periodic() {
+    arcadeDrive(-driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
+      driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID));
+  }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
     leftMotor1.setVoltage(leftVolts);
     rightMotor1.setVoltage(-rightVolts);
     m_drive.feed();
     }
+    
   }

@@ -41,9 +41,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private XboxController driverController;
+  private XboxController driverController =  new XboxController(DriverControllerConstants.XBOX_ID);
   //private XboxController operatorController;
-  private final Drivetrain m_driveTrain = new Drivetrain();
+  private final Drivetrain m_driveTrain = new Drivetrain(driverController);
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter(conveyor);
@@ -59,17 +59,17 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    driverController = new XboxController(DriverControllerConstants.XBOX_ID);
+
    // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(
+    /* m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
-        new RunCommand(() -> m_driveTrain.arcadeDrive(
+       new RunCommand(() -> m_driveTrain.arcadeDrive(
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
-            m_driveTrain));    
+            m_driveTrain));  */  
 
     //For shooter testing comment out when trying to drive
     /*shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
@@ -90,21 +90,28 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
-    new JoystickButton(driverController, XboxController.Button.kA.value)
-      .whenPressed(new InstantCommand(intake::dropIntake, intake));
+   /* new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(intake::dropIntake, intake));*/
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain,shooter) , m_driveTrain, m_Limelight, shooter ).andThen(
-        new InstantCommand(() -> SmartDashboard.putString("Info", "Instant Command Finsihed"))));
+      .whileHeld(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain,shooter) , m_driveTrain, m_Limelight, shooter )
+      .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Turn To Target Command Finsihed"))));
     new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
+      .whenReleased(new InstantCommand(intake::raiseIntake, intake)
+      .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Raise Intake Command Finsihed"))));
 
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> conveyor.start()) );
       
+      /*
     new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenReleased(new InstantCommand(()->  shooter.changeSpeed(500), shooter));
     new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
+      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));*/
+     new JoystickButton(driverController, XboxController.Button.kX.value)
+      .whenPressed(new InstantCommand(() -> shooter.fire(), shooter,conveyor));
+      new JoystickButton(driverController, XboxController.Button.kX.value)
+      .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
+
   }
 
 
