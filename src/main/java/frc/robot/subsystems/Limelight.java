@@ -36,6 +36,7 @@ public class Limelight extends SubsystemBase {
     this.tx = table.getEntry("tx");
     this.ty = table.getEntry("ty");
     this.ta = table.getEntry("ta");
+    this.table.getEntry("ledMode").setNumber(3);
 
   }
 
@@ -47,6 +48,7 @@ public class Limelight extends SubsystemBase {
     double x = this.tx.getDouble(0.0);
     double y = this.ty.getDouble(0.0);
     double area = this.ta.getDouble(0.0);
+
 
     //post to smart dashboard periodically
     SmartDashboard.putNumber("LimelightX", x);
@@ -71,7 +73,7 @@ public class Limelight extends SubsystemBase {
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
     //TODO 
-    this.table.getEntry("ledMode").setNumber(3);
+   // this.table.getEntry("ledMode").setNumber(3);
     if(this.table.getEntry("tv").getDouble(0.0) != 1.0)
       return false;
 
@@ -99,27 +101,35 @@ public class Limelight extends SubsystemBase {
   }
 
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
-    double turn = 0;
+    if (this.table.getEntry("ledMode").setNumber(1)){
+      SmartDashboard.putString("ledMode ","Set");
+    } else {
+      SmartDashboard.putString("ledMode ","Not set");
+    }
+    SmartDashboard.putString("turnToTarget ","Started");
+      double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
-    if (check){
+    /*if (check){
       //spin shooter up;
       shooter.setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
-    }
-        while(Math.abs(getTx().getDouble(0.0)) >= 3 && hasTarget()){
-          turn = getTx().getDouble(0.0)*0.03; 
+    }*/
+    SmartDashboard.putString("Target ","" + check);
+    SmartDashboard.putString("Initial TY","" + getTy().getDouble(0.0));
+    int loop = 0;
+    if(Math.abs(getTy().getDouble(0.0)) >= 3 && hasTarget()){
+          turn = getTy().getDouble(0.0)*0.03; 
           // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot        
           if (Math.abs(turn) < min){
             turn = turn > 0 ? min:-min;
           }
           //drivetrain.getDrive().arcadeDrive(0.0, turn);
           drivetrain.getDrive().tankDrive(-turn, turn);
-      
+          SmartDashboard.putString("Loop TY:",loop++ + ":" + getTy().getDouble(0.0));
         }
-        this.table.getEntry("ledMode").setNumber(1);
+        this.table.getEntry("ledMode").setNumber(3);
+        SmartDashboard.putString("Ending TY","" + getTy().getDouble(0.0));
         SmartDashboard.putString("Turning Complete","Turning Complete");
-    
-
   }
 }
 

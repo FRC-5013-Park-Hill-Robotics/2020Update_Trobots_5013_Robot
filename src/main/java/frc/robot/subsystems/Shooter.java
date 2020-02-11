@@ -57,14 +57,14 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     //if we want to shoot and we are not at speed we need to stop the conveyor
-    if (firing && !atSpeed()){
+   /* if (firing && !atSpeed()){
       m_conveyor.stop();
-    }
+    }*/
     adjustMotorsToTarget();
     //if we are at speed which we should be, fire away
-    if (firing && atSpeed()){
+   /* if (firing && atSpeed()){
       m_conveyor.start();
-    }
+    }*/
   }
 
   public void setTargetVelocity(double bottomMotorTarget){
@@ -80,10 +80,10 @@ public class Shooter extends SubsystemBase {
   }
 
   private void adjustMotorsToTarget(){
-    while (!atSpeed()){
+  //  while (!atSpeed()){
        adjustMotorToTarget(bottomMotor, getTargetVelocity());
        adjustMotorToTarget(topMotor, getTopTargetVelocity());
-    }
+   // }
     bottomMotor.set(ControlMode.Velocity, getTargetVelocity());
     topMotor.set(ControlMode.Velocity, getTopTargetVelocity());
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
