@@ -34,7 +34,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private XboxController driverController =  new XboxController(DriverControllerConstants.XBOX_ID);
   //private XboxController operatorController;
-  private final Drivetrain m_driveTrain = new Drivetrain(driverController);
+  private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter(conveyor);
