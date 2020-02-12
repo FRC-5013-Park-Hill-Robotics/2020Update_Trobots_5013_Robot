@@ -127,6 +127,8 @@ public final class Constants {
         public static final double CAMERA_ANGLE = 0;
         public static final double CAMERA_HEIGHT = 0;
         public static final double TARGET_HEIGHT = 0;
+        public static final int TARGET_PIPELINE = 0;
+        public static final int DEFAULT_PIPELINE = 1;
 
 
     }

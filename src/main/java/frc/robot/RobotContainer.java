@@ -69,14 +69,14 @@ public class RobotContainer {
        new RunCommand(() -> m_driveTrain.arcadeDrive(
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
-            m_driveTrain));  */  
+            m_driveTrain));  */
+
 
     //For shooter testing comment out when trying to drive
     /*shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
       -driverController.getRawAxis(1.0),driverController.(getRawAxis(.05)),
         shooter));*/
-  
-  }
+      }
 
 
 

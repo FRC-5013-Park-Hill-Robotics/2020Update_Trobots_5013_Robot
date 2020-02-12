@@ -23,6 +23,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry tx = table.getEntry("tx");
     private NetworkTableEntry ty = table.getEntry("ty");
     private NetworkTableEntry ta = table.getEntry("ta");
+    private int loop;
 
 
   public Limelight() {
@@ -36,7 +37,7 @@ public class Limelight extends SubsystemBase {
     this.tx = table.getEntry("tx");
     this.ty = table.getEntry("ty");
     this.ta = table.getEntry("ta");
-    this.table.getEntry("ledMode").setNumber(3);
+    this.loop = 0; 
 
   }
 
@@ -101,11 +102,14 @@ public class Limelight extends SubsystemBase {
   }
 
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
-    if (this.table.getEntry("ledMode").setNumber(1)){
-      SmartDashboard.putString("ledMode ","Set");
-    } else {
+
+
+
+    this.table.getEntry("pipeline").setNumber(LimelightConstants.TARGET_PIPELINE);
+    SmartDashboard.putString("ledMode ","Set");
+    /* else {
       SmartDashboard.putString("ledMode ","Not set");
-    }
+    }*/
     SmartDashboard.putString("turnToTarget ","Started");
       double turn = 0;
     double min = ShooterConstants.MIN_TURN;
@@ -116,7 +120,6 @@ public class Limelight extends SubsystemBase {
     }*/
     SmartDashboard.putString("Target ","" + check);
     SmartDashboard.putString("Initial TY","" + getTy().getDouble(0.0));
-    int loop = 0;
     if(Math.abs(getTy().getDouble(0.0)) >= 3 && hasTarget()){
           turn = getTy().getDouble(0.0)*0.03; 
           // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot        
@@ -125,9 +128,9 @@ public class Limelight extends SubsystemBase {
           }
           //drivetrain.getDrive().arcadeDrive(0.0, turn);
           drivetrain.getDrive().tankDrive(-turn, turn);
-          SmartDashboard.putString("Loop TY:",loop++ + ":" + getTy().getDouble(0.0));
+          SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getTy().getDouble(0.0));
         }
-        this.table.getEntry("ledMode").setNumber(3);
+        this.table.getEntry("pipeline").setNumber(LimelightConstants.DEFAULT_PIPELINE);
         SmartDashboard.putString("Ending TY","" + getTy().getDouble(0.0));
         SmartDashboard.putString("Turning Complete","Turning Complete");
   }
