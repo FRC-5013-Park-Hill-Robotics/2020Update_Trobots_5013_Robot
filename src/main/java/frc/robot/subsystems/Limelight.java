@@ -81,14 +81,6 @@ public class Limelight extends SubsystemBase {
     return true;
   }
 
-  /**Returns the angle to targed in degrees negative values to the left and positive to the right
-   * used for turn to target
-   */
-  public double angleToTarget(){
-    //TODO
-    return 0.0;
-  }
-
   public NetworkTableEntry getTx() {
     return tx;
   }
@@ -101,38 +93,40 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
+  public void setLedOn(boolean isOn) {
+    if (isOn){
+      this.table.getEntry("pipeline").setNumber(LimelightConstants.TARGET_PIPELINE);
+    } else {
+      this.table.getEntry("pipeline").setNumber(LimelightConstants.DEFAULT_PIPELINE);
+    }
+  }
+  
+  /**Returns the angle to targed in degrees negative values to the left and positive to the right
+   * used for turn to target
+   */
+  public double getAngleOfError(){
+    return getTy().getDouble(0.0);
+  }
+
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
-
-
-
-    this.table.getEntry("pipeline").setNumber(LimelightConstants.TARGET_PIPELINE);
-    SmartDashboard.putString("ledMode ","Set");
-    /* else {
-      SmartDashboard.putString("ledMode ","Not set");
-    }*/
     SmartDashboard.putString("turnToTarget ","Started");
-      double turn = 0;
+    setLedOn(true);
+    double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
-    /*if (check){
-      //spin shooter up;
-      shooter.setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
-    }*/
     SmartDashboard.putString("Target ","" + check);
-    SmartDashboard.putString("Initial TY","" + getTy().getDouble(0.0));
-    if(Math.abs(getTy().getDouble(0.0)) >= 3 && hasTarget()){
-          turn = getTy().getDouble(0.0)*0.03; 
-          // *NOTE 0.03 used in arcade drive should be altered to a constant suited for our bot        
-          if (Math.abs(turn) < min){
-            turn = turn > 0 ? min:-min;
-          }
-          //drivetrain.getDrive().arcadeDrive(0.0, turn);
-          drivetrain.getDrive().tankDrive(-turn, turn);
-          SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getTy().getDouble(0.0));
-        }
-        this.table.getEntry("pipeline").setNumber(LimelightConstants.DEFAULT_PIPELINE);
-        SmartDashboard.putString("Ending TY","" + getTy().getDouble(0.0));
-        SmartDashboard.putString("Turning Complete","Turning Complete");
+    SmartDashboard.putString("Initial TY","" + getAngleOfError());
+    if(Math.abs(getAngleOfError()) >= 3 && hasTarget()){
+      turn = getAngleOfError()*0.03;     
+      if (Math.abs(turn) < min){
+        turn = turn > 0 ? min:-min;
+      }
+      drivetrain.getDrive().tankDrive(-turn, turn);
+      SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getAngleOfError());
+    }
+    setLedOn(false);
+    SmartDashboard.putString("Ending TY","" + getAngleOfError());
+    SmartDashboard.putString("Turning Complete","Turning Complete");
   }
 }
 
