@@ -41,11 +41,14 @@ public class TurnToTargetCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //make sure it stops the drive
+    m_drivetrain.arcadeDrive(0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    // don't return true ever, command will end after button is released
+    return false;
   }
 }
