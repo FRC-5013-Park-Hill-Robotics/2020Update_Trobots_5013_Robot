@@ -80,8 +80,10 @@ public class Shooter extends SubsystemBase {
 
   private void adjustMotorsToTarget(){
   //  while (!atSpeed()){
+    
        adjustMotorToTarget(bottomMotor, getTargetVelocity());
        adjustMotorToTarget(topMotor, getTopTargetVelocity());
+    
    // }
     bottomMotor.set(ControlMode.Velocity, getTargetVelocity());
     topMotor.set(ControlMode.Velocity, getTopTargetVelocity());
@@ -93,11 +95,11 @@ public class Shooter extends SubsystemBase {
 
 
   private void adjustMotorToTarget(WPI_TalonFX motor, double target){
-    if (motor.getSelectedSensorVelocity() < target ){
+    if ((motor.getSelectedSensorVelocity() < target) && (target != 0)){
       //100% output to tet up to speed;
       motor.set(ControlMode.PercentOutput, 1.0);
     } else {
-      //maintain velocity
+      //maintain velocity      
       motor.set(ControlMode.Velocity, target);
     }
   }
