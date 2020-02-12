@@ -11,17 +11,14 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorControllerConstants;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
@@ -63,6 +60,7 @@ public class RobotContainer {
    // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
+    m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain,driverController));
     /* m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -70,6 +68,7 @@ public class RobotContainer {
           -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
           driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
             m_driveTrain));  */
+
 
 
     //For shooter testing comment out when trying to drive
@@ -93,8 +92,7 @@ public class RobotContainer {
    /* new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));*/
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whileHeld(new InstantCommand(() -> m_Limelight.turnToTarget(m_driveTrain,shooter) , m_driveTrain, m_Limelight, shooter )
-      .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Turn To Target Command Finsihed"))));
+      .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter)); 
     new JoystickButton(driverController, XboxController.Button.kB.value)
       .whenReleased(new InstantCommand(intake::raiseIntake, intake)
       .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Raise Intake Command Finsihed"))));

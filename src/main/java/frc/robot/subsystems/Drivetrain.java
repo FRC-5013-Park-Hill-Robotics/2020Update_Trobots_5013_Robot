@@ -252,8 +252,7 @@ public class Drivetrain extends SubsystemBase {
   }
   @Override
   public void periodic() {
-    /*arcadeDrive(-driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
-      driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)); */
+
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {

@@ -99,7 +99,7 @@ public class Shooter extends SubsystemBase {
       //100% output to tet up to speed;
       motor.set(ControlMode.PercentOutput, 1.0);
     } else {
-      //maintain velocity      
+      //maintain velocity     
       motor.set(ControlMode.Velocity, target);
     }
   }
