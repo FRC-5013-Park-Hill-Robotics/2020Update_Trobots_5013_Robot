@@ -91,11 +91,19 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
-  public void setLedOn(boolean isOn) {
+ /* public void setLedOn(boolean isOn) {
     if (isOn){
       this.table.getEntry("pipeline").setNumber(LimelightConstants.TARGET_PIPELINE);
     } else {
       this.table.getEntry("pipeline").setNumber(LimelightConstants.DEFAULT_PIPELINE);
+    }
+  }*/
+
+  public void setLedOn(boolean isOn) {
+    if (isOn){
+      this.table.getEntry("ledMode").setNumber(3);
+    } else {
+      this.table.getEntry("ledMode").setNumber(1);
     }
   }
   
