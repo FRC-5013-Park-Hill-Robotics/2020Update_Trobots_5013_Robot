@@ -20,7 +20,6 @@ import frc.robot.Gains;
 
 
 public final class Constants {
-    //TODO set id
     public static final int PCM_ID = 0;
     public static final class DriverControllerConstants{
         //=====================Controller Constants=====================
@@ -84,14 +83,11 @@ public final class Constants {
         public static final double kvVoltSecondsPerMeter = 2.25;
         public static final double kaVoltSecondsSquaredPerMeter =0.121;
                 
-       //TODO figure out velocity
        public static final double kPDriveVel = 2.58;
 
-    
     }
 
     public static final class ClimberConstants {
-        //TODO set ids
         public static final int LEFT_MOTOR = 6;
         public static final int RIGHT_MOTOR = 7;
         public static final int LEFT_LOWER_LIMIT = 0;
@@ -101,7 +97,6 @@ public final class Constants {
         public static final int RATCHED_SOLENOID_CHANNEL = 0;
     }
     public static final class ShooterConstants {
-        //TODO set ids
         public static final int SHOOTER_TOP_MOTOR = 13;
         public static final int SHOOTER_BOTTOM_MOTOR = 14;
         public static final int ELEVATION_MOTOR = 0;
@@ -114,7 +109,6 @@ public final class Constants {
         public static final double TOP_PERCENT_OF_BOTTOM = 0.5; //50%;
     }
     public static final class IntakeConstants {
-        //TODO set ids
         public static final int INTAKE_MOTOR = 8;
         public static final int LIFT_INTAKE_SOLENOID_CHANNEL = 0;
         public static final int DROP_INTAKE_SOLENOID_CHANNEL = 0;

@@ -60,7 +60,6 @@ public class Limelight extends SubsystemBase {
 
   /**Returns distance to target in inches */
   public double distanceToTarget(){
-    //TODO
     double cameraAngle = LimelightConstants.CAMERA_ANGLE; 
     double angleToTarget = this.ty.getDouble(0.0);
     double camHeight = LimelightConstants.CAMERA_HEIGHT;
@@ -73,7 +72,6 @@ public class Limelight extends SubsystemBase {
 
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
-    //TODO 
    // this.table.getEntry("ledMode").setNumber(3);
     if(this.table.getEntry("tv").getDouble(0.0) != 1.0)
       return false;
