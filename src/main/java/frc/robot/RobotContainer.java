@@ -81,8 +81,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
-   /* new JoystickButton(driverController, XboxController.Button.kA.value)
-      .whenPressed(new InstantCommand(intake::dropIntake, intake));*/
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(intake::dropIntake, intake));
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
     
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
       .whenPressed(new InstantCommand(() -> m_Limelight.setLedOn(true))); 
@@ -91,9 +93,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
       .whenReleased(new InstantCommand(() -> m_Limelight.setLedOn(false)));  
 
-    new JoystickButton(driverController, XboxController.Button.kB.value)
-      .whenReleased(new InstantCommand(intake::raiseIntake, intake)
-      .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Raise Intake Command Finsihed"))));
+
 
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> conveyor.start()) );
