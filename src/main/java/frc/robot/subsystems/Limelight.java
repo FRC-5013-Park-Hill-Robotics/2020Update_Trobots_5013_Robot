@@ -23,6 +23,8 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry tx = table.getEntry("tx");
     private NetworkTableEntry ty = table.getEntry("ty");
     private NetworkTableEntry ta = table.getEntry("ta");
+    private NetworkTableEntry tv = table.getEntry("ta");
+    private NetworkTableEntry ledMode = table.getEntry("ledMode");
     private int loop;
 
 
@@ -31,13 +33,18 @@ public class Limelight extends SubsystemBase {
      * tx - Horizontal Offset
      * ty - Vertical Offset 
      * ta - Area of target 
+     * tv - Target Visible
      */
 
     
     this.tx = table.getEntry("tx");
     this.ty = table.getEntry("ty");
     this.ta = table.getEntry("ta");
+    this.ta = table.getEntry("tv");
+    this.ledMode = table.getEntry("ledMode");
     this.loop = 0; 
+    setPipeline(LimelightConstants.TARGET_PIPELINE);
+    setLedOn(false);
 
   }
 
@@ -73,7 +80,7 @@ public class Limelight extends SubsystemBase {
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
    // this.table.getEntry("ledMode").setNumber(3);
-    if(this.table.getEntry("tv").getDouble(0.0) != 1.0)
+    if(tv.getDouble(0.0) != 1.0)
       return false;
 
     return true;
@@ -91,19 +98,15 @@ public class Limelight extends SubsystemBase {
     return ta;
   }
 
- /* public void setLedOn(boolean isOn) {
-    if (isOn){
-      this.table.getEntry("pipeline").setNumber(LimelightConstants.TARGET_PIPELINE);
-    } else {
-      this.table.getEntry("pipeline").setNumber(LimelightConstants.DEFAULT_PIPELINE);
-    }
-  }*/
+  public void setPipeline(int pipeline){
+    this.table.getEntry("pipeline").setNumber(pipeline);
+  }
 
   public void setLedOn(boolean isOn) {
     if (isOn){
-      this.table.getEntry("ledMode").setNumber(3);
+      ledMode.setNumber(LimelightConstants.LED_ON);
     } else {
-      this.table.getEntry("ledMode").setNumber(1);
+      ledMode.setNumber(LimelightConstants.LED_OFF);
     }
   }
   
@@ -116,7 +119,6 @@ public class Limelight extends SubsystemBase {
 
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
     SmartDashboard.putString("turnToTarget ","Started");
-    setLedOn(true);
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
@@ -130,7 +132,6 @@ public class Limelight extends SubsystemBase {
       drivetrain.getDrive().tankDrive(-turn, turn);
       SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getAngleOfError());
     }
-    setLedOn(false);
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
     SmartDashboard.putString("Turning Complete","Turning Complete");
   }

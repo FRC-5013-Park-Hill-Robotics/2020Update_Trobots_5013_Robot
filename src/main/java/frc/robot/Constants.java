@@ -110,7 +110,6 @@ public final class Constants {
     }
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR = 8;
-        public static final int LIFT_INTAKE_SOLENOID_CHANNEL = 0;
         public static final int DROP_INTAKE_SOLENOID_CHANNEL = 0;
     }
     public static final class ConveyorConstants {
@@ -123,6 +122,8 @@ public final class Constants {
         public static final double TARGET_HEIGHT = 0;
         public static final int TARGET_PIPELINE = 0;
         public static final int DEFAULT_PIPELINE = 1;
+        public static final int LED_ON = 3;
+        public static final int LED_OFF = 1;
 
 
     }

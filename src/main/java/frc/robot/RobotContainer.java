@@ -83,15 +83,21 @@ public class RobotContainer {
     //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
    /* new JoystickButton(driverController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(intake::dropIntake, intake));*/
+    
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter)); 
+      .whenPressed(new InstantCommand(() -> m_Limelight.setLedOn(true))); 
+    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+      .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter));
+    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+      .whenReleased(new InstantCommand(() -> m_Limelight.setLedOn(false)));  
+
     new JoystickButton(driverController, XboxController.Button.kB.value)
       .whenReleased(new InstantCommand(intake::raiseIntake, intake)
       .andThen(new InstantCommand(() -> SmartDashboard.putString("Info", "Raise Intake Command Finsihed"))));
 
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> conveyor.start()) );
-      
+  
       /*
     new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenReleased(new InstantCommand(()->  shooter.changeSpeed(500), shooter));
@@ -101,6 +107,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(() -> shooter.fire(), shooter,conveyor));
       new JoystickButton(driverController, XboxController.Button.kX.value)
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
+
+ 
 
   }
 
