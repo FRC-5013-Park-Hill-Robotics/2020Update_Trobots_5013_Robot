@@ -8,10 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.IntakeConstants;
@@ -20,7 +18,7 @@ public class Intake extends SubsystemBase {
   private TalonSRX intakeMotor = new TalonSRX(IntakeConstants.INTAKE_MOTOR);
   
   //Dropping the intake is set up as forward and raising it as reverse, may have to change based on mechanics and wiring.
-  //private DoubleSolenoid intakeSolenoid = new DoubleSolenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL, IntakeConstants.LIFT_INTAKE_SOLENOID_CHANNEL);
+  private Solenoid intakeSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL);
   
   /**
    * Creates a new Intake.
@@ -37,19 +35,11 @@ public class Intake extends SubsystemBase {
 
   public void dropIntake(){
     intakeMotor.set(ControlMode.PercentOutput, .75 );
-  /*  if (!intakeSolenoid.isFwdSolenoidBlackListed()){
-      intakeSolenoid.set(DoubleSolenoid.Value.kForward);
-      intakeMotor.set(ControlMode.PercentOutput,1.0);
-      intakeSolenoid.set(DoubleSolenoid.Value.kOff);
-    }*/
+    intakeSolenoid.set(true); 
   }
 
   public void raiseIntake(){
-  /*  if (!intakeSolenoid.isRevSolenoidBlackListed()){
-      intakeMotor.set(ControlMode.PercentOutput,0.0);
-      intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
-      intakeSolenoid.set(DoubleSolenoid.Value.kOff);
-    }*/
+    intakeSolenoid.set(false); 
     intakeMotor.set(ControlMode.PercentOutput, 0 );
   }
 }
