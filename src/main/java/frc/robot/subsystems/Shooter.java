@@ -41,6 +41,7 @@ public class Shooter extends SubsystemBase {
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
     firing = true;
+    SmartDashboard.putString("Shooter is Firing: ", ""+firing);
   }
 
   public void fireLow(){
@@ -56,14 +57,14 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     //if we want to shoot and we are not at speed we need to stop the conveyor
-   /* if (firing && !atSpeed()){
+    if (firing && !atSpeed()){
       m_conveyor.stop();
-    }*/
+    }
     adjustMotorsToTarget();
     //if we are at speed which we should be, fire away
-   /* if (firing && atSpeed()){
+    if (firing && atSpeed()){
       m_conveyor.start();
-    }*/
+    }
   }
 
   public void setTargetVelocity(double bottomMotorTarget){
@@ -85,8 +86,6 @@ public class Shooter extends SubsystemBase {
        adjustMotorToTarget(topMotor, getTopTargetVelocity());
     
    // }
-    bottomMotor.set(ControlMode.Velocity, getTargetVelocity());
-    topMotor.set(ControlMode.Velocity, getTopTargetVelocity());
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
@@ -95,16 +94,21 @@ public class Shooter extends SubsystemBase {
 
 
   private void adjustMotorToTarget(WPI_TalonFX motor, double target){
+    SmartDashboard.putNumber("Target Speed: ", target);
     if ((motor.getSelectedSensorVelocity() < target) && (target != 0)){
-      //100% output to tet up to speed;
+      SmartDashboard.putNumber("Velocity is less than Target: ", motor.getSelectedSensorVelocity());
+      //100% output to get up to speed;
       motor.set(ControlMode.PercentOutput, 1.0);
     } else {
+      SmartDashboard.putNumber("Velocity is greater than Target: ", motor.getSelectedSensorVelocity());
       //maintain velocity     
       motor.set(ControlMode.Velocity, target);
     }
   }
 
   private boolean atSpeed(){
+    SmartDashboard.putBoolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
+
     return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() &&
       topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity();
   }
