@@ -30,7 +30,7 @@ public class AutoPathFactory {
     public static RamseteCommand generateTrajectory(Drivetrain driveTrain) {
         Pose2d start = new Pose2d(0, 0, new Rotation2d(0));
         Pose2d end = new Pose2d(.8,.8,
-        new Rotation2d(8) );
+        new Rotation2d(Math.toRadians(90)) );
     
         var interiorWaypoints = new ArrayList<Translation2d>();
         interiorWaypoints.add(new Translation2d(.6,.6));
