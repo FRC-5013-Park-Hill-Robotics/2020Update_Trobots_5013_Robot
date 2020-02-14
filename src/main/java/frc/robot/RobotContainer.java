@@ -91,10 +91,8 @@ public class RobotContainer {
 
     //Turn to target
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Limelight.setLedOn(true))); 
-    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter));
-    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+      .whenPressed(new InstantCommand(() -> m_Limelight.setLedOn(true)))
+      .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter))
       .whenReleased(new InstantCommand(() -> m_Limelight.setLedOn(false)));  
 
 
@@ -108,8 +106,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kX.value)
       .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));*/
      new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenPressed(new InstantCommand(() -> shooter.fire(), shooter,conveyor));
-      new JoystickButton(driverController, XboxController.Button.kX.value)
+      .whenPressed(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
  
