@@ -106,7 +106,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kX.value)
       .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));*/
      new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenPressed(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
+      .whileHeld(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
  
