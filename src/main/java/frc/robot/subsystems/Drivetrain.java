@@ -45,6 +45,11 @@ public class Drivetrain extends SubsystemBase {
     leftMotor1.configFactoryDefault();
     leftMotor2.configFactoryDefault();
 
+    rightMotor1.configClosedloopRamp(.3);
+    rightMotor2.configClosedloopRamp(.3);
+    leftMotor1.configClosedloopRamp(.3);
+    leftMotor2.configClosedloopRamp(.3);
+
     /* set up followers */
     leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
     rightMotor2.set(ControlMode.Follower, CompetitionDriveConstants.RIGHT_MOTOR_1_ID);
