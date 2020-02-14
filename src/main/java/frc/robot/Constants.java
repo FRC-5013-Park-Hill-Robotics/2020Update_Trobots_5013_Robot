@@ -26,15 +26,10 @@ public final class Constants {
         public static final double DEADBAND_VALUE = .01;
         public static final int XBOX_ID = 0;
         public static final int Y_LJOY_ID = 1;
+        public static final int TRIGGER_AXIS = 3; //negative values are right and positive values are left
         public static final int X_RJOY_ID = 4;
     }
-    public static final class OperatorControllerConstants{
-        //=====================Controller Constants=====================
-        public static final double DEADBAND_VALUE = .01;
-        public static final int XBOX_ID = 1;
-        public static final int Y_LJOY_ID = 1;
-        public static final int X_RJOY_ID = 4;
-}
+
     public static final class CompetitionDriveConstants {
         //=====================Motor IDS=====================
         public static final int LEFT_MOTOR_1_ID = 3;
