@@ -42,4 +42,8 @@ public class Intake extends SubsystemBase {
     dropIntateSolenoid.set(false); 
     intakeMotor.set(ControlMode.PercentOutput, 0 );
   }
+
+  public boolean isDown(){
+    return dropIntateSolenoid.get();
+  }
 }
