@@ -33,6 +33,13 @@ public class IntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
     double triggerValue = m_controller.getRawAxis(DriverControllerConstants.TRIGGER_AXIS);
 
     if (m_intake.isDown() && triggerValue > -1*DriverControllerConstants.DEADBAND_VALUE){
@@ -44,12 +51,6 @@ public class IntakeCommand extends CommandBase {
       CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
       m_intake.dropIntake();
     }
-    
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
   }
 
   // Called once the command ends or is interrupted.
