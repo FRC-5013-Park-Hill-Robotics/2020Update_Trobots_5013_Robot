@@ -81,10 +81,12 @@ public class Limelight extends SubsystemBase {
   /** Returns if limelight can see defined retroreflective target */
   public boolean hasTarget(){
    // this.table.getEntry("ledMode").setNumber(3);
-    if(tv.getDouble(0.0) != 1.0)
-      return false;
+    SmartDashboard.putNumber("tv; ", tv.getDouble(0));
+    if(tv.getDouble(0) != 0)
+      return true;
+    
 
-    return true;
+    return false;
   }
 
   public NetworkTableEntry getTx() {
