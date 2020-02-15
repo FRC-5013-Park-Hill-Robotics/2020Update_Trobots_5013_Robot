@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -41,15 +42,20 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     double triggerValue = m_controller.getRawAxis(DriverControllerConstants.TRIGGER_AXIS);
-
-    if (m_intake.isDown() && triggerValue > -1*DriverControllerConstants.DEADBAND_VALUE){
+    SmartDashboard.putString("Trigger Value",""+triggerValue); 
+    SmartDashboard.putString("Intake down", ""+ m_intake.isDown());
+    if (m_intake.isDown() && triggerValue < .5){
+      SmartDashboard.putString("Intake Aaction ","raise");
       m_intake.raiseIntake();
       //Using command scheduler because shooter may be controlling conveyor and it gets presidence
       CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.stop(), m_conveyor));
-    } else if (!m_intake.isDown() && triggerValue < -1 * DriverControllerConstants.DEADBAND_VALUE){
+    } else if (!m_intake.isDown() && triggerValue > .5){
       //Using command scheduler because shooter may be controlling conveyor and it gets presidence
+      SmartDashboard.putString("Intake Aaction ","drop");
       CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
       m_intake.dropIntake();
+    } else {
+      SmartDashboard.putString("Intake Aaction ","none");
     }
   }
 
