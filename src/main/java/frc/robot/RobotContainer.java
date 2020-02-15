@@ -11,10 +11,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurnToTargetCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
@@ -40,6 +42,7 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
+  private final Climber climber = new Climber();
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
   
@@ -81,13 +84,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-/*
-    //TODO should start run instant start conveyor command insthante command followed by .andThen drop intake command
-    new JoystickButton(driverController, XboxController.Button.kA.value)
-      .whenPressed(new InstantCommand(intake::dropIntake, intake));
-    new JoystickButton(driverController, XboxController.Button.kA.value)
-      .whenReleased(new InstantCommand(intake::raiseIntake, intake));
-    */
 
     //Turn to target
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
@@ -98,7 +94,8 @@ public class RobotContainer {
 
     //temporary
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-      .whenPressed(new InstantCommand(() -> conveyor.start()) );
+      .whenPressed(new InstantCommand(() -> conveyor.start()) )
+      .whenReleased(new InstantCommand(() -> conveyor.stop()));
   
       /*
     new JoystickButton(driverController, XboxController.Button.kY.value)
@@ -108,6 +105,21 @@ public class RobotContainer {
      new JoystickButton(driverController, XboxController.Button.kX.value)
       .whileHeld(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
+
+    new DirectionPadButton(driverController, Direction.UP)
+      .whileHeld(new InstantCommand(() -> climber.extend(.5)))
+      .whenReleased(new InstantCommand(() -> climber.hold()));
+    new DirectionPadButton(driverController, Direction.DOWN)
+      .whileHeld(new InstantCommand(() -> climber.retract(.50)))
+      .whenReleased(new InstantCommand(() -> climber.hold()));
+      
+    new DirectionPadButton(driverController, Direction.LEFT)
+      .whileHeld(new InstantCommand(() -> climber.roll(.30)))
+      .whenReleased(new InstantCommand(() -> climber.hold()));
+
+      new DirectionPadButton(driverController, Direction.RIGHT)
+      .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
+      .whenReleased(new InstantCommand(() -> climber.hold()));
 
  
 

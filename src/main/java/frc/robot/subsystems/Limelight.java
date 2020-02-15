@@ -116,7 +116,8 @@ public class Limelight extends SubsystemBase {
    * used for turn to target
    */
   public double getAngleOfError(){
-    return getTy().getDouble(0.0);
+    //+1 is a fudge factor cor camera mounting
+    return getTy().getDouble(0.0) + 1;
   }
 
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
@@ -126,7 +127,7 @@ public class Limelight extends SubsystemBase {
     boolean check = hasTarget();
     SmartDashboard.putString("Target ","" + check);
     SmartDashboard.putString("Initial TY","" + getAngleOfError());
-    if(Math.abs(getAngleOfError()) >= 3 && hasTarget()){
+    if(Math.abs(getAngleOfError()) >= 2 && hasTarget()){
       turn = getAngleOfError()*0.03;     
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
