@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
@@ -194,7 +195,11 @@ public class Drivetrain extends SubsystemBase {
    * Zeroes the heading of the robot.
    */
   public void zeroHeading() {
-    pigeonIMU.setYaw(0);
+    pigeonIMU.setYaw(0,
+    CompetitionDriveConstants.kTimeoutMs);
+    pigeonIMU.setAccumZAngle(0,
+    CompetitionDriveConstants.kTimeoutMs);
+    System.out.println("[Pigeon] All sensors zeroed. /n");
   }
 
   /**
@@ -206,6 +211,22 @@ public class Drivetrain extends SubsystemBase {
     final double[] yprArray = new double[3];
     pigeonIMU.getYawPitchRoll(yprArray);
     return Math.IEEEremainder(yprArray[0], 360) * (CompetitionDriveConstants.GYRO_REVERSED ? -1.0 : 1.0);
+  }
+
+  /**
+   * gets the distance of the right motor
+   * @return the robot's right motor distance in meters
+   */
+  public double getRightDistanceMeters(){
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorPosition();
+  }
+
+  /**
+   * gets the distance of the Left motor
+   * @return the robot's Left motor distance in meters
+   */
+  public double getLeftDistanceMeters(){
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorVelocity();
   }
 
   /**
@@ -223,8 +244,9 @@ public class Drivetrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftMotor1.getSelectedSensorVelocity(),
-        rightMotor1.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(
+      getLeftDistanceMeters(),
+    getRightDistanceMeters());
   }
 
   /**
@@ -243,11 +265,18 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (leftMotor1.getSelectedSensorPosition() + rightMotor1.getSelectedSensorPosition()) / 2.0;
+    return getLeftDistanceMeters() + 
+    getRightDistanceMeters() 
+    / 2.0;
   }
   @Override
   public void periodic() {
-
+    m_odometry.update(
+      Rotation2d.fromDegrees(getHeading()), 
+      getLeftDistanceMeters(), 
+      getRightDistanceMeters());
+      SmartDashboard.putString("Pose",
+      m_odometry.getPoseMeters().toString());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
