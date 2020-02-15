@@ -48,11 +48,11 @@ public class IntakeCommand extends CommandBase {
       SmartDashboard.putString("Intake Aaction ","raise");
       m_intake.raiseIntake();
       //Using command scheduler because shooter may be controlling conveyor and it gets presidence
-      CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.stop(), m_conveyor));
+     // CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.stop(), m_conveyor));
     } else if (!m_intake.isDown() && triggerValue > .5){
       //Using command scheduler because shooter may be controlling conveyor and it gets presidence
       SmartDashboard.putString("Intake Aaction ","drop");
-      CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
+      //CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
       m_intake.dropIntake();
     } else {
       SmartDashboard.putString("Intake Aaction ","none");

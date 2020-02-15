@@ -107,7 +107,7 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
     new DirectionPadButton(driverController, Direction.UP)
-      .whileHeld(new InstantCommand(() -> climber.extend(.5)))
+      .whileHeld(new InstantCommand(() -> climber.extend(1)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     new DirectionPadButton(driverController, Direction.DOWN)
       .whileHeld(new InstantCommand(() -> climber.retract(.50)))
