@@ -35,8 +35,11 @@ public class Climber extends SubsystemBase {
     leftMotor1.configFactoryDefault();
     rightMotor1.configFactoryDefault();
     extensionMotor.configFactoryDefault();
-    extensionMotor.configContinuousCurrentLimit(10);
+    extensionMotor.configContinuousCurrentLimit(6);
     extensionMotor.setNeutralMode(NeutralMode.Coast);
+
+    leftMotor1.configOpenloopRamp(.25);
+    rightMotor1.configOpenloopRamp(.25);
 
     leftMotor1.setInverted(true);
     rightMotor1.setInverted(true);
@@ -49,7 +52,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void extend(double velocity){
-    extensionMotor.set(ControlMode.PercentOutput,velocity*.75);
+    extensionMotor.set(ControlMode.PercentOutput,velocity*.60);
     leftMotor1.set(ControlMode.PercentOutput,-velocity);
     rightMotor1.set(ControlMode.PercentOutput,-velocity);
   }
@@ -70,7 +73,7 @@ public class Climber extends SubsystemBase {
   }
   public void roll(double velocity){
     leftMotor1.set(ControlMode.PercentOutput,velocity);
-    rightMotor1.set(ControlMode.PercentOutput,-velocity *0.85);
+    rightMotor1.set(ControlMode.PercentOutput,-velocity);
 
   }
 }
