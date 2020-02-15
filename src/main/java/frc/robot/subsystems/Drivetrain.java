@@ -223,8 +223,8 @@ public class Drivetrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(leftMotor1.getSelectedSensorVelocity(),
-        rightMotor1.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorVelocity(),
+    CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorVelocity());
   }
 
   /**
@@ -243,7 +243,9 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (leftMotor1.getSelectedSensorPosition() + rightMotor1.getSelectedSensorPosition()) / 2.0;
+    return (CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorPosition() + 
+    CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorPosition()) 
+    / 2.0;
   }
   @Override
   public void periodic() {
