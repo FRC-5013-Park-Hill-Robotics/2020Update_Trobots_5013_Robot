@@ -209,6 +209,22 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /**
+   * gets the distance of the right motor
+   * @return the robot's right motor distance in meters
+   */
+  public double getRightDistanceMeters(){
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorPosition();
+  }
+
+  /**
+   * gets the distance of the Left motor
+   * @return the robot's Left motor distance in meters
+   */
+  public double getLeftDistanceMeters(){
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorVelocity();
+  }
+
+  /**
    * Returns the currently-estimated pose of the robot.
    *
    * @return The pose.
@@ -223,8 +239,8 @@ public class Drivetrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorVelocity(),
-    CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorVelocity());
+    return new DifferentialDriveWheelSpeeds(getLeftDistanceMeters(),
+    getRightDistanceMeters());
   }
 
   /**
@@ -243,13 +259,16 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorPosition() + 
-    CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorPosition()) 
+    return getLeftDistanceMeters() + 
+    getRightDistanceMeters() 
     / 2.0;
   }
   @Override
   public void periodic() {
-
+    m_odometry.update(
+      Rotation2d.fromDegrees(getHeading()), 
+      getLeftDistanceMeters(), 
+      getRightDistanceMeters());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
