@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
@@ -239,7 +240,8 @@ public class Drivetrain extends SubsystemBase {
    * @return The current wheel speeds.
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(getLeftDistanceMeters(),
+    return new DifferentialDriveWheelSpeeds(
+      getLeftDistanceMeters(),
     getRightDistanceMeters());
   }
 
@@ -269,6 +271,8 @@ public class Drivetrain extends SubsystemBase {
       Rotation2d.fromDegrees(getHeading()), 
       getLeftDistanceMeters(), 
       getRightDistanceMeters());
+      SmartDashboard.putString("Pose",
+      m_odometry.getPoseMeters().toString());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
