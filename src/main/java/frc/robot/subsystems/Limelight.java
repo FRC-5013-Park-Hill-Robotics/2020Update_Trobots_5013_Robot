@@ -66,9 +66,9 @@ public class Limelight extends SubsystemBase {
   }
 
   /**Returns distance to target in inches */
-  public double distanceToTarget(){
+  public double distanceToTargetInInches(){
     double cameraAngle = LimelightConstants.CAMERA_ANGLE; 
-    double angleToTarget = this.ty.getDouble(0.0);
+    double angleToTarget = this.tx.getDouble(0.0);
     double camHeight = LimelightConstants.CAMERA_HEIGHT;
     double targetHeight = LimelightConstants.TARGET_HEIGHT;
     double distance =  ((targetHeight-camHeight) / Math.tan(cameraAngle+angleToTarget));
@@ -121,6 +121,7 @@ public class Limelight extends SubsystemBase {
   }
 
   public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
+    switchPipeline(true);
     SmartDashboard.putString("turnToTarget ","Started");
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
@@ -137,6 +138,16 @@ public class Limelight extends SubsystemBase {
     }
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
     SmartDashboard.putString("Turning Complete","Turning Complete");
+    switchPipeline(false);
   }
+
+  public void switchPipeline(boolean targeting){
+    if(targeting == true)
+      this.table.getEntry("pipeline").setPipeline(LimelightConstants.TARGET_PIPELINE);
+    
+    else 
+      this.table.getEntry("pipeline").setPipeline(LimelightConstants.DRIVE_PIPELINE);
+  }
+  
 }
 
