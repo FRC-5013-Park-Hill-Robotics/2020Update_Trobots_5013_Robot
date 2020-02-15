@@ -142,11 +142,11 @@ public class Limelight extends SubsystemBase {
   }
 
   public void switchPipeline(boolean targeting){
-    if(targeting == true)
-      this.table.getEntry("pipeline").setPipeline(LimelightConstants.TARGET_PIPELINE);
-    
-    else 
-      this.table.getEntry("pipeline").setPipeline(LimelightConstants.DRIVE_PIPELINE);
+    if(targeting == true){
+      setPipeline(LimelightConstants.TARGET_PIPELINE);
+    } else {
+      setPipeline(LimelightConstants.DRIVE_PIPELINE);
+    }
   }
   
 }
