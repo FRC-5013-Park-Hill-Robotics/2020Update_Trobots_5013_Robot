@@ -85,11 +85,8 @@ public final class Constants {
     public static final class ClimberConstants {
         public static final int LEFT_MOTOR = 6;
         public static final int RIGHT_MOTOR = 7;
-        public static final int LEFT_LOWER_LIMIT = 0;
-        public static final int RIGHT_LOWER_LIMIT = 0;
-        public static final int LEFT_ENCODER = 0;
-        public static final int RIGHT_ENCODER = 0;
-        public static final int RATCHED_SOLENOID_CHANNEL = 0;
+        public static final int RATCHED_SOLENOID_CHANNEL = 2;
+        public static final int EXTENSION_MOTOR = 5;
     }
     public static final class ShooterConstants {
         public static final int SHOOTER_TOP_MOTOR = 13;
