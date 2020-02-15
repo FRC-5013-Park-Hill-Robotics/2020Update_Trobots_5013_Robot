@@ -18,7 +18,8 @@ public class Intake extends SubsystemBase {
   private TalonSRX intakeMotor = new TalonSRX(IntakeConstants.INTAKE_MOTOR);
   
   //Dropping the intake is set up as forward and raising it as reverse, may have to change based on mechanics and wiring.
-  private Solenoid dropIntateSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL);;
+  private Solenoid dropIntakeSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL);
+  private Solenoid raiseIntakeSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.RAISE_INTAKE_SOLENOID_CHANNEL);
   /**
    * Creates a new Intake.
    */
@@ -34,16 +35,17 @@ public class Intake extends SubsystemBase {
 
   public void dropIntake(){
     intakeMotor.set(ControlMode.PercentOutput, .75 );
-    dropIntateSolenoid.set(true); 
-
+    dropIntakeSolenoid.set(true); 
+    raiseIntakeSolenoid.set(false); 
   }
 
   public void raiseIntake(){
-    dropIntateSolenoid.set(false); 
+    dropIntakeSolenoid.set(false); 
+    raiseIntakeSolenoid.set(true); 
     intakeMotor.set(ControlMode.PercentOutput, 0 );
   }
 
   public boolean isDown(){
-    return dropIntateSolenoid.get();
+    return dropIntakeSolenoid.get();
   }
 }
