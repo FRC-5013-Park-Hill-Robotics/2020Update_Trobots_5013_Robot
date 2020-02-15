@@ -195,7 +195,11 @@ public class Drivetrain extends SubsystemBase {
    * Zeroes the heading of the robot.
    */
   public void zeroHeading() {
-    pigeonIMU.setYaw(0);
+    pigeonIMU.setYaw(0,
+    CompetitionDriveConstants.kTimeoutMs);
+    pigeonIMU.setAccumZAngle(0,
+    CompetitionDriveConstants.kTimeoutMs);
+    System.out.println("[Pigeon] All sensors zeroed. /n");
   }
 
   /**
