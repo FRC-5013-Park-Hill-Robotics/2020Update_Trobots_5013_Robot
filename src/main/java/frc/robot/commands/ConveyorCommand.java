@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Conveyor;
 
@@ -29,9 +30,11 @@ public class ConveyorCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putString("ConveyorCommand lower eye", ""+m_conveyor.isBallReadyForIntake());
+    SmartDashboard.putString("ConveyorCommand upper eye",""+ m_conveyor.isBallReadyToShoot());
     if (m_conveyor.isBallReadyForIntake() && !m_conveyor.isBallReadyToShoot()){
       m_conveyor.start();
-    } else if(m_conveyor.isRunning()){
+    } else {
       m_conveyor.stop();
     }
   }

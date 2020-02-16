@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
 
@@ -35,7 +36,8 @@ public class Conveyor extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putString("Lower Eye", "" + lowerEye.get());
+    SmartDashboard.putString("Upper Eye", "" + upperEye.get());
   }
   public void start() {
     leftMotor1.set(ControlMode.PercentOutput, 0.6);
@@ -52,10 +54,6 @@ public class Conveyor extends SubsystemBase {
 
   public boolean isBallReadyToShoot(){
     return upperEye.get();
-  }
-
-  public boolean isRunning(){
-    return rightMotor1.get() > 0.05;
   }
 
 }
