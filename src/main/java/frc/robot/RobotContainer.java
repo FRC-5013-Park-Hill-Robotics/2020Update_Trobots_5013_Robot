@@ -86,30 +86,27 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // Turn to target
-    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+    new TriggerButton(driverController,TriggerButton.Trigger.LEFT, .05)
       .whenPressed(new InstantCommand(() -> m_Limelight.beforeTurnToTarget()))
       .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter))
       .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));
 
-    // temporary
+    // Fire
+    new TriggerButton(driverController, TriggerButton.Trigger.RIGHT,.05)
+      .whenPressed(new InstantCommand(() -> intake.dropIntake(),intake))
+      .whenReleased(new InstantCommand(() -> intake.raiseIntake(),intake));
+
+    //Intake up down
+    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+      .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
+
+    //Slow Turn
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-      .whenPressed(new InstantCommand(() -> conveyor.start()))
-      .whenReleased(new InstantCommand(() -> conveyor.stop()));
-
-    /*
-     * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-     * .whileHeld(new ConveyorCommand(conveyor));
-     */
-    /*
-     * new JoystickButton(driverController, XboxController.Button.kY.value)
-     * .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
-     * new JoystickButton(driverController, XboxController.Button.kX.value)
-     * .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
-     */
-    new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whileHeld(new InstantCommand(() -> shooter.fire(), shooter, conveyor))
-      .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
-
+      .whileHeld(new InstantCommand(()->m_driveTrain.arcadeDrive(
+         -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
+         driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
+         m_driveTrain));
+    
     // Extend Climber
     new DirectionPadButton(driverController, Direction.UP)
       .whileHeld(new InstantCommand(() -> climber.extend(1)))
@@ -127,6 +124,21 @@ public class RobotContainer {
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
 
+    // temporary
+    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+  /*
+   * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+   * .whileHeld(new ConveyorCommand(conveyor));
+   */
+  /*
+   * new JoystickButton(driverController, XboxController.Button.kY.value)
+   * .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
+   * new JoystickButton(driverController, XboxController.Button.kX.value)
+   * .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
+   */
   }
 
   /**
