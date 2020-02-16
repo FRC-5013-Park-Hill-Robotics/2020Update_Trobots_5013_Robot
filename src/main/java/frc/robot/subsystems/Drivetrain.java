@@ -151,6 +151,9 @@ public class Drivetrain extends SubsystemBase {
   public void arcadeDrive(final double fwd, final double rot) {
     getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
   }
+  public void arcadeDriveFine(final double fwd, final double rot) {
+    getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot/2));
+  }
 
   public void resetEncoders() {
     rightMotor1.setSelectedSensorPosition(0, CompetitionDriveConstants.kSlotIdx, CompetitionDriveConstants.kTimeoutMs);
