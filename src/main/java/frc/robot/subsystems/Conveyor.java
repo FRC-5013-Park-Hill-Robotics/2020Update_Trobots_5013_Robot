@@ -11,12 +11,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
 
 public class Conveyor extends SubsystemBase {
   private WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(ConveyorConstants.LEFT_CONVEYOR_MOTOR);
   private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ConveyorConstants.RIGHT_CONVEYOR_MOTOR);
+  private DigitalInput lowerEye = new DigitalInput(ConveyorConstants.LOWER_EYE);
+  private DigitalInput upperEye = new DigitalInput(ConveyorConstants.UPPER_EYE);
 
   /**
    * Creates a new Conveyor.
@@ -42,5 +45,18 @@ public class Conveyor extends SubsystemBase {
     leftMotor1.set(ControlMode.PercentOutput, 0.0);
     rightMotor1.set(ControlMode.PercentOutput, 0.0);
   }
+
+  public boolean isBallReadyForIntake(){
+    return lowerEye.get();
+  }
+
+  public boolean isBallReadyToShoot(){
+    return upperEye.get();
+  }
+
+  public boolean isRunning(){
+    return rightMotor1.get() > 0.05;
+  }
+
 }
 

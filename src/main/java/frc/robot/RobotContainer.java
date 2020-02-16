@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurnToTargetCommand;
@@ -58,6 +59,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain,driverController));
     intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
+    conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
     /* m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.

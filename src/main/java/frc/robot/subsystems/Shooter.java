@@ -38,6 +38,14 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
   }
   
+
+  public void setPID(WPI_TalonFX motor,double kP, double kI, double kD, double kF) {
+    motor.config_kP(0, kP, 30);
+    motor.config_kI(0, kI, 30);
+		motor.config_kD(0, kD, 30);
+		motor.config_kF(0, kF, 30);
+  }
+
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
     firing = true;
