@@ -30,15 +30,16 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private XboxController driverController =  new XboxController(DriverControllerConstants.XBOX_ID);
-  //private XboxController operatorController;
+  private XboxController driverController = new XboxController(DriverControllerConstants.XBOX_ID);
+  // private XboxController operatorController;
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake();
@@ -47,91 +48,86 @@ public class RobotContainer {
   private final Climber climber = new Climber();
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
-  
 
-  
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
-   // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
+    // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
-    m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain,driverController));
+    m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
     intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
     conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
-    /* m_driveTrain.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
-       new RunCommand(() -> m_driveTrain.arcadeDrive(
-          -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
-          driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
-            m_driveTrain));  */
+    /*
+     * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
+     * forward/backward controlled by the left // hand, and turning controlled by
+     * the right. new RunCommand(() -> m_driveTrain.arcadeDrive(
+     * -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
+     * driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
+     * m_driveTrain));
+     */
 
-
-
-    //For shooter testing comment out when trying to drive
-    /*shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
-      -driverController.getRawAxis(1.0),driverController.(getRawAxis(.05)),
-        shooter));*/
-      }
-
-
-
+    // For shooter testing comment out when trying to drive
+    /*
+     * shooter.setDefaultCommand(new RunCommand(() -> shooter.test(
+     * -driverController.getRawAxis(1.0),driverController.(getRawAxis(.05)),
+     * shooter));
+     */
+  }
 
   /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
 
-    //Turn to target
+    // Turn to target
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
       .whenPressed(new InstantCommand(() -> m_Limelight.beforeTurnToTarget()))
       .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter))
-      .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));  
+      .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));
 
-
-    //temporary
+    // temporary
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-      .whenPressed(new InstantCommand(() -> conveyor.start()) )
+      .whenPressed(new InstantCommand(() -> conveyor.start()))
       .whenReleased(new InstantCommand(() -> conveyor.stop()));
-  
-    /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-   .whileHeld(new ConveyorCommand(conveyor));*/
-      /*
-    new JoystickButton(driverController, XboxController.Button.kY.value)
-      .whenReleased(new InstantCommand(()->  shooter.changeSpeed(500), shooter));
+
+    /*
+     * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+     * .whileHeld(new ConveyorCommand(conveyor));
+     */
+    /*
+     * new JoystickButton(driverController, XboxController.Button.kY.value)
+     * .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
+     * new JoystickButton(driverController, XboxController.Button.kX.value)
+     * .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
+     */
     new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));*/
-     new JoystickButton(driverController, XboxController.Button.kX.value)
-      .whileHeld(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
+      .whileHeld(new InstantCommand(() -> shooter.fire(), shooter, conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
-      //Extend Climber
+    // Extend Climber
     new DirectionPadButton(driverController, Direction.UP)
       .whileHeld(new InstantCommand(() -> climber.extend(1)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
-    //Retract Climber
+    // Retract Climber
     new DirectionPadButton(driverController, Direction.DOWN)
       .whileHeld(new InstantCommand(() -> climber.retract(.50)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
-    // Roll Climb left 
+    // Roll Climb left
     new DirectionPadButton(driverController, Direction.LEFT)
       .whileHeld(new InstantCommand(() -> climber.roll(.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
-      //Roll Climb Right
-      new DirectionPadButton(driverController, Direction.RIGHT)
+    // Roll Climb Right
+    new DirectionPadButton(driverController, Direction.RIGHT)
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
 
- 
-
   }
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -142,7 +138,5 @@ public class RobotContainer {
     RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
     return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
   }
-
-
 
 }

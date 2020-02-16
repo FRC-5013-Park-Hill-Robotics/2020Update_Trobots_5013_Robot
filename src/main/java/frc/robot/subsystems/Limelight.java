@@ -120,25 +120,30 @@ public class Limelight extends SubsystemBase {
     return getTy().getDouble(0.0) + 1;
   }
 
-  public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
-    switchPipeline(true);
+  public void autoTurnToTarget(Drivetrain drivetrain, Shooter shooter){
+    while (turnToTarget(drivetrain,shooter));
+  }
+  public boolean turnToTarget(Drivetrain drivetrain, Shooter shooter){
     SmartDashboard.putString("turnToTarget ","Started");
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
     SmartDashboard.putString("Target ","" + check);
     SmartDashboard.putString("Initial TY","" + getAngleOfError());
-    if(Math.abs(getAngleOfError()) >= 2 && hasTarget()){
+    if(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()){
       turn = getAngleOfError()*0.03;     
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
       }
       drivetrain.getDrive().tankDrive(-turn, turn);
       SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getAngleOfError());
+    } else {
+      //This prevents errors on the console from not updated drive train.
+      drivetrain.getDrive().tankDrive(0, 0);
     }
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
     SmartDashboard.putString("Turning Complete","Turning Complete");
-    switchPipeline(false);
+    return Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget();
   }
 
   public void beforeTurnToTarget(){
