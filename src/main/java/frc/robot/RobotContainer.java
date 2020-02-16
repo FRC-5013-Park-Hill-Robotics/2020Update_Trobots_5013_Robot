@@ -8,11 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurnToTargetCommand;
@@ -58,6 +60,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain,driverController));
     intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
+    conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
     /* m_driveTrain.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
@@ -87,9 +90,9 @@ public class RobotContainer {
 
     //Turn to target
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> m_Limelight.setLedOn(true)))
+      .whenPressed(new InstantCommand(() -> m_Limelight.beforeTurnToTarget()))
       .whileHeld(new TurnToTargetCommand(m_Limelight, m_driveTrain, shooter))
-      .whenReleased(new InstantCommand(() -> m_Limelight.setLedOn(false)));  
+      .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));  
 
 
     //temporary
@@ -97,6 +100,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(() -> conveyor.start()) )
       .whenReleased(new InstantCommand(() -> conveyor.stop()));
   
+    /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+   .whileHeld(new ConveyorCommand(conveyor));*/
       /*
     new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenReleased(new InstantCommand(()->  shooter.changeSpeed(500), shooter));
@@ -106,17 +111,19 @@ public class RobotContainer {
       .whileHeld(new InstantCommand(() -> shooter.fire(), shooter,conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
+      //Extend Climber
     new DirectionPadButton(driverController, Direction.UP)
       .whileHeld(new InstantCommand(() -> climber.extend(1)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
+    //Retract Climber
     new DirectionPadButton(driverController, Direction.DOWN)
       .whileHeld(new InstantCommand(() -> climber.retract(.50)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
-      
+    // Roll Climb left 
     new DirectionPadButton(driverController, Direction.LEFT)
       .whileHeld(new InstantCommand(() -> climber.roll(.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
-
+      //Roll Climb Right
       new DirectionPadButton(driverController, Direction.RIGHT)
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));

@@ -99,6 +99,8 @@ public final class Constants {
         public static final double HIGH_VELOCITY = 9400.0;
         public static final double LOW_VELOCITY = 4500.0;
         public static final double TOP_PERCENT_OF_BOTTOM = 0.5; //50%;
+        public static final double kP = .2;
+        public static final double kF = 0;
     }
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR = 8;
@@ -108,6 +110,8 @@ public final class Constants {
     public static final class ConveyorConstants {
         public static final int LEFT_CONVEYOR_MOTOR = 9;
         public static final int RIGHT_CONVEYOR_MOTOR = 10;
+        public static final int LOWER_EYE = 1;
+        public static final int UPPER_EYE = 0;
     }
     public static final class LimelightConstants {
         public static final double CAMERA_ANGLE = 0;

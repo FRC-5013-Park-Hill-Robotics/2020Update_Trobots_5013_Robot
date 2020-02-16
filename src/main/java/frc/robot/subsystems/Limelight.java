@@ -141,6 +141,15 @@ public class Limelight extends SubsystemBase {
     switchPipeline(false);
   }
 
+  public void beforeTurnToTarget(){
+    setLedOn(true);
+    switchPipeline(true);
+  }
+
+  public void afterTurnToTarget(){
+    setLedOn(false);
+    switchPipeline(false);
+  }
   public void switchPipeline(boolean targeting){
     if(targeting == true){
       setPipeline(LimelightConstants.TARGET_PIPELINE);
