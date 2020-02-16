@@ -33,7 +33,7 @@ public class TriggerButton extends Button {
     }
 
     public boolean get() {
-        double axis = m_controller.getRawAxis(m_trigger.direction);
+        double axis = m_controller.getRawAxis(3);
         if (m_trigger.equals(Trigger.LEFT)){
             return axis < -1*m_deadband;
         } else {

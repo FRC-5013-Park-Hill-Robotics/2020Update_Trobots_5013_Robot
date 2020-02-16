@@ -58,7 +58,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
-    intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
+ //   intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
     conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
@@ -93,12 +93,13 @@ public class RobotContainer {
 
     // Fire
     new TriggerButton(driverController, TriggerButton.Trigger.RIGHT,.05)
-      .whenPressed(new InstantCommand(() -> intake.dropIntake(),intake))
-      .whenReleased(new InstantCommand(() -> intake.raiseIntake(),intake));
+      .whenPressed(new InstantCommand(() -> shooter.fire(),shooter, conveyor))
+      .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
 
     //Intake up down
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
+      .whenPressed(new InstantCommand(() -> intake.dropIntake(),intake))
+      .whenReleased(new InstantCommand(() -> intake.raiseIntake(),intake));
 
     //Slow Turn
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
