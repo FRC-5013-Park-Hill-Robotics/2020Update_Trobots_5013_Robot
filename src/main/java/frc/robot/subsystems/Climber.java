@@ -15,52 +15,66 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends SubsystemBase {
-  private TalonSRX m_climberMotor;
-  private Servo m_climbServo;
-  private double m_targetServoPosition;
-  private WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(ClimberConstants.LEFT_MOTOR);
-  private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ClimberConstants.RIGHT_MOTOR);
+  private WPI_TalonSRX extensionMotor = new WPI_TalonSRX(ClimberConstants.EXTENSION_MOTOR);
+  private WPI_TalonFX leftMotor1 = new WPI_TalonFX(ClimberConstants.LEFT_MOTOR);
+  private WPI_TalonFX rightMotor1 = new WPI_TalonFX(ClimberConstants.RIGHT_MOTOR);
+  private Solenoid ratchet = new Solenoid(ClimberConstants.RATCHED_SOLENOID_CHANNEL);
   /**
    * Creates a new Climber.
    */
   public Climber() {
-    m_climberMotor.setInverted(true);
+    
     leftMotor1.configFactoryDefault();
     rightMotor1.configFactoryDefault();
+    extensionMotor.configFactoryDefault();
+    extensionMotor.configContinuousCurrentLimit(6);
+    extensionMotor.setNeutralMode(NeutralMode.Coast);
+
+    leftMotor1.configOpenloopRamp(.25);
+    rightMotor1.configOpenloopRamp(.25);
+
     leftMotor1.setInverted(true);
     rightMotor1.setInverted(true);
+    extensionMotor.setInverted(false);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  /**Extends Climber 45 inches*/
-  public void extend(){
-    // TODO WE will need to have the encoder and determine how many pulses 45 inches is using phoenix tuner.
+
+  public void extend(double velocity){
+    extensionMotor.set(ControlMode.PercentOutput,velocity*.60);
+    leftMotor1.set(ControlMode.PercentOutput,-velocity);
+    rightMotor1.set(ControlMode.PercentOutput,-velocity);
   }
 
-  /**EXtends Climber fully */
-  public void fullyExtend(){
-    leftMotor1.set(ControlMode.PercentOutput, 0.25);
-    rightMotor1.set(ControlMode.PercentOutput, 0.25);
-    //TODO will need to determine pulses to max height, we don't want to run slack into our rope
+  public void retract(double velocity){
+    leftMotor1.set(ControlMode.PercentOutput,velocity);
+    rightMotor1.set(ControlMode.PercentOutput,velocity);
+    extensionMotor.set(ControlMode.PercentOutput,.05);
   }
 
-  public void fullyRetract(){
-    //TODO Must use limit switch to prevent damage to telescope rods
+  public void hold(){
+    extensionMotor.setNeutralMode(NeutralMode.Brake);
+    leftMotor1.setNeutralMode(NeutralMode.Brake);
+    rightMotor1.setNeutralMode(NeutralMode.Brake);
+    leftMotor1.set(ControlMode.PercentOutput,0);
+    rightMotor1.set(ControlMode.PercentOutput,0);
+    extensionMotor.set(ControlMode.PercentOutput,0);
   }
+  public void roll(double velocity){
+    leftMotor1.set(ControlMode.PercentOutput,velocity);
+    rightMotor1.set(ControlMode.PercentOutput,-velocity);
 
- /**  negative values are down positive up, values 0...1 used as motor percent
-  must obey limit switches*/
-  public void manualExtenstion(double throttle){
-    //TODO dont know if we need this or not, may want to limit throttle if we do though.
   }
 }
 //List of parts: Two Talon SRX's Mag encoder, Rahcet release, Parmeter, Velocity, wpilib import components. Liam

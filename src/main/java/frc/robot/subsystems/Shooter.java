@@ -38,6 +38,14 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
   }
   
+
+  public void setPID(WPI_TalonFX motor,double kP, double kI, double kD, double kF) {
+    motor.config_kP(0, kP, 30);
+    motor.config_kI(0, kI, 30);
+		motor.config_kD(0, kD, 30);
+		motor.config_kF(0, kF, 30);
+  }
+
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
     firing = true;
@@ -56,15 +64,23 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (firing){
+      bottomMotor.set(ControlMode.PercentOutput,.55);
+      topMotor.set(ControlMode.PercentOutput,.25);
+    } else {
+      bottomMotor.set(ControlMode.PercentOutput,0);
+      topMotor.set(ControlMode.PercentOutput,0);
+    }
     //if we want to shoot and we are not at speed we need to stop the conveyor
-    if (firing && !atSpeed()){
+   /* if (firing && !atSpeed()){
       m_conveyor.stop();
     }
+
     adjustMotorsToTarget();
     //if we are at speed which we should be, fire away
-    if (firing && atSpeed()){
+    /*f (firing && atSpeed()){
       m_conveyor.start();
-    }
+    }*/
   }
 
   public void setTargetVelocity(double bottomMotorTarget){

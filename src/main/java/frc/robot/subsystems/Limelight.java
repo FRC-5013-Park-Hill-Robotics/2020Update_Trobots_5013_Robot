@@ -67,9 +67,9 @@ public class Limelight extends SubsystemBase {
   }
 
   /**Returns distance to target in inches */
-  public double distanceToTarget(){
+  public double distanceToTargetInInches(){
     double cameraAngle = LimelightConstants.CAMERA_ANGLE; 
-    double angleToTarget = this.ty.getDouble(0.0);
+    double angleToTarget = this.tx.getDouble(0.0);
     double camHeight = LimelightConstants.CAMERA_HEIGHT;
     double targetHeight = LimelightConstants.TARGET_HEIGHT;
     double distance =  ((targetHeight-camHeight) / Math.tan(cameraAngle+angleToTarget));
@@ -117,26 +117,52 @@ public class Limelight extends SubsystemBase {
    * used for turn to target
    */
   public double getAngleOfError(){
-    return getTy().getDouble(0.0);
+    //+1 is a fudge factor cor camera mounting
+    return getTy().getDouble(0.0) + 1;
   }
 
-  public void turnToTarget(Drivetrain drivetrain, Shooter shooter){
+  public void autoTurnToTarget(Drivetrain drivetrain, Shooter shooter){
+    while (turnToTarget(drivetrain,shooter));
+  }
+  public boolean turnToTarget(Drivetrain drivetrain, Shooter shooter){
     SmartDashboard.putString("turnToTarget ","Started");
     double turn = 0;
     double min = ShooterConstants.MIN_TURN;
     boolean check = hasTarget();
     SmartDashboard.putString("Target ","" + check);
     SmartDashboard.putString("Initial TY","" + getAngleOfError());
-    if(Math.abs(getAngleOfError()) >= 3 && hasTarget()){
+    if(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()){
       turn = getAngleOfError()*0.03;     
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
       }
       drivetrain.getDrive().tankDrive(-turn, turn);
       SmartDashboard.putString("Loop TY:",this.loop++ + ":" + getAngleOfError());
+    } else {
+      //This prevents errors on the console from not updated drive train.
+      drivetrain.getDrive().tankDrive(0, 0);
     }
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
     SmartDashboard.putString("Turning Complete","Turning Complete");
+    return Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget();
   }
+
+  public void beforeTurnToTarget(){
+    setLedOn(true);
+    switchPipeline(true);
+  }
+
+  public void afterTurnToTarget(){
+    setLedOn(false);
+    switchPipeline(false);
+  }
+  public void switchPipeline(boolean targeting){
+    if(targeting == true){
+      setPipeline(LimelightConstants.TARGET_PIPELINE);
+    } else {
+      setPipeline(LimelightConstants.DRIVE_PIPELINE);
+    }
+  }
+  
 }
 

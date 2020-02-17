@@ -85,11 +85,8 @@ public final class Constants {
     public static final class ClimberConstants {
         public static final int LEFT_MOTOR = 6;
         public static final int RIGHT_MOTOR = 7;
-        public static final int LEFT_LOWER_LIMIT = 0;
-        public static final int RIGHT_LOWER_LIMIT = 0;
-        public static final int LEFT_ENCODER = 0;
-        public static final int RIGHT_ENCODER = 0;
-        public static final int RATCHED_SOLENOID_CHANNEL = 0;
+        public static final int RATCHED_SOLENOID_CHANNEL = 2;
+        public static final int EXTENSION_MOTOR = 5;
     }
     public static final class ShooterConstants {
         public static final int SHOOTER_TOP_MOTOR = 13;
@@ -102,6 +99,8 @@ public final class Constants {
         public static final double HIGH_VELOCITY = 9400.0;
         public static final double LOW_VELOCITY = 4500.0;
         public static final double TOP_PERCENT_OF_BOTTOM = 0.5; //50%;
+        public static final double kP = .2;
+        public static final double kF = 0;
     }
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR = 8;
@@ -111,6 +110,8 @@ public final class Constants {
     public static final class ConveyorConstants {
         public static final int LEFT_CONVEYOR_MOTOR = 9;
         public static final int RIGHT_CONVEYOR_MOTOR = 10;
+        public static final int LOWER_EYE = 1;
+        public static final int UPPER_EYE = 0;
     }
     public static final class LimelightConstants {
         public static final double CAMERA_ANGLE = 0;
@@ -118,8 +119,10 @@ public final class Constants {
         public static final double TARGET_HEIGHT = 0;
         public static final int TARGET_PIPELINE = 0;
         public static final int DEFAULT_PIPELINE = 1;
+        public static final int DRIVE_PIPELINE = 2;
         public static final int LED_ON = 3;
         public static final int LED_OFF = 1;
+        public static final double TURN_TO_TARGET_TOLERANCE = 2.0;
 
 
     }
