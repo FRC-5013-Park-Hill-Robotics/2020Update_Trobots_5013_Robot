@@ -48,4 +48,8 @@ public class Intake extends SubsystemBase {
   public boolean isDown(){
     return dropIntakeSolenoid.get();
   }
+  public void reverseIntake(){
+    intakeMotor.set(ControlMode.PercentOutput, -.75 );
+  }
+  
 }
