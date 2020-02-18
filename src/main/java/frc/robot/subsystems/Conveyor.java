@@ -44,6 +44,12 @@ public class Conveyor extends SubsystemBase {
     leftMotor1.set(ControlMode.PercentOutput, 0.6);
     rightMotor1.set(ControlMode.PercentOutput, 0.6);
   }
+
+  public void reverse() {
+    leftMotor1.set(ControlMode.PercentOutput, -0.6);
+    rightMotor1.set(ControlMode.PercentOutput,- 0.6);
+  }
+  
   public void stop() {
     leftMotor1.set(ControlMode.PercentOutput, 0.0);
     rightMotor1.set(ControlMode.PercentOutput, 0.0);

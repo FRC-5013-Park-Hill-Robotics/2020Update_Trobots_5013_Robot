@@ -25,6 +25,7 @@ public final class Constants {
         //=====================Controller Constants=====================
         public static final double DEADBAND_VALUE = .01;
         public static final int XBOX_ID = 0;
+        public static final int OPERATOR_CONTROLLER = 3;
         public static final int Y_LJOY_ID = 1;
         public static final int TRIGGER_AXIS = 3; //negative values are right and positive values are left
         public static final int X_RJOY_ID = 4;
@@ -87,6 +88,7 @@ public final class Constants {
         public static final int RIGHT_MOTOR = 7;
         public static final int RATCHED_SOLENOID_CHANNEL = 2;
         public static final int EXTENSION_MOTOR = 5;
+        public static final Gains kGains = new Gains(0.2, 0.0, 0.0, 0.0, 0, 1.0);
     }
     public static final class ShooterConstants {
         public static final int SHOOTER_TOP_MOTOR = 13;
