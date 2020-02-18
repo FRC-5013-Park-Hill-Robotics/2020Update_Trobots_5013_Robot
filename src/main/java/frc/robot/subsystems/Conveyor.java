@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorConstants;
 
+
 public class Conveyor extends SubsystemBase {
   private WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(ConveyorConstants.LEFT_CONVEYOR_MOTOR);
   private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ConveyorConstants.RIGHT_CONVEYOR_MOTOR);
@@ -60,6 +61,10 @@ public class Conveyor extends SubsystemBase {
 
   public boolean isBallReadyToShoot(){
     return upperEye.get();
+  }
+  public void reversestart() {
+    leftMotor1.set(ControlMode.PercentOutput, -0.6);
+    rightMotor1.set(ControlMode.PercentOutput, -0.6);
   }
 
 }
