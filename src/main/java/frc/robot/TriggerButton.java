@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
@@ -18,12 +19,12 @@ public class TriggerButton extends Button {
     private Trigger m_trigger;
     private double m_deadband;
     public static enum Trigger {
-        LEFT(-1), RIGHT(1);
+        LEFT(2), RIGHT(3);
 
-        int direction;
+        int axis;
 
-        private Trigger(int direction) {
-            this.direction = direction;
+        private Trigger(int axis) {
+            this.axis = axis;
         }
     }
     public TriggerButton(XboxController joystick, Trigger trigger, double deadband) {
@@ -33,11 +34,8 @@ public class TriggerButton extends Button {
     }
 
     public boolean get() {
-        double axis = m_controller.getRawAxis(3);
-        if (m_trigger.equals(Trigger.LEFT)){
-            return axis < -1*m_deadband;
-        } else {
-            return axis > m_deadband;
-        }
+        double axis = m_controller.getRawAxis(m_trigger.axis);
+        SmartDashboard.putNumber("Trigger Value", axis);
+        return axis > m_deadband;
     }
 }

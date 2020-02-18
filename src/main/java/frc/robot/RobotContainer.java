@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.BackupConveyor;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -39,10 +40,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private XboxController driverController = new XboxController(DriverControllerConstants.XBOX_ID);
-  // private XboxController operatorController;
+  private XboxController operatorController  = new XboxController(DriverControllerConstants.OPERATOR_CONTROLLER);
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
-  private final Intake intake = new Intake();
+  private final Intake intake = new Intake(conveyor);
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
@@ -59,7 +60,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
  //   intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
-    conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
+    //conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
      * forward/backward controlled by the left // hand, and turning controlled by
@@ -93,7 +94,8 @@ public class RobotContainer {
 
     // Fire
     new TriggerButton(driverController, TriggerButton.Trigger.RIGHT,.05)
-      .whenPressed(new InstantCommand(() -> shooter.fire(),shooter, conveyor))
+      .whenPressed(new BackupConveyor(conveyor, 500))
+      .whileHeld(new InstantCommand(() -> shooter.fire(),shooter, conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
 
     //Intake up down
@@ -126,8 +128,16 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(() -> climber.hold()));
 
     // temporary
-    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+    /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
     .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));*/
+
+    new JoystickButton(operatorController, XboxController.Button.kA.value)
+    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kB.value)
+    .whenPressed(new InstantCommand(() -> conveyor.reverse()))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
   /*

@@ -60,13 +60,21 @@ public class Shooter extends SubsystemBase {
   public void stopFiring(){
     firing = false;
     setTargetVelocity(0.0);
+    //m_conveyor.stop();
   }
 
   @Override
   public void periodic() {
     if (firing){
-      bottomMotor.set(ControlMode.PercentOutput,.55);
-      topMotor.set(ControlMode.PercentOutput,.25);
+      if (atSpeed()){
+   //     m_conveyor.start();
+      } else {
+        if (m_conveyor.isBallReadyToShoot()){
+   //       m_conveyor.reverse();
+        }
+      }
+      bottomMotor.set(ControlMode.PercentOutput,.65);
+      topMotor.set(ControlMode.PercentOutput,.30);
     } else {
       bottomMotor.set(ControlMode.PercentOutput,0);
       topMotor.set(ControlMode.PercentOutput,0);
