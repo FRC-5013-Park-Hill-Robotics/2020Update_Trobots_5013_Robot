@@ -27,12 +27,14 @@ public class Shooter extends SubsystemBase {
     topMotor.setInverted(true);
     bottomMotor.setInverted(!topMotor.getInverted());
     m_conveyor = conveyor;
+    setPID(bottomMotor,ShooterConstants.kP, 0, 0, ShooterConstants.kF);
+    setPID(topMotor,ShooterConstants.kP, 0, 0, ShooterConstants.kF);
   }
 
   //method for testing.
   public void changeSpeed(double velocity){
     setTargetVelocity(getTargetVelocity() + velocity);
-    adjustMotorsToTarget();
+    //adjustMotorsToTarget();
     firing = true;
     SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
     SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
@@ -60,21 +62,28 @@ public class Shooter extends SubsystemBase {
   public void stopFiring(){
     firing = false;
     setTargetVelocity(0.0);
-    //m_conveyor.stop();
+    m_conveyor.stop();
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
+    SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
+    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
-   //     m_conveyor.start();
+        SmartDashboard.putString("at speed", ""+true);
+        m_conveyor.start();
       } else {
+        SmartDashboard.putString("at speed", ""+false);
+        m_conveyor.stop();
         if (m_conveyor.isBallReadyToShoot()){
    //       m_conveyor.reverse();
         }
-      }
-      bottomMotor.set(ControlMode.PercentOutput,.65);
-      topMotor.set(ControlMode.PercentOutput,.30);
+      } 
+      bottomMotor.set(ControlMode.Velocity,getTargetVelocity());
+      topMotor.set(ControlMode.Velocity,getTopTargetVelocity());
     } else {
       bottomMotor.set(ControlMode.PercentOutput,0);
       topMotor.set(ControlMode.PercentOutput,0);
@@ -102,7 +111,7 @@ public class Shooter extends SubsystemBase {
   public double getTargetVelocity(){
     return m_targetVelocity;
   }
-
+/*
   private void adjustMotorsToTarget(){
   //  while (!atSpeed()){
     
@@ -129,11 +138,11 @@ public class Shooter extends SubsystemBase {
       motor.set(ControlMode.Velocity, target);
     }
   }
-
+*/
   private boolean atSpeed(){
     SmartDashboard.putBoolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
 
-    return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() &&
-      topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity();
+    return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() *.95 &&
+      topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity() *.95;
   }
 }

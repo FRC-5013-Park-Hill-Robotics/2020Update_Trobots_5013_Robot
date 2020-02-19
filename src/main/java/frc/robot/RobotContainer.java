@@ -144,12 +144,12 @@ public class RobotContainer {
    * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
    * .whileHeld(new ConveyorCommand(conveyor));
    */
-  /*
-   * new JoystickButton(driverController, XboxController.Button.kY.value)
-   * .whenReleased(new InstantCommand(()-> shooter.changeSpeed(500), shooter));
-   * new JoystickButton(driverController, XboxController.Button.kX.value)
-   * .whenReleased(new InstantCommand(() -> shooter.changeSpeed(500), shooter));
-   */
+  
+     new JoystickButton(driverController, XboxController.Button.kY.value)
+    .whenReleased(new InstantCommand(()-> shooter.changeSpeed(200), shooter));
+    new JoystickButton(driverController, XboxController.Button.kX.value)
+    .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-200), shooter));
+   
   }
 
   /**
