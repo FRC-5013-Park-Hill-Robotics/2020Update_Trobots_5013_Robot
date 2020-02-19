@@ -235,7 +235,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's Left motor distance in meters
    */
   public double getLeftDistanceMeters(){
-    return CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorVelocity();
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorPosition();
   }
 
   /**
