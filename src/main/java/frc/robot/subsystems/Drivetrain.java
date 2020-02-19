@@ -24,6 +24,7 @@ import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Drivetrain extends SubsystemBase {
@@ -46,6 +47,11 @@ public class Drivetrain extends SubsystemBase {
     leftMotor1.configFactoryDefault();
     leftMotor2.configFactoryDefault();
   
+    rightMotor1.setNeutralMode(NeutralMode.Brake);
+    rightMotor2.setNeutralMode(NeutralMode.Brake);
+    leftMotor1.setNeutralMode(NeutralMode.Brake);
+    leftMotor2.setNeutralMode(NeutralMode.Brake);
+
     rightMotor1.configOpenloopRamp(.3);
     rightMotor2.configOpenloopRamp(.3);
     leftMotor1.configOpenloopRamp(.3);
