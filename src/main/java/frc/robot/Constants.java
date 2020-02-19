@@ -99,7 +99,8 @@ public final class Constants {
         public static final int GATE_SOLENOID_CHANNEL = 0;
         public static final double MIN_TURN = 0.4;
         //22ft 8000,
-        public static final double HIGH_VELOCITY = 10000.0;
+        //27fr 10000
+        public static final double HIGH_VELOCITY = 8000.0;
         public static final double LOW_VELOCITY = 4500.0;
         public static final double TOP_PERCENT_OF_BOTTOM = 0.3; //50%;
         public static final double kP = .45;
