@@ -52,10 +52,10 @@ public class Drivetrain extends SubsystemBase {
     leftMotor1.setNeutralMode(NeutralMode.Brake);
     leftMotor2.setNeutralMode(NeutralMode.Brake);
 
-    rightMotor1.configOpenloopRamp(.3);
-    rightMotor2.configOpenloopRamp(.3);
-    leftMotor1.configOpenloopRamp(.3);
-    leftMotor2.configOpenloopRamp(.3);
+    rightMotor1.configOpenloopRamp(.5);
+    rightMotor2.configOpenloopRamp(.5);
+    leftMotor1.configOpenloopRamp(.5);
+    leftMotor2.configOpenloopRamp(.5);
 
     /* set up followers */
     leftMotor2.set(ControlMode.Follower, CompetitionDriveConstants.LEFT_MOTOR_1_ID);
