@@ -107,7 +107,7 @@ public class RobotContainer {
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whileHeld(new InstantCommand(()->m_driveTrain.arcadeDrive(
          -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
-         driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)),
+         driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)/2),
          m_driveTrain));
     
     // Extend Climber
