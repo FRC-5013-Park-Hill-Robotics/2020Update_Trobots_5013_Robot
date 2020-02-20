@@ -274,8 +274,8 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return getLeftDistanceMeters() + 
-    getRightDistanceMeters() 
+    return (getLeftDistanceMeters() + 
+    getRightDistanceMeters() )
     / 2.0;
   }
   @Override
@@ -292,7 +292,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
     leftMotor1.setVoltage(leftVolts);
-    rightMotor1.setVoltage(-rightVolts);
+    rightMotor1.setVoltage(rightVolts);
     m_drive.feed();
     }
     
