@@ -284,8 +284,10 @@ public class Drivetrain extends SubsystemBase {
       Rotation2d.fromDegrees(getHeading()), 
       getLeftDistanceMeters(), 
       getRightDistanceMeters());
-      SmartDashboard.putString("Pose",
-      m_odometry.getPoseMeters().toString());
+      SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
+      SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
+      SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
+      SmartDashboard.putNumber("Heading", getHeading());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
