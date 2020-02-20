@@ -144,7 +144,7 @@ public class Limelight extends SubsystemBase {
     }
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
     SmartDashboard.putString("Turning Complete","Turning Complete");
-    return Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget();
+    return ! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget());
   }
 
   public void beforeTurnToTarget(){

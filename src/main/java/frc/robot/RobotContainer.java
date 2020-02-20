@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
+import frc.robot.commands.AutonoumousBackAndShootGroup;
 import frc.robot.commands.BackupConveyor;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
@@ -166,8 +167,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public CommandBase getAutonomousCommand() {
-    RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
-    return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));
+    /*RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
+    return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));*/
+    return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter);
   }
 
 }
