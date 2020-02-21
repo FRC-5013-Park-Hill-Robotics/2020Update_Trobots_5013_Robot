@@ -1,9 +1,7 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+ /** Limelight operates asynchronously so hasTarget will return false while finding the target.  
+   During auto we need a command to make the sequence of commands wait until target is found before 
+   proceeding to turn to target.  Thus the only thing this command does is implement isFinished.   If
+   for some reason auto can't find target this command will hang the auto routine. */
 
 package frc.robot.commands;
 
@@ -36,7 +34,7 @@ public class FindTarget extends CommandBase {
   public void end(boolean interrupted) {
   }
 
-  // Returns true when the command should end.
+
   @Override
   public boolean isFinished() {
     SmartDashboard.putBoolean("Finder has target", m_limelight.hasTarget());

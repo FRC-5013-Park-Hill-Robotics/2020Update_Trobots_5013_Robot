@@ -1,9 +1,6 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+/**
+ * Will drive straight for a given distance.
+ */
 
 package frc.robot.commands;
 
@@ -18,13 +15,16 @@ public class AutoDriveCommand extends CommandBase {
     private double m_start = 0;
   /**
    * Creates a new DriveBackwardsCommand.
+   * @param speed is the percent output negative values being backwards
+   * @param distance is the distance to travel in meters  //todo consider doing this in feet.
+   * @param drivetrain is the drivetrain used to drive
+   *
    */
   public AutoDriveCommand(double speed, double distance, Drivetrain drivetrain) {
     super();
     m_distance = distance/3.281;
     m_speed = speed;
     m_drivetrain = drivetrain;
-    // Use addRequirements() here to declare subsystem dependencies
     addRequirements(drivetrain);
   }
 
