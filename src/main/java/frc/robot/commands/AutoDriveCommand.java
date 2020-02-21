@@ -16,7 +16,7 @@ public class AutoDriveCommand extends CommandBase {
   /**
    * Creates a new DriveBackwardsCommand.
    * @param speed is the percent output negative values being backwards
-   * @param distance is the distance to travel in meters  //todo consider doing this in feet.
+   * @param distance is the distance to travel in feet
    * @param drivetrain is the drivetrain used to drive
    *
    */
