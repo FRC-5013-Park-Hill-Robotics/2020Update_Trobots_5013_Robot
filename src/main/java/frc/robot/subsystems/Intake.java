@@ -59,9 +59,9 @@ public class Intake extends SubsystemBase {
   public void dropIntake(){
     //Using command scheduler because shooter may be controlling conveyor and it gets presidence
     //CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
-    intakeMotor.set(ControlMode.PercentOutput, .9 );
     dropIntakeSolenoid.set(true); 
     raiseIntakeSolenoid.set(false); 
+    intakeMotor.set(ControlMode.PercentOutput, .9 );
   }
 
   public void raiseIntake(){
