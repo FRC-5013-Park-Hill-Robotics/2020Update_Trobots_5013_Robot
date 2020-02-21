@@ -27,8 +27,8 @@ public class AutoTurnToTargetCommand extends CommandBase {
     this.m_limeLight = limeLight;
     this.m_drivetrain = drivetrain;
     this.m_shooter = shooter;
-    addRequirements(limeLight);
     addRequirements(drivetrain);
+
   }
 
   // Called when the command is initially scheduled.

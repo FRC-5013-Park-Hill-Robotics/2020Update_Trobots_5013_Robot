@@ -7,34 +7,28 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
 
-public class AutonomousCommand extends CommandBase {
-  private boolean finished = false;
+public class FindTarget extends CommandBase {
+  private Limelight m_limelight;
   /**
-   * Creates a new AutonomousCommand.
+   * Creates a new FindTarget.
    */
-  private Drivetrain driveTrain;
-  public AutonomousCommand(Drivetrain drive) {
+  public FindTarget(Limelight limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drive);
-    this.driveTrain = drive;
-  }
+    m_limelight = limelight;
+  };
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.driveTrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    /*System.out.println("Auto Begin");
-    this.driveTrain.moveTo(60.0);
-    this.finished = true;
-    System.out.println("Auto End");*/
   }
 
   // Called once the command ends or is interrupted.
@@ -45,6 +39,7 @@ public class AutonomousCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.finished;
+    SmartDashboard.putBoolean("Finder has target", m_limelight.hasTarget());
+    return m_limelight.hasTarget();
   }
 }

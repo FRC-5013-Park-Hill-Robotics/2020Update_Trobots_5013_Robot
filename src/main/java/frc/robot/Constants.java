@@ -46,7 +46,8 @@ public final class Constants {
         public static final boolean LEFT_REVERSED = false;
         public static final boolean RIGHT_REVERSED = true;
 
-        public static final double DISTANCE_PER_PULSE = .0009029;
+        //public static final double DISTANCE_PER_PULSE = .0009029;
+        public static final double DISTANCE_PER_PULSE_METERS = 0.000024396;
         public static final boolean GYRO_REVERSED = false;
         
         /**
