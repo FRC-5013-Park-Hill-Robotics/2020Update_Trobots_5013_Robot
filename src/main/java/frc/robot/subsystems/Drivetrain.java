@@ -127,7 +127,7 @@ public class Drivetrain extends SubsystemBase {
     return m_drive;
   }
 
-  public void moveTo(final double inches) {
+  /*public void moveTo(final double inches) {
     // System.out.println("moveTo:Before Left position:" +
     // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
     // Right position:" +
@@ -152,7 +152,7 @@ public class Drivetrain extends SubsystemBase {
     // error:" +
     // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
 
-  }
+  }*/
 
   public void arcadeDrive(final double fwd, final double rot) {
     getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
@@ -227,7 +227,8 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's right motor distance in meters
    */
   public double getRightDistanceMeters(){
-    return CompetitionDriveConstants.DISTANCE_PER_PULSE*rightMotor1.getSelectedSensorPosition();
+    SmartDashboard.putNumber("Right Encoder", rightMotor1.getSelectedSensorPosition());
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*rightMotor1.getSelectedSensorPosition();
   }
 
   /**
@@ -235,7 +236,8 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's Left motor distance in meters
    */
   public double getLeftDistanceMeters(){
-    return CompetitionDriveConstants.DISTANCE_PER_PULSE*leftMotor1.getSelectedSensorPosition();
+    SmartDashboard.putNumber("LEft Encoder", leftMotor1.getSelectedSensorPosition());
+    return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*leftMotor1.getSelectedSensorPosition();
   }
 
   /**
@@ -274,6 +276,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
+    SmartDashboard.putString("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
     return (getLeftDistanceMeters() + 
     getRightDistanceMeters() )
     / 2.0;

@@ -48,6 +48,9 @@ public class Shooter extends SubsystemBase {
 		motor.config_kF(0, kF, 30);
   }
 
+  public void spinUp(){
+    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+  }
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
     firing = true;

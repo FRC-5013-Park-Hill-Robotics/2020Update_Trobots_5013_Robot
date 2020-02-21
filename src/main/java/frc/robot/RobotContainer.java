@@ -169,7 +169,7 @@ public class RobotContainer {
   public CommandBase getAutonomousCommand() {
     /*RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
     return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));*/
-    return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter);
+    return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor);
   }
 
 }
