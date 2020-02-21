@@ -21,7 +21,7 @@ public class AutoDriveCommand extends CommandBase {
    */
   public AutoDriveCommand(double speed, double distance, Drivetrain drivetrain) {
     super();
-    m_distance = distance;
+    m_distance = distance/3.281;
     m_speed = speed;
     m_drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies
