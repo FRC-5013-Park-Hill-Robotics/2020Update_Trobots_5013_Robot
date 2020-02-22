@@ -22,6 +22,8 @@ public class Conveyor extends SubsystemBase {
   private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ConveyorConstants.RIGHT_CONVEYOR_MOTOR);
   private DigitalInput lowerEye = new DigitalInput(ConveyorConstants.LOWER_EYE);
   private DigitalInput upperEye = new DigitalInput(ConveyorConstants.UPPER_EYE);
+  private long startTime=0;
+  private double percentOutput;
 
   /**
    * Creates a new Conveyor.
@@ -39,20 +41,53 @@ public class Conveyor extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putString("Lower Eye", "" + lowerEye.get());
     SmartDashboard.putString("Upper Eye", "" + upperEye.get());
+    SmartDashboard.putNumber("TimeInMilis", System.currentTimeMillis());
+    SmartDashboard.putBoolean("Conveyor Moving", isMoving());
+    if (System.currentTimeMillis() > startTime){
+      rightMotor1.set(ControlMode.PercentOutput, percentOutput);
+      leftMotor1.set(ControlMode.PercentOutput, percentOutput);
+      startTime = 0;
+    } 
   }
+
+  private void setPercentOutput(double targetPercent, Long timeout){
+    this.percentOutput = targetPercent;
+    if (timeout == 0){
+      this.startTime = 0;
+    } else if (startTime == 0) { 
+      //Don't set if you are delaying already.
+      this.startTime = System.currentTimeMillis() + timeout;
+    }
+    SmartDashboard.putNumber("Target timeout", startTime);
+  }
+
+
+  public void start(long timeout) {
+    SmartDashboard.putString("Last Conveyor Command", "start:"+timeout);
+    if (!isMoving()){
+      setPercentOutput(0.6, timeout);
+    }
+     //leftMotor1.set(ControlMode.PercentOutput, .6);
+     //rightMotor1.set(ControlMode.PercentOutput, .6);
+   }
   public void start() {
-    leftMotor1.set(ControlMode.PercentOutput, .6);
-    rightMotor1.set(ControlMode.PercentOutput, .6);
+    SmartDashboard.putString("Last Conveyor Command", "start");
+   setPercentOutput(0.6, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, .6);
+    //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
 
   public void reverse() {
-    leftMotor1.set(ControlMode.PercentOutput, -0.6);
-    rightMotor1.set(ControlMode.PercentOutput,- 0.6);
+    setPercentOutput(-0.6, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, -0.6);
+    //rightMotor1.set(ControlMode.PercentOutput,- 0.6);
   }
   
   public void stop() {
-    leftMotor1.set(ControlMode.PercentOutput, 0.0);
-    rightMotor1.set(ControlMode.PercentOutput, 0.0);
+    SmartDashboard.putString("Last Conveyor Command", "stop");
+    setPercentOutput(0, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, 0.0);
+    //rightMotor1.set(ControlMode.PercentOutput, 0.0);
   }
 
   public boolean isBallReadyForIntake(){
@@ -62,9 +97,14 @@ public class Conveyor extends SubsystemBase {
   public boolean isBallReadyToShoot(){
     return upperEye.get();
   }
+
+  public boolean isMoving(){
+    return Math.abs(percentOutput) > 0.0;
+  }
   public void reversestart() {
-    leftMotor1.set(ControlMode.PercentOutput, -0.6);
-    rightMotor1.set(ControlMode.PercentOutput, -0.6);
+    setPercentOutput(-0.6, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, -0.6);
+    //rightMotor1.set(ControlMode.PercentOutput, -0.6);
   }
 
 }

@@ -62,7 +62,7 @@ public class RobotContainer {
     configureButtonBindings();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
     //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
-    conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
+    conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
     m_Limelight.setPipeline(LimelightConstants.DRIVE_PIPELINE);
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
