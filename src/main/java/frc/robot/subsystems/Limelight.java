@@ -44,7 +44,7 @@ public class Limelight extends SubsystemBase {
     this.ta = table.getEntry("tv");
     this.ledMode = table.getEntry("ledMode");
     this.loop = 0; 
-    setPipeline(LimelightConstants.TARGET_PIPELINE);
+    setPipeline(LimelightConstants.DEFAULT_PIPELINE);
     setLedOn(false);
 
   }

@@ -41,8 +41,8 @@ public class Conveyor extends SubsystemBase {
     SmartDashboard.putString("Upper Eye", "" + upperEye.get());
   }
   public void start() {
-    leftMotor1.set(ControlMode.PercentOutput, 0.6);
-    rightMotor1.set(ControlMode.PercentOutput, 0.6);
+    leftMotor1.set(ControlMode.PercentOutput, .6);
+    rightMotor1.set(ControlMode.PercentOutput, .6);
   }
 
   public void reverse() {
