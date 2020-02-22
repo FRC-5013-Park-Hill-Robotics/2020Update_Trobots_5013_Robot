@@ -61,7 +61,7 @@ public class Intake extends SubsystemBase {
     //CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
     dropIntakeSolenoid.set(true); 
     raiseIntakeSolenoid.set(false); 
-    intakeMotor.set(ControlMode.PercentOutput, .9 );
+    intakeMotor.set(ControlMode.PercentOutput, .45 );
   }
 
   public void raiseIntake(){

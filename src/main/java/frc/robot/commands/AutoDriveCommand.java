@@ -33,12 +33,14 @@ public class AutoDriveCommand extends CommandBase {
   public void initialize() {
      m_start = 0;
      m_drivetrain.resetEncoders();
+     SmartDashboard.putNumber("Auto init encoder values", m_drivetrain.getAverageEncoderDistance());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putString("execute autodrive", "Speed" + m_speed);
+    SmartDashboard.putNumber("execute autodrive speed",  m_speed);
+    SmartDashboard.putNumber("execute autodrive distance", m_drivetrain.getAverageEncoderDistance());
     m_drivetrain.arcadeDrive(m_speed, 0);
   }
 
