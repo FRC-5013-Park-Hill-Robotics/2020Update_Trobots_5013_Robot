@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.LimelightConstants;
@@ -30,6 +31,7 @@ import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -51,6 +53,7 @@ public class RobotContainer {
   private final Climber climber = new Climber();
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
+  SendableChooser chooser = new SendableChooser<CommandBase>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -60,6 +63,8 @@ public class RobotContainer {
     // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
+    this.chooser.setDefaultOption("Back & Shoot", getAutonomousCommand());
+    addAutonomousOptions();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
     //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
     conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
@@ -164,6 +169,11 @@ public class RobotContainer {
     /*RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
     return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));*/
     return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor);
+  }
+
+  private void addAutonomousOptions(){
+    this.chooser.addOption("Drive Forward", new AutonomousCommand(m_driveTrain));
+
   }
 
 }
