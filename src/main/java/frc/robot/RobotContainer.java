@@ -25,6 +25,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flashlight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -49,6 +50,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
+  private final Flashlight m_flashlight = new Flashlight();
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
 
@@ -64,6 +66,7 @@ public class RobotContainer {
     //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
     conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
     m_Limelight.setPipeline(LimelightConstants.DRIVE_PIPELINE);
+    m_Limelight.setLedOn(false);
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
      * forward/backward controlled by the left // hand, and turning controlled by
@@ -148,11 +151,11 @@ public class RobotContainer {
    * .whileHeld(new ConveyorCommand(conveyor));
    */
   
-   /*  new JoystickButton(driverController, XboxController.Button.kY.value)
-    .whenReleased(new InstantCommand(()-> shooter.changeSpeed(200), shooter));
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+    .whenReleased(new InstantCommand(()-> m_flashlight.on(), m_flashlight));
     new JoystickButton(driverController, XboxController.Button.kX.value)
-    .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-200), shooter));
-   */
+    .whenReleased(new InstantCommand(()-> m_flashlight.off(), m_flashlight));
+   
   }
 
   /**
