@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
@@ -65,9 +66,9 @@ public class RobotContainer {
     this.chooser.setDefaultOption("Back & Shoot", getAutonomousCommand());
     addAutonomousOptions();
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
-    
- //   intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
-    //conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
+    //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
+    conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
+    m_Limelight.setPipeline(LimelightConstants.DRIVE_PIPELINE);
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
      * forward/backward controlled by the left // hand, and turning controlled by
@@ -107,8 +108,8 @@ public class RobotContainer {
 
     //Intake up down
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> intake.dropIntake(),intake))
-      .whenReleased(new InstantCommand(() -> intake.raiseIntake(),intake));
+      .whenPressed(new InstantCommand(() -> intake.dropIntake()))
+      .whenReleased(new InstantCommand(() -> intake.raiseIntake()));
 
     //Slow Turn
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
@@ -138,14 +139,6 @@ public class RobotContainer {
     /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
     .whenPressed(new InstantCommand(() -> conveyor.start()))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));*/
-
-    new JoystickButton(operatorController, XboxController.Button.kA.value)
-    .whenPressed(new InstantCommand(() -> conveyor.start()))
-    .whenReleased(new InstantCommand(() -> conveyor.stop()));
-
-    new JoystickButton(operatorController, XboxController.Button.kB.value)
-    .whenPressed(new InstantCommand(() -> conveyor.reverse()))
-    .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
     .whenPressed(new InstantCommand(() -> conveyor.start()))
