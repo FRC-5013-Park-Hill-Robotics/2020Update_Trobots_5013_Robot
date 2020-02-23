@@ -77,7 +77,7 @@ public class Shooter extends SubsystemBase {
     if (firing){
       if (atSpeed()){
         SmartDashboard.putString("at speed", ""+true);
-        m_conveyor.start();
+        m_conveyor.startForShooter();
       } else {
         SmartDashboard.putString("at speed", ""+false);
         m_conveyor.stop();
