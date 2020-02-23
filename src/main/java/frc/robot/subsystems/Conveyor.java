@@ -24,6 +24,9 @@ public class Conveyor extends SubsystemBase {
   private DigitalInput upperEye = new DigitalInput(ConveyorConstants.UPPER_EYE);
   private long startTime=0;
   private double percentOutput;
+  public static final double kSpeed = 0.3;//percent output
+  public static final double kSpeedForShooter = 0.6;//percent output
+  
 
   /**
    * Creates a new Conveyor.
@@ -65,20 +68,26 @@ public class Conveyor extends SubsystemBase {
   public void start(long timeout) {
     SmartDashboard.putString("Last Conveyor Command", "start:"+timeout);
     if (!isMoving()){
-      setPercentOutput(0.6, timeout);
+      setPercentOutput(kSpeed, timeout);
     }
      //leftMotor1.set(ControlMode.PercentOutput, .6);
      //rightMotor1.set(ControlMode.PercentOutput, .6);
    }
   public void start() {
     SmartDashboard.putString("Last Conveyor Command", "start");
-   setPercentOutput(0.6, 0L);
+   setPercentOutput(kSpeed, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, .6);
+    //rightMotor1.set(ControlMode.PercentOutput, .6);
+  }
+  public void startForShooter() {
+    SmartDashboard.putString("Last Conveyor Command", "start");
+    setPercentOutput(kSpeedForShooter, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
 
   public void reverse() {
-    setPercentOutput(-0.6, 0L);
+    setPercentOutput(-kSpeed, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, -0.6);
     //rightMotor1.set(ControlMode.PercentOutput,- 0.6);
   }
@@ -102,7 +111,7 @@ public class Conveyor extends SubsystemBase {
     return Math.abs(percentOutput) > 0.0;
   }
   public void reversestart() {
-    setPercentOutput(-0.6, 0L);
+    setPercentOutput(-kSpeed, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, -0.6);
     //rightMotor1.set(ControlMode.PercentOutput, -0.6);
   }
