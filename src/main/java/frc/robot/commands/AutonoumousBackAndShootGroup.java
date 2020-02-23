@@ -24,9 +24,9 @@ public class AutonoumousBackAndShootGroup extends SequentialCommandGroup {
   public AutonoumousBackAndShootGroup(Drivetrain drivetrain, Limelight limelight, Shooter shooter, Conveyor conveyor) {
     super(new ResetDrivetrainEncoders(drivetrain),
       new AutoDriveCommand(-0.5,3.658, drivetrain),
+      new InstantCommand(() -> shooter.spinUp()),
       new InstantCommand(() -> limelight.beforeTurnToTarget()),
       new FindTarget(limelight),
-      new InstantCommand(() -> shooter.spinUp()),
       new AutoTurnToTargetCommand(limelight, drivetrain, shooter),
       new FireAll(shooter, conveyor),
       new InstantCommand(() -> limelight.afterTurnToTarget()),
