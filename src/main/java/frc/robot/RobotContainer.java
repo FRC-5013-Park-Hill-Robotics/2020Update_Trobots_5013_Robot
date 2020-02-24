@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.Constants.FlashlightConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutonomousCommand;
@@ -52,7 +53,7 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
-  private final Flashlight m_flashlight = new Flashlight();
+  private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
   SendableChooser chooser = new SendableChooser<CommandBase>();
