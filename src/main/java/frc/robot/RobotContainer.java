@@ -31,6 +31,7 @@ import frc.robot.subsystems.Flashlight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -56,7 +57,7 @@ public class RobotContainer {
   private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
-  SendableChooser chooser = new SendableChooser<CommandBase>();
+  SendableChooser<CommandBase> chooser = new SendableChooser<CommandBase>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -106,7 +107,7 @@ public class RobotContainer {
 
     // Fire
     new TriggerButton(driverController, TriggerButton.Trigger.RIGHT,.05)
-      .whenPressed(new BackupConveyor(conveyor, 500))
+     // .whenPressed(new BackupConveyor(conveyor, 500))
       .whileHeld(new InstantCommand(() -> shooter.fire(),shooter, conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
 
@@ -123,19 +124,19 @@ public class RobotContainer {
          m_driveTrain));
     
     // Extend Climber
-    new DirectionPadButton(driverController, Direction.UP)
+    new DirectionPadButton(operatorController, Direction.UP)
       .whileHeld(new InstantCommand(() -> climber.extend(1)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Retract Climber
-    new DirectionPadButton(driverController, Direction.DOWN)
+    new DirectionPadButton(operatorController, Direction.DOWN)
       .whileHeld(new InstantCommand(() -> climber.retract(.50)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Roll Climb left
-    new DirectionPadButton(driverController, Direction.LEFT)
+    new DirectionPadButton(operatorController, Direction.LEFT)
       .whileHeld(new InstantCommand(() -> climber.roll(.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Roll Climb Right
-    new DirectionPadButton(driverController, Direction.RIGHT)
+    new DirectionPadButton(operatorController, Direction.RIGHT)
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
 
@@ -152,17 +153,29 @@ public class RobotContainer {
     .whenPressed(new InstantCommand(() -> conveyor.reverse()))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
+    new JoystickButton(operatorController, XboxController.Button.kA.value)
+    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kB.value)
+    .whenPressed(new InstantCommand(() -> conveyor.reverse()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value)
+    .whenPressed(new InstantCommand(() -> shooter.fireLow()))
+    .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
+
   /*
    * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
    * .whileHeld(new ConveyorCommand(conveyor));
    */
   
     new JoystickButton(driverController, XboxController.Button.kY.value)
-    .whenReleased(new InstantCommand(()-> m_flashlight.on(), m_flashlight));
-    new JoystickButton(driverController, XboxController.Button.kX.value)
-    .whenReleased(new InstantCommand(()-> m_flashlight.off(), m_flashlight));
-   
-  }
+    .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
+    new JoystickButton(operatorController, XboxController.Button.kY.value)
+    .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
+  } 
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
