@@ -35,7 +35,7 @@ public class TurnToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_limeLight.turnToTarget(m_drivetrain,m_shooter);
+    m_limeLight.turnToTargetVolts(m_drivetrain,m_shooter);
   }
 
   // Called once the command ends or is interrupted.
