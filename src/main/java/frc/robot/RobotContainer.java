@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,12 +19,16 @@ import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.FlashlightConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
+import frc.robot.commands.AutoBackup;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
 import frc.robot.commands.BackupConveyor;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FireAll;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.TurnByAngle;
 import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
@@ -174,6 +180,12 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
     new JoystickButton(operatorController, XboxController.Button.kY.value)
     .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
+
+      // Turn to target Test
+     /*   new TriggerButton(driverController,TriggerButton.Trigger.LEFT, .05)
+        .whenPressed(new InstantCommand(() -> m_Limelight.beforeTurnToTarget()))
+        .whileHeld(new TurnByAngle(m_Limelight::getAngleOfError, m_driveTrain))
+        .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));*/
   } 
 
 
@@ -191,8 +203,12 @@ public class RobotContainer {
   public void addAutonomousOptions(){
     this.chooser.setDefaultOption(AutonomousConstants.RIGHT_SIDE_BACK_AND_SHOOT, 
      new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake));
-    this.chooser.setDefaultOption("Another of the same", 
-     new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake)); 
+    this.chooser.setDefaultOption("BAckup 5", 
+     new AutoBackup(-.5,5,m_driveTrain)); 
+     this.chooser.setDefaultOption("Fire all", 
+     new FireAll(shooter,conveyor)); 
+   // this.chooser.setDefaultOption("Rotate 90", 
+   //  new TurnByAngle(new DoubleSupplier(()->90),m_driveTrain)); 
      SmartDashboard.putData("Auto Chooser", this.chooser);
   }
 
