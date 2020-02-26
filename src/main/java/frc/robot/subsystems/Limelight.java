@@ -118,7 +118,7 @@ public class Limelight extends SubsystemBase {
    */
   public double getAngleOfError(){
     //+1 is a fudge factor cor camera mounting
-    return getTx().getDouble(0.0);
+    return getTx().getDouble(0.0) ;
   }
 
   public void autoTurnToTarget(Drivetrain drivetrain, Shooter shooter){
@@ -136,15 +136,15 @@ public class Limelight extends SubsystemBase {
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
       }
-      drivetrain.getDrive().tankDrive(-turn, turn);
+      drivetrain.getDrive().tankDrive(turn, -turn);
       SmartDashboard.putString("Loop Tx:",this.loop++ + ":" + getAngleOfError());
     } else {
       //This prevents errors on the console from not updated drive train.
       drivetrain.getDrive().tankDrive(0, 0);
     }
     SmartDashboard.putString("Ending TY","" + getAngleOfError());
-    SmartDashboard.putString("Turning Complete","Turning Complete");
-    return ! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget());
+    SmartDashboard.putBoolean("Turning Complete",! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()));
+    return !(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE) && hasTarget();
   }
 
   public void beforeTurnToTarget(){

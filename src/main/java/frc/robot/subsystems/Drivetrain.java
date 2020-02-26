@@ -227,7 +227,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's right motor distance in meters
    */
   public double getRightDistanceMeters(){
-    SmartDashboard.putNumber("Right Encoder", rightMotor1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("Right Encoder", rightMotor1.getSelectedSensorPosition());
     return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*rightMotor1.getSelectedSensorPosition();
   }
 
@@ -236,7 +236,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's Left motor distance in meters
    */
   public double getLeftDistanceMeters(){
-    SmartDashboard.putNumber("LEft Encoder", leftMotor1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("LEft Encoder", leftMotor1.getSelectedSensorPosition());
     return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*leftMotor1.getSelectedSensorPosition();
   }
 
@@ -276,7 +276,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    SmartDashboard.putString("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
+    //String("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
     return (getLeftDistanceMeters() + 
     getRightDistanceMeters() )
     / 2.0;
@@ -287,10 +287,10 @@ public class Drivetrain extends SubsystemBase {
       Rotation2d.fromDegrees(getHeading()), 
       getLeftDistanceMeters(), 
       getRightDistanceMeters());
-      SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
-      SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
-      SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
-      SmartDashboard.putNumber("Heading", getHeading());
+      //SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
+     // SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
+      //SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
+      //SmartDashboard.putNumber("Heading", getHeading());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {

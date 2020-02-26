@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
@@ -21,10 +22,11 @@ public class AutonoumousBackAndShootGroup extends SequentialCommandGroup {
   /**
    * Creates a new AutonoumousBackAndShootGroup.
    */
-  public AutonoumousBackAndShootGroup(Drivetrain drivetrain, Limelight limelight, Shooter shooter, Conveyor conveyor) {
+  public AutonoumousBackAndShootGroup(Drivetrain drivetrain, Limelight limelight, Shooter shooter, Conveyor conveyor, Intake intake) {
     super(new ResetDrivetrainEncoders(drivetrain),
-      new AutoDriveCommand(-0.5,3.658, drivetrain),
+      new InstantCommand(() -> intake.dropIntake()),
       new InstantCommand(() -> shooter.spinUp()),
+      new AutoDriveCommand(-0.5,12, drivetrain),
       new InstantCommand(() -> limelight.beforeTurnToTarget()),
       new FindTarget(limelight),
       new AutoTurnToTargetCommand(limelight, drivetrain, shooter),

@@ -36,8 +36,8 @@ public class Shooter extends SubsystemBase {
     setTargetVelocity(getTargetVelocity() + velocity);
     //adjustMotorsToTarget();
     firing = true;
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    //String("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
   }
   
 
@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
   public void fire(){
     setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
     firing = true;
-    SmartDashboard.putString("Shooter is Firing: ", ""+firing);
+    //String("Shooter is Firing: ", ""+firing);
   }
 
   public void fireLow(){
@@ -70,16 +70,16 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
-    SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
+    //SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
+    //SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
-        SmartDashboard.putString("at speed", ""+true);
+        //SmartDashboard.putString("at speed", ""+true);
         m_conveyor.startForShooter();
       } else {
-        SmartDashboard.putString("at speed", ""+false);
+        //SmartDashboard.putString("at speed", ""+false);
         m_conveyor.stop();
         if (m_conveyor.isBallReadyToShoot()){
    //       m_conveyor.reverse();
@@ -143,7 +143,7 @@ public class Shooter extends SubsystemBase {
   }
 */
   private boolean atSpeed(){
-    SmartDashboard.putBoolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
+    //Boolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
 
     return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() *.95 &&
       topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity() *.95;

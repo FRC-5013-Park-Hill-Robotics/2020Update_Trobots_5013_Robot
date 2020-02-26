@@ -21,6 +21,10 @@ import frc.robot.Gains;
 
 public final class Constants {
     public static final int PCM_ID = 0;
+    public static final class AutonomousConstants{
+        public static final String RIGHT_SIDE_BACK_AND_SHOOT = "Right Side Back and Shoot";
+        public static final String DEFAULT = RIGHT_SIDE_BACK_AND_SHOOT;
+    }
     public static final class DriverControllerConstants{
         //=====================Controller Constants=====================
         public static final double DEADBAND_VALUE = .01;
@@ -98,7 +102,7 @@ public final class Constants {
         public static final int ELEVATION_LOWER_LIMIT = 0;
         public static final int ELEVATION_ENCODER = 0;
         public static final int GATE_SOLENOID_CHANNEL = 0;
-        public static final double MIN_TURN = 0.4;
+        public static final double MIN_TURN = 0.3;
         //22ft 8000,9000
         //27fr 10000
         public static final double HIGH_VELOCITY = 9000.0;

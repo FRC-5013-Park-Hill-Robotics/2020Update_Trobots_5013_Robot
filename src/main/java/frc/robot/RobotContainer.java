@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutonomousConstants;
 import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.FlashlightConstants;
 import frc.robot.Constants.LimelightConstants;
@@ -67,8 +68,7 @@ public class RobotContainer {
     // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
-    this.chooser.setDefaultOption("Back & Shoot", getAutonomousCommand());
-    addAutonomousOptions();
+
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
     //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
     conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
@@ -185,12 +185,15 @@ public class RobotContainer {
   public CommandBase getAutonomousCommand() {
     /*RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
     return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));*/
-    return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor);
+    return this.chooser.getSelected();
   }
 
-  private void addAutonomousOptions(){
-    this.chooser.addOption("Drive Forward", new AutonomousCommand(m_driveTrain));
-
+  public void addAutonomousOptions(){
+    this.chooser.setDefaultOption(AutonomousConstants.RIGHT_SIDE_BACK_AND_SHOOT, 
+     new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake));
+    this.chooser.setDefaultOption("Another of the same", 
+     new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake)); 
+     SmartDashboard.putData("Auto Chooser", this.chooser);
   }
 
 }
