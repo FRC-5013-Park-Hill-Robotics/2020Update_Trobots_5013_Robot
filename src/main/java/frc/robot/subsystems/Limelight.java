@@ -136,6 +136,7 @@ public class Limelight extends SubsystemBase {
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
       }
+      SmartDashboard.putNumber("Turn", turn);
       drivetrain.getDrive().tankDrive(turn, -turn);
       SmartDashboard.putString("Loop Tx:",this.loop++ + ":" + getAngleOfError());
     } else {

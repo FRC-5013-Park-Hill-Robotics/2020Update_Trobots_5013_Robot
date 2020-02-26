@@ -86,6 +86,13 @@ public final class Constants {
                 
        public static final double kPDriveVel = 2.58;
 
+       public static final double kTurnP = .1;
+       public static final double kTurnI = 0;
+       public static final double kTurnD = 0.3;
+       public static final double kTurnFriction = 0.3;
+       public static final double kTurnToleranceDeg = LimelightConstants.TURN_TO_TARGET_TOLERANCE;
+       public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
+
     }
 
     public static final class ClimberConstants {
@@ -102,7 +109,7 @@ public final class Constants {
         public static final int ELEVATION_LOWER_LIMIT = 0;
         public static final int ELEVATION_ENCODER = 0;
         public static final int GATE_SOLENOID_CHANNEL = 0;
-        public static final double MIN_TURN = 0.3;
+        public static final double MIN_TURN = 0.36;
         //22ft 8000,9000
         //27fr 10000
         public static final double HIGH_VELOCITY = 9000.0;
@@ -132,7 +139,7 @@ public final class Constants {
         public static final int DRIVE_PIPELINE = 2;
         public static final int LED_ON = 3;
         public static final int LED_OFF = 1;
-        public static final double TURN_TO_TARGET_TOLERANCE = 2.0;
+        public static final double TURN_TO_TARGET_TOLERANCE = 1.5;
     }
     public static final class FlashlightConstants {
         public static final int PCM_PORT =20;

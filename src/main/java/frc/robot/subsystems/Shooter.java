@@ -70,19 +70,19 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
-    //SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
-    //SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
+    SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
+    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
-        //SmartDashboard.putString("at speed", ""+true);
+        SmartDashboard.putString("at speed", ""+true);
         m_conveyor.startForShooter();
       } else {
-        //SmartDashboard.putString("at speed", ""+false);
+        SmartDashboard.putString("at speed", ""+false);
         m_conveyor.stop();
         if (m_conveyor.isBallReadyToShoot()){
-   //       m_conveyor.reverse();
+          m_conveyor.reverse();
         }
       } 
       bottomMotor.set(ControlMode.Velocity,getTargetVelocity());

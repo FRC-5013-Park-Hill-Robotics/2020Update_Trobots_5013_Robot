@@ -127,32 +127,6 @@ public class Drivetrain extends SubsystemBase {
     return m_drive;
   }
 
-  /*public void moveTo(final double inches) {
-    // System.out.println("moveTo:Before Left position:" +
-    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
-    // Right position:" +
-    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    // System.out.println("moveTo:Before Left error:" +
-    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
-    // error:" +
-    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-    final double targetPos = inches * (1 / CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    // System.out.println("moveTo:TargetPos:" + targetPos);
-    while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
-        + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)) / 2 < targetPos) {
-      leftMotor1.set(ControlMode.MotionMagic, targetPos);
-      rightMotor1.set(ControlMode.MotionMagic, targetPos);
-    }
-    // System.out.println("moveTo:AFter Left position:" +
-    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
-    // Right position:" +
-    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    // System.out.println("moveTo:AFter Left error:" +
-    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
-    // error:" +
-    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-
-  }*/
 
   public void arcadeDrive(final double fwd, final double rot) {
     getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
@@ -273,7 +247,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Gets the average distance of the two encoders.
    *
-   * @return the average of the two encoder readings
+   * @return the average of the two encoder readings in meters
    */
   public double getAverageEncoderDistance() {
     //String("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
@@ -290,7 +264,7 @@ public class Drivetrain extends SubsystemBase {
       //SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
      // SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
       //SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
-      //SmartDashboard.putNumber("Heading", getHeading());
+      SmartDashboard.putNumber(" DT Heading", getHeading());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
