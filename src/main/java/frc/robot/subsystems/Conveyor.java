@@ -42,10 +42,10 @@ public class Conveyor extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("Lower Eye", "" + lowerEye.get());
-    SmartDashboard.putString("Upper Eye", "" + upperEye.get());
-    SmartDashboard.putNumber("TimeInMilis", System.currentTimeMillis());
-    SmartDashboard.putBoolean("Conveyor Moving", isMoving());
+   // SmartDashboard.putString("Lower Eye", "" + lowerEye.get());
+  //  SmartDashboard.putString("Upper Eye", "" + upperEye.get());
+  //  SmartDashboard.putNumber("TimeInMilis", System.currentTimeMillis());
+   // SmartDashboard.putBoolean("Conveyor Moving", isMoving());
     if (System.currentTimeMillis() > startTime){
       rightMotor1.set(ControlMode.PercentOutput, percentOutput);
       leftMotor1.set(ControlMode.PercentOutput, percentOutput);
@@ -61,12 +61,12 @@ public class Conveyor extends SubsystemBase {
       //Don't set if you are delaying already.
       this.startTime = System.currentTimeMillis() + timeout;
     }
-    SmartDashboard.putNumber("Target timeout", startTime);
+    //SmartDashboard.putNumber("Target timeout", startTime);
   }
 
 
   public void start(long timeout) {
-    SmartDashboard.putString("Last Conveyor Command", "start:"+timeout);
+    //SmartDashboard.putString("Last Conveyor Command", "start:"+timeout);
     if (!isMoving()){
       setPercentOutput(kSpeed, timeout);
     }
@@ -74,13 +74,13 @@ public class Conveyor extends SubsystemBase {
      //rightMotor1.set(ControlMode.PercentOutput, .6);
    }
   public void start() {
-    SmartDashboard.putString("Last Conveyor Command", "start");
+    //SmartDashboard.putString("Last Conveyor Command", "start");
    setPercentOutput(kSpeed, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
   public void startForShooter() {
-    SmartDashboard.putString("Last Conveyor Command", "start");
+    //SmartDashboard.putString("Last Conveyor Command", "start");
     setPercentOutput(kSpeedForShooter, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
@@ -93,7 +93,7 @@ public class Conveyor extends SubsystemBase {
   }
   
   public void stop() {
-    SmartDashboard.putString("Last Conveyor Command", "stop");
+    //SmartDashboard.putString("Last Conveyor Command", "stop");
     setPercentOutput(0, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, 0.0);
     //rightMotor1.set(ControlMode.PercentOutput, 0.0);
