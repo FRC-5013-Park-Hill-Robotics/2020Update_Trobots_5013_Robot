@@ -37,6 +37,24 @@ public class Drivetrain extends SubsystemBase {
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
 
+  private interface DriveMode {
+    public void drive(double throttle, double rotation);
+  }
+
+  public final DriveMode FINE_DRIVE = new DriveMode(){
+    public void drive(double throttle, double rotation){
+      getDrive().arcadeDrive(applyDeadband(throttle)/2, applyDeadband(rotation)/2);
+    }
+  };
+
+  public final DriveMode NORMAL_DRIVE = new DriveMode(){
+    public void drive(double throttle, double rotation){
+      getDrive().arcadeDrive(applyDeadband(throttle), applyDeadband(rotation));
+    }
+  };
+
+  private DriveMode m_currentDriveMode = NORMAL_DRIVE;
+
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftMotor1, rightMotor1);
 
@@ -129,10 +147,7 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void arcadeDrive(final double fwd, final double rot) {
-    getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
-  }
-  public void arcadeDriveFine(final double fwd, final double rot) {
-    getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot/2));
+    m_currentDriveMode.drive(fwd, rot);
   }
 
   public void resetEncoders() {
@@ -264,13 +279,21 @@ public class Drivetrain extends SubsystemBase {
       //SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
      // SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
       //SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
-      SmartDashboard.putNumber(" DT Heading", getHeading());
+      SmartDashboard.putNumber("Heading", getHeading());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {
     leftMotor1.setVoltage(leftVolts);
     rightMotor1.setVoltage(rightVolts);
     m_drive.feed();
-    }
-    
   }
+  
+  public void setDriveModeNormal(){
+    this.m_currentDriveMode = NORMAL_DRIVE;
+  }
+
+  public void setDriveModeFine(){
+    this.m_currentDriveMode = FINE_DRIVE;
+  }
+
+}
