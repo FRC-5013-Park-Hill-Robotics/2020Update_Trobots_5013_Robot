@@ -127,32 +127,6 @@ public class Drivetrain extends SubsystemBase {
     return m_drive;
   }
 
-  /*public void moveTo(final double inches) {
-    // System.out.println("moveTo:Before Left position:" +
-    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
-    // Right position:" +
-    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    // System.out.println("moveTo:Before Left error:" +
-    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
-    // error:" +
-    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-    final double targetPos = inches * (1 / CompetitionDriveConstants.DISTANCE_PER_PULSE);
-    // System.out.println("moveTo:TargetPos:" + targetPos);
-    while ((leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)
-        + rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx)) / 2 < targetPos) {
-      leftMotor1.set(ControlMode.MotionMagic, targetPos);
-      rightMotor1.set(ControlMode.MotionMagic, targetPos);
-    }
-    // System.out.println("moveTo:AFter Left position:" +
-    // leftMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx) + "
-    // Right position:" +
-    // rightMotor1.getSelectedSensorPosition(CompetitionDriveConstants.kSlotIdx));
-    // System.out.println("moveTo:AFter Left error:" +
-    // leftMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx) + " Right
-    // error:" +
-    // rightMotor1.getErrorDerivative(CompetitionDriveConstants.kSlotIdx));
-
-  }*/
 
   public void arcadeDrive(final double fwd, final double rot) {
     getDrive().arcadeDrive(applyDeadband(fwd), applyDeadband(rot));
@@ -227,7 +201,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's right motor distance in meters
    */
   public double getRightDistanceMeters(){
-    SmartDashboard.putNumber("Right Encoder", rightMotor1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("Right Encoder", rightMotor1.getSelectedSensorPosition());
     return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*rightMotor1.getSelectedSensorPosition();
   }
 
@@ -236,7 +210,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's Left motor distance in meters
    */
   public double getLeftDistanceMeters(){
-    SmartDashboard.putNumber("LEft Encoder", leftMotor1.getSelectedSensorPosition());
+    //SmartDashboard.putNumber("LEft Encoder", leftMotor1.getSelectedSensorPosition());
     return CompetitionDriveConstants.DISTANCE_PER_PULSE_METERS*leftMotor1.getSelectedSensorPosition();
   }
 
@@ -273,10 +247,10 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Gets the average distance of the two encoders.
    *
-   * @return the average of the two encoder readings
+   * @return the average of the two encoder readings in meters
    */
   public double getAverageEncoderDistance() {
-    SmartDashboard.putString("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
+    //String("Distances" , "Left" + getLeftDistanceMeters() + " right " + getRightDistanceMeters() );
     return (getLeftDistanceMeters() + 
     getRightDistanceMeters() )
     / 2.0;
@@ -287,10 +261,10 @@ public class Drivetrain extends SubsystemBase {
       Rotation2d.fromDegrees(getHeading()), 
       getLeftDistanceMeters(), 
       getRightDistanceMeters());
-      SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
-      SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
-      SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
-      SmartDashboard.putNumber("Heading", getHeading());
+      //SmartDashboard.putString("Pose", m_odometry.getPoseMeters().toString());
+     // SmartDashboard.putNumber("Left Distance", getLeftDistanceMeters());
+      //SmartDashboard.putNumber("Right Distance", getRightDistanceMeters());
+      SmartDashboard.putNumber(" DT Heading", getHeading());
   }
 
   public void tankDriveVolts(final double leftVolts, final double rightVolts) {

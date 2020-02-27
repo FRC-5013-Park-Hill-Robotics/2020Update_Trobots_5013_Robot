@@ -7,28 +7,41 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.AutonomousConstants;
 import frc.robot.Constants.DriverControllerConstants;
+import frc.robot.Constants.FlashlightConstants;
+import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
+import frc.robot.commands.AutoBackup;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
 import frc.robot.commands.BackupConveyor;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.FireAll;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.TurnByAngle;
 import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Flashlight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -48,8 +61,10 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
+  private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
+  SendableChooser<CommandBase> chooser = new SendableChooser<CommandBase>();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -59,9 +74,12 @@ public class RobotContainer {
     // operatorController = new XboxController(OperatorControllerConstants.XBOX_ID);
     // Configure the button bindings
     configureButtonBindings();
+
     m_driveTrain.setDefaultCommand(new DriveCommand(m_driveTrain, driverController));
- //   intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
-    //conveyor.setDefaultCommand(new ConveyorCommand(conveyor));
+    //intake.setDefaultCommand(new IntakeCommand(intake, conveyor, driverController));
+    conveyor.setDefaultCommand(new ConveyorCommand(conveyor,intake));
+    m_Limelight.setPipeline(LimelightConstants.DRIVE_PIPELINE);
+    m_Limelight.setLedOn(false);
     /*
      * m_driveTrain.setDefaultCommand( // A split-stick arcade command, with
      * forward/backward controlled by the left // hand, and turning controlled by
@@ -95,36 +113,36 @@ public class RobotContainer {
 
     // Fire
     new TriggerButton(driverController, TriggerButton.Trigger.RIGHT,.05)
-      .whenPressed(new BackupConveyor(conveyor, 500))
+     // .whenPressed(new BackupConveyor(conveyor, 500))
       .whileHeld(new InstantCommand(() -> shooter.fire(),shooter, conveyor))
       .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
 
     //Intake up down
     new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> intake.dropIntake(),intake))
-      .whenReleased(new InstantCommand(() -> intake.raiseIntake(),intake));
+      .whenPressed(new InstantCommand(() -> intake.dropIntake()))
+      .whenReleased(new InstantCommand(() -> intake.raiseIntake()));
 
     //Slow Turn
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
       .whileHeld(new InstantCommand(()->m_driveTrain.arcadeDrive(
-         -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID),
+         -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID/2),
          driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)/2),
          m_driveTrain));
     
     // Extend Climber
-    new DirectionPadButton(driverController, Direction.UP)
+    new DirectionPadButton(operatorController, Direction.UP)
       .whileHeld(new InstantCommand(() -> climber.extend(1)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Retract Climber
-    new DirectionPadButton(driverController, Direction.DOWN)
+    new DirectionPadButton(operatorController, Direction.DOWN)
       .whileHeld(new InstantCommand(() -> climber.retract(.50)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Roll Climb left
-    new DirectionPadButton(driverController, Direction.LEFT)
+    new DirectionPadButton(operatorController, Direction.LEFT)
       .whileHeld(new InstantCommand(() -> climber.roll(.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
     // Roll Climb Right
-    new DirectionPadButton(driverController, Direction.RIGHT)
+    new DirectionPadButton(operatorController, Direction.RIGHT)
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
 
@@ -132,14 +150,6 @@ public class RobotContainer {
     /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
     .whenPressed(new InstantCommand(() -> conveyor.start()))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));*/
-
-    new JoystickButton(operatorController, XboxController.Button.kA.value)
-    .whenPressed(new InstantCommand(() -> conveyor.start()))
-    .whenReleased(new InstantCommand(() -> conveyor.stop()));
-
-    new JoystickButton(operatorController, XboxController.Button.kB.value)
-    .whenPressed(new InstantCommand(() -> conveyor.reverse()))
-    .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
     .whenPressed(new InstantCommand(() -> conveyor.start()))
@@ -149,17 +159,35 @@ public class RobotContainer {
     .whenPressed(new InstantCommand(() -> conveyor.reverse()))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
+    new JoystickButton(operatorController, XboxController.Button.kA.value)
+    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kB.value)
+    .whenPressed(new InstantCommand(() -> conveyor.reverse()))
+    .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value)
+    .whenPressed(new InstantCommand(() -> shooter.fireLow()))
+    .whenReleased(new InstantCommand(() -> shooter.stopFiring(),shooter, conveyor));
+
   /*
    * new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
    * .whileHeld(new ConveyorCommand(conveyor));
    */
   
-   /*  new JoystickButton(driverController, XboxController.Button.kY.value)
-    .whenReleased(new InstantCommand(()-> shooter.changeSpeed(200), shooter));
-    new JoystickButton(driverController, XboxController.Button.kX.value)
-    .whenReleased(new InstantCommand(() -> shooter.changeSpeed(-200), shooter));
-   */
-  }
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+    .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
+    new JoystickButton(operatorController, XboxController.Button.kY.value)
+    .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
+
+      // Turn to target Test
+     /*   new TriggerButton(driverController,TriggerButton.Trigger.LEFT, .05)
+        .whenPressed(new InstantCommand(() -> m_Limelight.beforeTurnToTarget()))
+        .whileHeld(new TurnByAngle(m_Limelight::getAngleOfError, m_driveTrain))
+        .whenReleased(new InstantCommand(() -> m_Limelight.afterTurnToTarget()));*/
+  } 
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -169,7 +197,19 @@ public class RobotContainer {
   public CommandBase getAutonomousCommand() {
     /*RamseteCommand command = AutoPathFactory.generateTrajectory(this.m_driveTrain);
     return command.andThen(() -> m_driveTrain.tankDriveVolts(0, 0));*/
-    return new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor);
+    return this.chooser.getSelected();
+  }
+
+  public void addAutonomousOptions(){
+    this.chooser.setDefaultOption(AutonomousConstants.RIGHT_SIDE_BACK_AND_SHOOT, 
+     new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake));
+    this.chooser.setDefaultOption("BAckup 5", 
+     new AutoBackup(-.5,5,m_driveTrain)); 
+     this.chooser.setDefaultOption("Fire all", 
+     new FireAll(shooter,conveyor)); 
+   // this.chooser.setDefaultOption("Rotate 90", 
+   //  new TurnByAngle(new DoubleSupplier(()->90),m_driveTrain)); 
+     //SmartDashboard.putData("Auto Chooser", this.chooser);
   }
 
 }

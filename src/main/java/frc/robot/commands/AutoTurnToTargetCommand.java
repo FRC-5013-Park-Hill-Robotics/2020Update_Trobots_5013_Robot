@@ -39,8 +39,8 @@ public class AutoTurnToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_finished = m_limeLight.turnToTarget(m_drivetrain, m_shooter);
-    SmartDashboard.putString("Execute auto turn to target", "Finishged =" + m_finished);
+    m_finished = m_limeLight.turnToTargetVolts(m_drivetrain, m_shooter);
+    //SmartDashboard.putString("Execute auto turn to target", "Finishged =" + m_finished);
   }
 
   // Called once the command ends or is interrupted.

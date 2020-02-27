@@ -9,22 +9,15 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Limelight;
-import frc.robot.subsystems.Shooter;
 
-public class TurnToTargetCommand extends CommandBase {
+public class ResetDrivetrainEncoders extends CommandBase {
   private Drivetrain m_drivetrain;
-  private Limelight m_limeLight;
-  private Shooter m_shooter;
   /**
-   * Creates a new TurnToTarget.
+   * Creates a new ResetDrivetrainEncoders.
    */
-  public TurnToTargetCommand(Limelight limeLight, Drivetrain drivetrain, Shooter shooter) {
-    this.m_limeLight = limeLight;
+  public ResetDrivetrainEncoders(Drivetrain drivetrain) {
+    // Use addRequirements() here to declare subsystem dependencies.
     this.m_drivetrain = drivetrain;
-    this.m_shooter = shooter;
-    addRequirements(limeLight);
-    addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -35,20 +28,17 @@ public class TurnToTargetCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_limeLight.turnToTargetVolts(m_drivetrain,m_shooter);
+    m_drivetrain.resetEncoders();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //make sure it stops the drive
-    m_drivetrain.arcadeDrive(0,0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // don't return true ever, command will end after button is released
-    return false;
+    return Math.abs(m_drivetrain.getLeftDistanceMeters()) < 0.05 ;
   }
 }

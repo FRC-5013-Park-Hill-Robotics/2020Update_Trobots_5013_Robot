@@ -42,20 +42,20 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     double triggerValue = m_controller.getRawAxis(DriverControllerConstants.TRIGGER_AXIS);
-    SmartDashboard.putString("Trigger Value",""+triggerValue); 
-    SmartDashboard.putString("Intake down", ""+ m_intake.isDown());
+    //.putString("Trigger Value",""+triggerValue); 
+    //SmartDashboard.putString("Intake down", ""+ m_intake.isDown());
     if (m_intake.isDown() && triggerValue < .5){
-      SmartDashboard.putString("Intake Aaction ","raise");
+     // SmartDashboard.putString("Intake Aaction ","raise");
        //Using command scheduler because shooter may be controlling conveyor and it gets presidence
        CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.stop(), m_conveyor));
       m_intake.raiseIntake();
     } else if (!m_intake.isDown() && triggerValue > .5){
       //Using command scheduler because shooter may be controlling conveyor and it gets presidence
-      SmartDashboard.putString("Intake Aaction ","drop");
+      //SmartDashboard.putString("Intake Aaction ","drop");
       CommandScheduler.getInstance().schedule(new InstantCommand(() -> m_conveyor.start(), m_conveyor));
       m_intake.dropIntake();
     } else {
-      SmartDashboard.putString("Intake Aaction ","none");
+      //SmartDashboard.putString("Intake Aaction ","none");
     }
   }
 
