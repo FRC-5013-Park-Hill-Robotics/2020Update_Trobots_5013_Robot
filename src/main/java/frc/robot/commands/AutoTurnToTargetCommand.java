@@ -40,7 +40,7 @@ public class AutoTurnToTargetCommand extends CommandBase {
   @Override
   public void execute() {
     m_finished = m_limeLight.turnToTargetVolts(m_drivetrain, m_shooter);
-    SmartDashboard.putString("Execute auto turn to target", "Finishged =" + m_finished);
+    //SmartDashboard.putString("Execute auto turn to target", "Finishged =" + m_finished);
   }
 
   // Called once the command ends or is interrupted.
