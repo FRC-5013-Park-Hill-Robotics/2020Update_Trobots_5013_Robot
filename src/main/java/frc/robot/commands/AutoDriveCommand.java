@@ -54,7 +54,7 @@ public class AutoDriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("Distance", m_drivetrain.getAverageEncoderDistance());
+    //SmartDashboard.putNumber("Distance", m_drivetrain.getAverageEncoderDistance());
     return Math.abs(m_drivetrain.getAverageEncoderDistance()) >= m_distance;
   }
 }

@@ -209,7 +209,7 @@ public class RobotContainer {
      new FireAll(shooter,conveyor)); 
    // this.chooser.setDefaultOption("Rotate 90", 
    //  new TurnByAngle(new DoubleSupplier(()->90),m_driveTrain)); 
-     SmartDashboard.putData("Auto Chooser", this.chooser);
+     //SmartDashboard.putData("Auto Chooser", this.chooser);
   }
 
 }

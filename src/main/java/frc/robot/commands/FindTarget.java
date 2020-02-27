@@ -37,7 +37,7 @@ public class FindTarget extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("Finder has target", m_limelight.hasTarget());
+    //SmartDashboard.putBoolean("Finder has target", m_limelight.hasTarget());
     return m_limelight.hasTarget();
   }
 }

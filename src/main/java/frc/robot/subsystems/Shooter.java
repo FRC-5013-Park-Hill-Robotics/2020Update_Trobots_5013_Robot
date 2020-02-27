@@ -70,16 +70,16 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
-    SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
+    //SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
+    //SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
-        SmartDashboard.putString("at speed", ""+true);
+        //SmartDashboard.putString("at speed", ""+true);
         m_conveyor.startForShooter();
       } else {
-        SmartDashboard.putString("at speed", ""+false);
+        //SmartDashboard.putString("at speed", ""+false);
         m_conveyor.stop();
         if (m_conveyor.isBallReadyToShoot()){
           m_conveyor.reverse();
@@ -114,34 +114,6 @@ public class Shooter extends SubsystemBase {
   public double getTargetVelocity(){
     return m_targetVelocity;
   }
-/*
-  private void adjustMotorsToTarget(){
-  //  while (!atSpeed()){
-    
-       adjustMotorToTarget(bottomMotor, getTargetVelocity());
-       adjustMotorToTarget(topMotor, getTopTargetVelocity());
-    
-   // }
-    SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
-    SmartDashboard.putString("topShooterVelocity rpm",""+ topMotor.getSelectedSensorVelocity() * 600 / 2048);
-    SmartDashboard.putString("bottomShooterVelocity rpm", ""+bottomMotor.getSelectedSensorVelocity() * 600 / 2048);
-  }
-
-
-  private void adjustMotorToTarget(WPI_TalonFX motor, double target){
-    SmartDashboard.putNumber("Target Speed: ", target);
-    if ((motor.getSelectedSensorVelocity() < target) && (target != 0)){
-      SmartDashboard.putNumber("Velocity is less than Target: ", motor.getSelectedSensorVelocity());
-      //100% output to get up to speed;
-      motor.set(ControlMode.PercentOutput, 1.0);
-    } else {
-      SmartDashboard.putNumber("Velocity is greater than Target: ", motor.getSelectedSensorVelocity());
-      //maintain velocity     
-      motor.set(ControlMode.Velocity, target);
-    }
-  }
-*/
   private boolean atSpeed(){
     //Boolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
 

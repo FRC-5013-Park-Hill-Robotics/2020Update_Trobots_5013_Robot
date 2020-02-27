@@ -33,7 +33,7 @@ public class FireAll extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("Execute firing",true);
+    //SmartDashboard.putBoolean("Execute firing",true);
     m_shooter.fire();
   }
 
@@ -48,7 +48,7 @@ public class FireAll extends CommandBase {
     if (m_conveyor.isBallReadyToShoot()){
       lastBallTime = System.currentTimeMillis();
     }
-    SmartDashboard.putBoolean("Fire All Finished", System.currentTimeMillis() > lastBallTime);
+    //SmartDashboard.putBoolean("Fire All Finished", System.currentTimeMillis() > lastBallTime);
     //Stop shooting when it has been a second since the last ball.
     return System.currentTimeMillis() > lastBallTime + 1000;
     
