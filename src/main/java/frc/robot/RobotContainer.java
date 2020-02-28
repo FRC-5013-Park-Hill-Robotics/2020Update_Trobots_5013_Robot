@@ -124,10 +124,8 @@ public class RobotContainer {
 
     //Slow Turn
     new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
-      .whileHeld(new InstantCommand(()->m_driveTrain.arcadeDrive(
-         -driverController.getRawAxis(DriverControllerConstants.Y_LJOY_ID/2),
-         driverController.getRawAxis(DriverControllerConstants.X_RJOY_ID)/2),
-         m_driveTrain));
+      .whileHeld(new InstantCommand(()->m_driveTrain.setDriveModeFine()))
+      .whenReleased(new InstantCommand(()->m_driveTrain.setDriveModeNormal()));
     
     // Extend Climber
     new DirectionPadButton(operatorController, Direction.UP)
