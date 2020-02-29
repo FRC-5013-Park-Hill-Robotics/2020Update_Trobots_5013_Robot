@@ -36,12 +36,14 @@ public class ConveyorCommand extends CommandBase {
     //SmartDashboard.putString("ConveyorCommand lower eye", ""+m_conveyor.isBallReadyForIntake());
     //SmartDashboard.putString("ConveyorCommand upper eye",""+ m_conveyor.isBallReadyToShoot());
     //SmartDashboard.putString("ConveyorCommand Intake down",""+ m_conveyor.isBallReadyToShoot());
-    if (m_intake.isDown() && m_conveyor.isBallReadyForIntake() && !m_conveyor.isBallReadyToShoot()){
-      //SmartDashboard.putString("Conveyor Command ", "Trying to STart");
-      m_conveyor.start(500);
-    } else {
-     // SmartDashboard.putString("Conveyor Command ", "Trying to Stop");
-      m_conveyor.stop();
+    if (!m_conveyor.isOverridden()){
+      if (m_intake.isDown() && m_conveyor.isBallReadyForIntake() && !m_conveyor.isBallReadyToShoot()){
+        //SmartDashboard.putString("Conveyor Command ", "Trying to STart");
+        m_conveyor.start(250);
+      } else {
+      // SmartDashboard.putString("Conveyor Command ", "Trying to Stop");
+        m_conveyor.stop();
+      }
     }
   }
 

@@ -36,7 +36,6 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flashlight;
-import frc.robot.subsystems.HandoffRoller;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -64,7 +63,6 @@ public class RobotContainer {
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
   private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
-  private final HandoffRoller m_handoffRoller = new HandoffRoller(conveyor, intake);
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
   SendableChooser<CommandBase> chooser = new SendableChooser<CommandBase>();
@@ -153,7 +151,7 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(() -> conveyor.stop()));*/
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
-    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenPressed(new InstantCommand(() -> conveyor.startOverride(),conveyor))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
     new JoystickButton(driverController, XboxController.Button.kB.value)
@@ -161,7 +159,7 @@ public class RobotContainer {
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
     new JoystickButton(operatorController, XboxController.Button.kA.value)
-    .whenPressed(new InstantCommand(() -> conveyor.start()))
+    .whenPressed(new InstantCommand(() -> conveyor.startOverride(),conveyor))
     .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
     new JoystickButton(operatorController, XboxController.Button.kB.value)
@@ -178,8 +176,6 @@ public class RobotContainer {
    */
   
     new JoystickButton(driverController, XboxController.Button.kY.value)
-    .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
-    new JoystickButton(operatorController, XboxController.Button.kY.value)
     .whenReleased(new InstantCommand(()-> m_flashlight.toggle(), m_flashlight));
 
       // Turn to target Test

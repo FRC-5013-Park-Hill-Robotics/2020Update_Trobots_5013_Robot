@@ -112,7 +112,8 @@ public final class Constants {
         public static final double MIN_TURN = 0.36;
         //22ft 8000,9000
         //27fr 10000
-        public static final double HIGH_VELOCITY = 9000.0;
+        //public static final double HIGH_VELOCITY = 9000.0;
+        public static final double HIGH_VELOCITY = 10000.0;
         public static final double LOW_VELOCITY = 4500.0;
         public static final double TOP_PERCENT_OF_BOTTOM = 0.3; //50%;
         public static final double kP = .45;

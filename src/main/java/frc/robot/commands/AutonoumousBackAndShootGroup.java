@@ -26,7 +26,7 @@ public class AutonoumousBackAndShootGroup extends SequentialCommandGroup {
     super(new ResetDrivetrainEncoders(drivetrain),
       new InstantCommand(() -> intake.dropIntake()),
       new InstantCommand(() -> shooter.spinUp()),
-      new AutoDriveCommand(-0.5,12, drivetrain),
+      new AutoDriveCommand(-0.5,9.5, drivetrain),
       new InstantCommand(() -> limelight.beforeTurnToTarget()),
       new FindTarget(limelight),
      // new TurnByAngle(limelight::getAngleOfError,drivetrain),
