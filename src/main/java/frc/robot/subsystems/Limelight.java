@@ -125,26 +125,26 @@ public class Limelight extends SubsystemBase {
     while (turnToTargetVolts(drivetrain,shooter));
   }
   public boolean turnToTargetVolts(Drivetrain drivetrain, Shooter shooter){
-    SmartDashboard.putString("turnToTarget ","Started");
+    //SmartDashboard.putString("turnToTarget ","Started");
     double turn = 0;
-    double min = 1.8;
+    double min = 1.7;
     boolean check = hasTarget();
-    SmartDashboard.putString("Target ","" + check);
-    SmartDashboard.putString("Initial Tx","" + getAngleOfError());
+   // SmartDashboard.putString("Target ","" + check);
+    //SmartDashboard.putString("Initial Tx","" + getAngleOfError());
     if(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()){
       turn = getAngleOfError()*0.1;     
       if (Math.abs(turn) < min){
         turn = turn > 0 ? min:-min;
       }
-      SmartDashboard.putNumber("Turn", turn);
+      //SmartDashboard.putNumber("Turn", turn);
       drivetrain.tankDriveVolts(turn, -turn);
-      SmartDashboard.putString("Loop Tx:",this.loop++ + ":" + getAngleOfError());
+      //SmartDashboard.putString("Loop Tx:",this.loop++ + ":" + getAngleOfError());
     } else {
       //This prevents errors on the console from not updated drive train.
       drivetrain.tankDriveVolts(0, 0);
     }
-    SmartDashboard.putString("Ending TY","" + getAngleOfError());
-    SmartDashboard.putBoolean("Turning Complete",! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()));
+    //SmartDashboard.putString("Ending TY","" + getAngleOfError());
+    //SmartDashboard.putBoolean("Turning Complete",! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()));
     return !(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE) && hasTarget();
   }
 /*

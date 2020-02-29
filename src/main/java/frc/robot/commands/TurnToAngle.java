@@ -16,26 +16,26 @@ import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-public class TurnByAngle extends PIDCommand {
+public class TurnToAngle extends PIDCommand {
   private final Drivetrain drive;
 
   private final PIDController controller;
 
-  public TurnByAngle(DoubleSupplier targetAngleDegrees, Drivetrain drive) {
+  public TurnToAngle(double  targetAngleDegrees, Drivetrain drive) {
     super(new PIDController(CompetitionDriveConstants.kTurnP, CompetitionDriveConstants.kTurnI, CompetitionDriveConstants.kTurnD),
     // Close loop on heading
     () -> -drive.getHeading(),
     // Set reference to target
-    targetAngleDegrees.getAsDouble() - drive.getHeading(),
+    targetAngleDegrees,
     // Pipe output to turn robot
     output -> {
-      drive.arcadeDrive(0, output + Math.signum(output)*CompetitionDriveConstants.kTurnFriction);
+      double turn =  output + Math.signum(output)*CompetitionDriveConstants.kTurnFriction;
+      drive.tankDriveVolts(turn, -turn);
     },
     // Require the drive
     drive);
-    SmartDashboard.putNumber("turnByAngle", targetAngleDegrees.getAsDouble());
-    SmartDashboard.putNumber("turnByAngleTartetHEading",targetAngleDegrees.getAsDouble()- drive.getHeading());
-    this.drive = drive;
+    SmartDashboard.putNumber("TurnToAngle", targetAngleDegrees);
+     this.drive = drive;
     this.controller = getController();
     // Set the controller to be continuous (because it is an angle controller)
     controller.enableContinuousInput(-180, 180);
