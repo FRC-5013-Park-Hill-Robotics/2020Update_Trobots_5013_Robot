@@ -26,6 +26,7 @@ public class Conveyor extends SubsystemBase {
   private double percentOutput;
   public static final double kSpeed = 0.3;//percent output
   public static final double kSpeedForShooter = 0.6;//percent output
+  private boolean override = false;
   
 
   /**
@@ -68,6 +69,7 @@ public class Conveyor extends SubsystemBase {
 
 
   public void start(long timeout) {
+    override=false;
     //SmartDashboard.putString("Last Conveyor Command", "start:"+timeout);
     if (!isMoving()){
       setPercentOutput(kSpeed, timeout);
@@ -76,12 +78,14 @@ public class Conveyor extends SubsystemBase {
      //rightMotor1.set(ControlMode.PercentOutput, .6);
    }
   public void start() {
+    override=false;
     //SmartDashboard.putString("Last Conveyor Command", "start");
-   setPercentOutput(kSpeed, 0L);
+    setPercentOutput(kSpeed, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
   public void startForShooter() {
+    override=false;
     //SmartDashboard.putString("Last Conveyor Command", "start for shooter");
     setPercentOutput(kSpeedForShooter, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, .6);
@@ -89,12 +93,20 @@ public class Conveyor extends SubsystemBase {
   }
 
   public void reverse() {
+    override = true;
     setPercentOutput(-kSpeed, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, -0.6);
     //rightMotor1.set(ControlMode.PercentOutput,- 0.6);
   }
-  
+  public void startOverride() {
+    //SmartDashboard.putString("Last Conveyor Command", "start");
+    override=true;
+    setPercentOutput(kSpeed, 0L);
+    //leftMotor1.set(ControlMode.PercentOutput, .6);
+    //rightMotor1.set(ControlMode.PercentOutput, .6);
+  }
   public void stop() {
+    override=false;
     //SmartDashboard.putString("Last Conveyor Command", "stop");
     setPercentOutput(0, 0L);
     //leftMotor1.set(ControlMode.PercentOutput, 0.0);
@@ -112,11 +124,9 @@ public class Conveyor extends SubsystemBase {
   public boolean isMoving(){
     return Math.abs(percentOutput) > 0.0;
   }
-  public void reversestart() {
-    setPercentOutput(-kSpeed, 0L);
-    //leftMotor1.set(ControlMode.PercentOutput, -0.6);
-    //rightMotor1.set(ControlMode.PercentOutput, -0.6);
-  }
 
+  public boolean isOverridden(){
+    return override;
+  }
 }
 

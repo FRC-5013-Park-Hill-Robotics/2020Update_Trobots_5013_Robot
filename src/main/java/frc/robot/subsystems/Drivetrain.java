@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
 
   public final DriveMode FINE_DRIVE = new DriveMode(){
     public void drive(double throttle, double rotation){
-      getDrive().arcadeDrive(applyDeadband(throttle)/2, applyDeadband(rotation)/2);
+      getDrive().arcadeDrive(0.6 * applyDeadband(throttle), 0.6*applyDeadband(rotation)/2);
     }
   };
 

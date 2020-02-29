@@ -29,19 +29,15 @@ public class Flashlight extends SubsystemBase {
   }
 
   private boolean isOn(){
-    return m_light.getClosedLoopControl();
+    return m_light.enabled();
   }
   @Override
   public void periodic() {
     //we wanted activated light to blink
-    if (System.currentTimeMillis() % 200  < 100){ //if the remainder of the time/200 (every 1/5 second) 
-      if (!isOn()) {
+    if (m_activated && !isOn()){ //if the remainder of the time/200 (every 1/5 second) 
         m_light.start();
-      }
-    } else {
-      if (isOn()) {
+    } else if (!m_activated && isOn()){
         m_light.stop();
-      }
     }
   }
 
