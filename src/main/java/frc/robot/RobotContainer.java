@@ -20,7 +20,9 @@ import frc.robot.Constants.FlashlightConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
 import frc.robot.commands.AutoBackup;
+import frc.robot.commands.AutoCenterBackAndShoot;
 import frc.robot.commands.AutoDriveCommand;
+import frc.robot.commands.AutoDriveForwardCenterLow;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
 import frc.robot.commands.BackupConveyor;
@@ -28,13 +30,13 @@ import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FireAll;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.TurnByAngle;
 import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flashlight;
+import frc.robot.subsystems.HandoffRoller;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -62,6 +64,7 @@ public class RobotContainer {
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
   private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
+  private final HandoffRoller m_handoffRoller = new HandoffRoller(conveyor, intake);
 
   private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
   SendableChooser<CommandBase> chooser = new SendableChooser<CommandBase>();
@@ -201,13 +204,13 @@ public class RobotContainer {
   public void addAutonomousOptions(){
     this.chooser.setDefaultOption(AutonomousConstants.RIGHT_SIDE_BACK_AND_SHOOT, 
      new AutonoumousBackAndShootGroup(m_driveTrain, m_Limelight, shooter, conveyor,intake));
-    this.chooser.setDefaultOption("BAckup 5", 
-     new AutoBackup(-.5,5,m_driveTrain)); 
-     this.chooser.setDefaultOption("Fire all", 
-     new FireAll(shooter,conveyor)); 
+    this.chooser.addOption("Center Forward Low", 
+     new AutoDriveForwardCenterLow(m_driveTrain, shooter, conveyor));
+     this.chooser.addOption("Center Back High", 
+     new AutoCenterBackAndShoot(m_driveTrain, m_Limelight, shooter, conveyor,intake));
    // this.chooser.setDefaultOption("Rotate 90", 
    //  new TurnByAngle(new DoubleSupplier(()->90),m_driveTrain)); 
-     //SmartDashboard.putData("Auto Chooser", this.chooser);
+     SmartDashboard.putData("Auto Chooser", this.chooser);
   }
 
 }
