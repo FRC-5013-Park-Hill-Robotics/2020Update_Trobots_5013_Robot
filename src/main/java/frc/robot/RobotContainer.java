@@ -144,8 +144,10 @@ public class RobotContainer {
 
     new JoystickButton(operatorController, XboxController.Button.kX.value)
       .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(250)));
-    new JoystickButton(operatorController, XboxController.Button.kX.value)
+    new JoystickButton(operatorController, XboxController.Button.kY.value)
       .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(-250)));
+    new JoystickButton(operatorController, XboxController.Button.kStart.value)
+      .whenPressed(new InstantCommand(() -> shooter.resetHighVelocity()));
 
     // temporary
     /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)

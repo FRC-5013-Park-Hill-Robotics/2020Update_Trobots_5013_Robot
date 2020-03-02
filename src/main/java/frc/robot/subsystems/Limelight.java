@@ -195,11 +195,11 @@ public class Limelight extends SubsystemBase {
   }
 
   public boolean isOutOfRange(){
-    return (getTy().getDouble(0) < LimelightConstants.RANGE_TOO_CLOSE || getTy().getDouble(0) > LimelightConstants.RANGE_TOO_FAR);
+    return (getTy().getDouble(0) > LimelightConstants.RANGE_TOO_CLOSE || getTy().getDouble(0) < LimelightConstants.RANGE_TOO_FAR);
   }
 
   public boolean isPrimeRange(){
-    return (getTy().getDouble(0) < LimelightConstants.RANGE_PRIME_END && getTy().getDouble(0) > LimelightConstants.RANGE_PRIME_START);
+    return (getTy().getDouble(0) > LimelightConstants.RANGE_PRIME_END && getTy().getDouble(0) < LimelightConstants.RANGE_PRIME_START);
   }
 }
 

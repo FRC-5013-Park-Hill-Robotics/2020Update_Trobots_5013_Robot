@@ -125,4 +125,7 @@ public class Shooter extends SubsystemBase {
   public void changeHighVelocity(double amount){
     heightVelocity += amount;
   }
+  public void resetHighVelocity(){
+    heightVelocity = ShooterConstants.HIGH_VELOCITY;
+  }
 }
