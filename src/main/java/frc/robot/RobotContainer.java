@@ -10,7 +10,8 @@ package frc.robot;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,17 +20,12 @@ import frc.robot.Constants.DriverControllerConstants;
 import frc.robot.Constants.FlashlightConstants;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.DirectionPadButton.Direction;
-import frc.robot.commands.AutoBackup;
 import frc.robot.commands.AutoCenterBackAndShoot;
-import frc.robot.commands.AutoDriveCommand;
 import frc.robot.commands.AutoDriveForwardCenterLow;
 import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
-import frc.robot.commands.BackupConveyor;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.FireAll;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
@@ -38,11 +34,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Flashlight;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Blinkin.BlinkinController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -62,9 +57,11 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter(conveyor);
   private final Limelight m_Limelight = new Limelight();
   private final Climber climber = new Climber();
-  private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);
+  private final Flashlight m_flashlight = new Flashlight(FlashlightConstants.PCM_PORT);  
+  private final PWM m_blinkinPWM = new PWM(0);
+  private final BlinkinController m_statusLight = new BlinkinController(m_blinkinPWM,m_Limelight);
 
-  private final AutonomousCommand m_autoCommand = new AutonomousCommand(m_driveTrain);
+
   SendableChooser<CommandBase> chooser = new SendableChooser<CommandBase>();
 
   /**
@@ -144,6 +141,13 @@ public class RobotContainer {
     new DirectionPadButton(operatorController, Direction.RIGHT)
       .whileHeld(new InstantCommand(() -> climber.roll(-.30)))
       .whenReleased(new InstantCommand(() -> climber.hold()));
+
+    new JoystickButton(operatorController, XboxController.Button.kX.value)
+      .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(250)));
+    new JoystickButton(operatorController, XboxController.Button.kY.value)
+      .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(-250)));
+    new JoystickButton(operatorController, XboxController.Button.kStart.value)
+      .whenPressed(new InstantCommand(() -> shooter.resetHighVelocity()));
 
     // temporary
     /*new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
