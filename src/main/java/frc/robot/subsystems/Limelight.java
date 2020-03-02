@@ -8,9 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.Constants.ShooterConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -27,6 +25,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry tv = table.getEntry("ta");
     private NetworkTableEntry ledMode = table.getEntry("ledMode");
     private int loop;
+    private boolean m_targeting = false;
 
 
   public Limelight() {
@@ -175,11 +174,13 @@ public class Limelight extends SubsystemBase {
   public void beforeTurnToTarget(){
     setLedOn(true);
     switchPipeline(true);
+    m_targeting = true;
   }
 
   public void afterTurnToTarget(){
     setLedOn(false);
     switchPipeline(false);
+    m_targeting = false;
   }
   public void switchPipeline(boolean targeting){
     if(targeting == true){
@@ -189,5 +190,16 @@ public class Limelight extends SubsystemBase {
     }
   }
   
+  public boolean isTargeting(){
+    return m_targeting;
+  }
+
+  public boolean isOutOfRange(){
+    return (getTy().getDouble(0) < LimelightConstants.RANGE_TOO_CLOSE || getTy().getDouble(0) > LimelightConstants.RANGE_TOO_FAR);
+  }
+
+  public boolean isPrimeRange(){
+    return (getTy().getDouble(0) < LimelightConstants.RANGE_PRIME_END && getTy().getDouble(0) > LimelightConstants.RANGE_PRIME_START);
+  }
 }
 

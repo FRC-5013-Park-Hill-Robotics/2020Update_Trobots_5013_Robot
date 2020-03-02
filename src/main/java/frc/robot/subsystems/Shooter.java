@@ -17,6 +17,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
   private boolean firing = false;
+  private double heightVelocity = ShooterConstants.HIGH_VELOCITY;
   private double m_targetVelocity = 0;
   private Conveyor m_conveyor;
 
@@ -49,10 +50,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void spinUp(){
-    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    setTargetVelocity(heightVelocity);
   }
   public void fire(){
-    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    setTargetVelocity(heightVelocity);
     firing = true;
     //String("Shooter is Firing: ", ""+firing);
   }
@@ -119,5 +120,9 @@ public class Shooter extends SubsystemBase {
 
     return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() *.95 &&
       topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity() *.95;
+  }
+
+  public void changeHighVelocity(double amount){
+    heightVelocity += amount;
   }
 }

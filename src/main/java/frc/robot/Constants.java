@@ -142,6 +142,10 @@ public final class Constants {
         public static final int LED_ON = 3;
         public static final int LED_OFF = 1;
         public static final double TURN_TO_TARGET_TOLERANCE = 1.5;
+        public static final double RANGE_TOO_CLOSE =0;
+        public static final double RANGE_TOO_FAR=0;
+        public static final double RANGE_PRIME_START=0;
+        public static final double RANGE_PRIME_END=0;
     }
     public static final class FlashlightConstants {
         public static final int PCM_PORT =20;
