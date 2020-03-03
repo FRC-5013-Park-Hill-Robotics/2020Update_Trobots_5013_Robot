@@ -74,7 +74,7 @@ public class Shooter extends SubsystemBase {
     //SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
     //SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
     //SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
         //SmartDashboard.putString("at speed", ""+true);
@@ -92,16 +92,7 @@ public class Shooter extends SubsystemBase {
       bottomMotor.set(ControlMode.PercentOutput,0);
       topMotor.set(ControlMode.PercentOutput,0);
     }
-    //if we want to shoot and we are not at speed we need to stop the conveyor
-   /* if (firing && !atSpeed()){
-      m_conveyor.stop();
-    }
 
-    adjustMotorsToTarget();
-    //if we are at speed which we should be, fire away
-    /*f (firing && atSpeed()){
-      m_conveyor.start();
-    }*/
   }
 
   public void setTargetVelocity(double bottomMotorTarget){
