@@ -128,6 +128,9 @@ public class Limelight extends SubsystemBase {
     double turn = 0;
     double min = 1.7;
     boolean check = hasTarget();
+    if (hasTarget() && !shooter.atSpeed()){
+      shooter.spinUp();
+    }
    // SmartDashboard.putString("Target ","" + check);
     //SmartDashboard.putString("Initial Tx","" + getAngleOfError());
     if(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()){
