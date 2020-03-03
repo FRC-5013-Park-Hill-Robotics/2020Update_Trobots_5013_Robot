@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
@@ -23,11 +24,14 @@ public class AutonoumousBackAndShootGroup extends SequentialCommandGroup {
    * Creates a new AutonoumousBackAndShootGroup.
    */
   public AutonoumousBackAndShootGroup(Drivetrain drivetrain, Limelight limelight, Shooter shooter, Conveyor conveyor, Intake intake) {
-    super(new ResetDrivetrainEncoders(drivetrain),
-      new InstantCommand(() -> intake.dropIntake()),
-      new InstantCommand(() -> shooter.spinUp()),
-      new AutoDriveCommand(-0.5,9.5, drivetrain),
-      new InstantCommand(() -> limelight.beforeTurnToTarget()),
+    super(
+      new ParallelCommandGroup(
+        new ResetDrivetrainEncoders(drivetrain),
+        new InstantCommand(() -> intake.dropIntake()),
+        new InstantCommand(() -> shooter.spinUp()),
+        new InstantCommand(() -> limelight.beforeTurnToTarget())),
+      new AutoDriveCommand(0.5,0.5,drivetrain),
+      new AutoDriveCommand(-0.5,10, drivetrain),
       new FindTarget(limelight),
      // new TurnByAngle(limelight::getAngleOfError,drivetrain),
       new AutoTurnToTargetCommand(limelight, drivetrain, shooter),
