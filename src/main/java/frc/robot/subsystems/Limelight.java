@@ -8,9 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.Constants.LimelightConstants;
-import frc.robot.Constants.ShooterConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -27,6 +25,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry tv = table.getEntry("ta");
     private NetworkTableEntry ledMode = table.getEntry("ledMode");
     private int loop;
+    private boolean m_targeting = false;
 
 
   public Limelight() {
@@ -147,39 +146,17 @@ public class Limelight extends SubsystemBase {
     //SmartDashboard.putBoolean("Turning Complete",! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()));
     return !(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE) && hasTarget();
   }
-/*
-  public boolean turnToTarget(Drivetrain drivetrain, Shooter shooter){
-    SmartDashboard.putString("turnToTarget ","Started");
-    double turn = 0;
-    double min = ShooterConstants.MIN_TURN;
-    boolean check = hasTarget();
-    SmartDashboard.putString("Target ","" + check);
-    SmartDashboard.putString("Initial Tx","" + getAngleOfError());
-    if(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()){
-      turn = getAngleOfError()*0.03;     
-      if (Math.abs(turn) < min){
-        turn = turn > 0 ? min:-min;
-      }
-      SmartDashboard.putNumber("Turn", turn);
-      drivetrain.getDrive().tankDrive(turn, -turn);
-      SmartDashboard.putString("Loop Tx:",this.loop++ + ":" + getAngleOfError());
-    } else {
-      //This prevents errors on the console from not updated drive train.
-      drivetrain.getDrive().tankDrive(0, 0);
-    }
-    SmartDashboard.putString("Ending TY","" + getAngleOfError());
-    SmartDashboard.putBoolean("Turning Complete",! (Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE && hasTarget()));
-    return !(Math.abs(getAngleOfError()) >= LimelightConstants.TURN_TO_TARGET_TOLERANCE) && hasTarget();
-  }
-*/
+
   public void beforeTurnToTarget(){
     setLedOn(true);
     switchPipeline(true);
+    m_targeting = true;
   }
 
   public void afterTurnToTarget(){
     setLedOn(false);
     switchPipeline(false);
+    m_targeting = false;
   }
   public void switchPipeline(boolean targeting){
     if(targeting == true){
@@ -189,5 +166,16 @@ public class Limelight extends SubsystemBase {
     }
   }
   
+  public boolean isTargeting(){
+    return m_targeting;
+  }
+
+  public boolean isOutOfRange(){
+    return (getTy().getDouble(0) > LimelightConstants.RANGE_TOO_CLOSE || getTy().getDouble(0) < LimelightConstants.RANGE_TOO_FAR);
+  }
+
+  public boolean isPrimeRange(){
+    return (getTy().getDouble(0) > LimelightConstants.RANGE_PRIME_END && getTy().getDouble(0) < LimelightConstants.RANGE_PRIME_START);
+  }
 }
 

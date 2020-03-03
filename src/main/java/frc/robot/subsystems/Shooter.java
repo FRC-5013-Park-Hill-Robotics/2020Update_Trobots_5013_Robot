@@ -17,6 +17,7 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonFX topMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_TOP_MOTOR);
   private WPI_TalonFX bottomMotor = new WPI_TalonFX(ShooterConstants.SHOOTER_BOTTOM_MOTOR);
   private boolean firing = false;
+  private double heightVelocity = ShooterConstants.HIGH_VELOCITY;
   private double m_targetVelocity = 0;
   private Conveyor m_conveyor;
 
@@ -49,10 +50,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void spinUp(){
-    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    setTargetVelocity(heightVelocity);
   }
   public void fire(){
-    setTargetVelocity(ShooterConstants.HIGH_VELOCITY);
+    setTargetVelocity(heightVelocity);
     firing = true;
     //String("Shooter is Firing: ", ""+firing);
   }
@@ -73,7 +74,7 @@ public class Shooter extends SubsystemBase {
     //SmartDashboard.putString("topShooterTargetVelocity",""+ getTopTargetVelocity());
     //SmartDashboard.putString("bottomShooterTargetVelocity", ""+getTargetVelocity());
     //SmartDashboard.putString("topShooterVelocity",""+ topMotor.getSelectedSensorVelocity());
-    //SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
+    SmartDashboard.putString("bottomShooterVelocity", ""+bottomMotor.getSelectedSensorVelocity());
     if (firing){
       if (atSpeed()){
         //SmartDashboard.putString("at speed", ""+true);
@@ -91,16 +92,7 @@ public class Shooter extends SubsystemBase {
       bottomMotor.set(ControlMode.PercentOutput,0);
       topMotor.set(ControlMode.PercentOutput,0);
     }
-    //if we want to shoot and we are not at speed we need to stop the conveyor
-   /* if (firing && !atSpeed()){
-      m_conveyor.stop();
-    }
 
-    adjustMotorsToTarget();
-    //if we are at speed which we should be, fire away
-    /*f (firing && atSpeed()){
-      m_conveyor.start();
-    }*/
   }
 
   public void setTargetVelocity(double bottomMotorTarget){
@@ -119,5 +111,12 @@ public class Shooter extends SubsystemBase {
 
     return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() *.95 &&
       topMotor.getSelectedSensorVelocity() >= getTopTargetVelocity() *.95;
+  }
+
+  public void changeHighVelocity(double amount){
+    heightVelocity += amount;
+  }
+  public void resetHighVelocity(){
+    heightVelocity = ShooterConstants.HIGH_VELOCITY;
   }
 }
