@@ -117,7 +117,7 @@ public class Limelight extends SubsystemBase {
    */
   public double getAngleOfError(){
     //+1 is a fudge factor cor camera mounting
-    return getTx().getDouble(0.0) ;
+    return getTx().getDouble(0.0) + 1.5;
   }
 
   public void autoTurnToTarget(Drivetrain drivetrain, Shooter shooter){
