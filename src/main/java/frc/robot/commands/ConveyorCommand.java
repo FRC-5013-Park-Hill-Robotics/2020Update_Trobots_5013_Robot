@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Intake;
 
@@ -36,7 +37,8 @@ public class ConveyorCommand extends CommandBase {
     //SmartDashboard.putString("ConveyorCommand lower eye", ""+m_conveyor.isBallReadyForIntake());
     //SmartDashboard.putString("ConveyorCommand upper eye",""+ m_conveyor.isBallReadyToShoot());
     //SmartDashboard.putString("ConveyorCommand Intake down",""+ m_conveyor.isBallReadyToShoot());
-    if (!m_conveyor.isOverridden()){
+    
+    if (!m_conveyor.isOverridden()  && Robot.getInstance().isAutonomous()){
       if (m_intake.isDown() && m_conveyor.isBallReadyForIntake() && !m_conveyor.isBallReadyToShoot()){
         //SmartDashboard.putString("Conveyor Command ", "Trying to STart");
         m_conveyor.start(250);

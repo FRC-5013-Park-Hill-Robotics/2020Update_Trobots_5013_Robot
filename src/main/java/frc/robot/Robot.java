@@ -21,14 +21,19 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
   private CommandBase m_autonomousCommand;
-
+  private static Robot m_robot;
+  
+  public static Robot getInstance(){
+    return m_robot;
+  }
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   public Robot(){
-   
+   m_robot = this;
   }
+
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our

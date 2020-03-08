@@ -106,7 +106,7 @@ public class Shooter extends SubsystemBase {
   public double getTargetVelocity(){
     return m_targetVelocity;
   }
-  private boolean atSpeed(){
+  public boolean atSpeed(){
     //Boolean("Is BottomMotor at speed?: ", bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() );
 
     return bottomMotor.getSelectedSensorVelocity() >= getTargetVelocity() *.95 &&
