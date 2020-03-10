@@ -296,4 +296,45 @@ public class Drivetrain extends SubsystemBase {
     this.m_currentDriveMode = FINE_DRIVE;
   }
 
+  /*Return distance from wall of front time of flight sensor in inches */
+  public double getFrontWallDistance(){
+    return 0;
+  }
+
+  /*Return distance from wall of front time of flight sensor in inches */
+  public double getRearWallDistance(){
+    return 0;
+  }
+
+  /* Using time of flight sensors front and back measure distance from the wall
+    If we are too far from the wall for determined distance return negative error value 
+    to turn robot to the right, if both sensors are too close return a positive error value
+    to turn left otherwise return a negative value if front sensor is farther 
+    than back sensor to turn right if front sensor is closer return positive value to turn left 
+    if out of trenchrun range return 0*/
+  public double getWallError(){
+    double front = getFrontWallDistance();
+    double rear = getRearWallDistance();
+    double result = 0;
+    
+    if (front < CompetitionDriveConstants.kTrenchRunWallDistance && rear < CompetitionDriveConstants.kTrenchRunWallDistance){
+      //we are too close to the wall need to turn left
+      result =Math.max(Math.min(front, rear)/CompetitionDriveConstants.kTrenchRunWallDistance * CompetitionDriveConstants.kMaxTrenchTurn, getAngleToWall());
+    } else if (front > CompetitionDriveConstants.kTrenchRunWallDistance && rear > CompetitionDriveConstants.kTrenchRunWallDistance){
+      result = Math.min((Math.min(front, rear)-CompetitionDriveConstants.kTrenchRunWallDistance)/CompetitionDriveConstants.kTrenchRunWallDistance * -CompetitionDriveConstants.kMaxTrenchTurn,getAngleToWall());
+    } else {
+      getAngleToWall();
+    }
+    return Math.signum(result) * Math.min(result, CompetitionDriveConstants.kMaxTrenchTurn);
+
+  }
+
+  public double getAngleToWall(){
+    double front = getFrontWallDistance();
+    double rear = getRearWallDistance();
+    double hypotenuse = CompetitionDriveConstants.kDistanceBetweenSensors;
+    double opposite = rear-front; //may be negative
+
+    return Math.toDegrees(Math.asin(opposite/hypotenuse));
+  }
 }
