@@ -22,11 +22,13 @@ public class Conveyor extends SubsystemBase {
   private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ConveyorConstants.RIGHT_CONVEYOR_MOTOR);
   private DigitalInput lowerEye = new DigitalInput(ConveyorConstants.LOWER_EYE);
   private DigitalInput upperEye = new DigitalInput(ConveyorConstants.UPPER_EYE);
+  private DigitalInput middleEye; 
   private long startTime=0;
   private double percentOutput;
   public static final double kSpeed = 0.3;//percent output
   public static final double kSpeedForShooter = 0.6;//percent output
   private boolean override = false;
+  private boolean autoIndexing = true;
   
 
   /**
@@ -117,6 +119,9 @@ public class Conveyor extends SubsystemBase {
     return lowerEye.get();
   }
 
+  public boolean isBallInMiddlePosition(){
+    return middleEye.get();
+  }
   public boolean isBallReadyToShoot(){
     return upperEye.get();
   }
@@ -127,6 +132,18 @@ public class Conveyor extends SubsystemBase {
 
   public boolean isOverridden(){
     return override;
+  }
+
+  public boolean isAutoIndexing(){
+    return autoIndexing;
+  }
+
+  public void setAutoIndexing(boolean newValue){
+    autoIndexing = newValue;
+  }
+
+  public void toggleAutoIndexing(){
+    setAutoIndexing(!isAutoIndexing());
   }
 }
 

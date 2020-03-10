@@ -92,7 +92,11 @@ public final class Constants {
        public static final double kTurnFriction = 0.3;
        public static final double kTurnToleranceDeg = LimelightConstants.TURN_TO_TARGET_TOLERANCE;
        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
-       
+
+       public static final Gains kStabilizationGains = new Gains(.01, 0, 0, .1, 0, 1);
+       public static final double kTrenchRunWallDistance = 10;
+       public static final double kDistanceBetweenSensors = 15; //distance between front and back distance sensor in inches
+       public static final double kMaxTrenchTurn = 20;
     }
 
     public static final class ClimberConstants {
