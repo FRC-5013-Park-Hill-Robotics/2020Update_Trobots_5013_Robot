@@ -325,7 +325,7 @@ public class Drivetrain extends SubsystemBase {
     } else {
       getAngleToWall();
     }
-    return Math.signum(result) * Math.min(result, CompetitionDriveConstants.kMaxTrenchTurn);
+    return result;
 
   }
 

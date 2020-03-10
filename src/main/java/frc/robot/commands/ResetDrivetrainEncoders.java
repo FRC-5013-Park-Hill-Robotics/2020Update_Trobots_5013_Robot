@@ -29,6 +29,7 @@ public class ResetDrivetrainEncoders extends CommandBase {
   @Override
   public void execute() {
     m_drivetrain.resetEncoders();
+    m_drivetrain.zeroHeading();
   }
 
   // Called once the command ends or is interrupted.

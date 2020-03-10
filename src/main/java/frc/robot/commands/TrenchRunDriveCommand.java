@@ -33,13 +33,11 @@ public class TrenchRunDriveCommand extends PIDCommand {
         // Setpoint is 0
         0,
         // Pipe the output to the turning controls
-        output -> driveTrain.arcadeDrive(-controller.getRawAxis(DriverControllerConstants.Y_LJOY_ID), output));
+        output -> driveTrain.arcadeDrive(-controller.getRawAxis(DriverControllerConstants.Y_LJOY_ID), output),driveTrain);
 
-    addRequirements(driveTrain);
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController().setTolerance(CompetitionDriveConstants.kTurnToleranceDeg , CompetitionDriveConstants.kTurnRateToleranceDegPerS);
-    
   }
 
   // Returns true when the command should end.
