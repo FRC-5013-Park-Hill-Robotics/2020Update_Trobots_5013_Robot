@@ -323,7 +323,7 @@ public class Drivetrain extends SubsystemBase {
     } else if (front > CompetitionDriveConstants.kTrenchRunWallDistance && rear > CompetitionDriveConstants.kTrenchRunWallDistance){
       result = Math.min((Math.min(front, rear)-CompetitionDriveConstants.kTrenchRunWallDistance)/CompetitionDriveConstants.kTrenchRunWallDistance * -CompetitionDriveConstants.kMaxTrenchTurn,getAngleToWall());
     } else {
-      getAngleToWall();
+      result = getAngleToWall();
     }
     return result;
 
@@ -332,9 +332,9 @@ public class Drivetrain extends SubsystemBase {
   public double getAngleToWall(){
     double front = getFrontWallDistance();
     double rear = getRearWallDistance();
-    double hypotenuse = CompetitionDriveConstants.kDistanceBetweenSensors;
+    double adjacent = CompetitionDriveConstants.kDistanceBetweenSensors;
     double opposite = rear-front; //may be negative
 
-    return Math.toDegrees(Math.asin(opposite/hypotenuse));
+    return Math.toDegrees(Math.atan(opposite/adjacent));
   }
 }
