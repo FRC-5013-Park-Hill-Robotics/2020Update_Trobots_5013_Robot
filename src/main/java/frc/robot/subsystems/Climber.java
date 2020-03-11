@@ -11,22 +11,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends SubsystemBase {
   private WPI_TalonSRX extensionMotor = new WPI_TalonSRX(ClimberConstants.EXTENSION_MOTOR);
   private WPI_TalonFX leftMotor1 = new WPI_TalonFX(ClimberConstants.LEFT_MOTOR);
   private WPI_TalonFX rightMotor1 = new WPI_TalonFX(ClimberConstants.RIGHT_MOTOR);
-  private Solenoid ratchet = new Solenoid(ClimberConstants.RATCHED_SOLENOID_CHANNEL);
+
   /**
    * Creates a new Climber.
    */

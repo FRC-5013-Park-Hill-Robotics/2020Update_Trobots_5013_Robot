@@ -86,9 +86,9 @@ public final class Constants {
                 
        public static final double kPDriveVel = 2.58;
 
-       public static final double kTurnP = .05;
+       public static final double kTurnP = .07;
        public static final double kTurnI = 0;
-       public static final double kTurnD = 0.3;
+       public static final double kTurnD = 0.0;
        public static final double kTurnFriction = 0.3;
        public static final double kTurnToleranceDeg = LimelightConstants.TURN_TO_TARGET_TOLERANCE;
        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second

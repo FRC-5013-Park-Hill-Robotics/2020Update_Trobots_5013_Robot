@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -22,10 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CompetitionDriveConstants;
 import frc.robot.Constants.DriverControllerConstants;
-
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 
 public class Drivetrain extends SubsystemBase {
   private final WPI_TalonFX leftMotor1 = new WPI_TalonFX(CompetitionDriveConstants.LEFT_MOTOR_1_ID);
@@ -297,12 +296,12 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /*Return distance from wall of front time of flight sensor in inches */
-  public double getFrontWallDistance(){
+  public double getFrontRightWallDistance(){
     return 0;
   }
 
   /*Return distance from wall of front time of flight sensor in inches */
-  public double getRearWallDistance(){
+  public double getRearRightWallDistance(){
     return 0;
   }
 
@@ -313,15 +312,15 @@ public class Drivetrain extends SubsystemBase {
     than back sensor to turn right if front sensor is closer return positive value to turn left 
     if out of trenchrun range return 0*/
   public double getWallError(){
-    double front = getFrontWallDistance();
-    double rear = getRearWallDistance();
+    double frontRight = getFrontRightWallDistance();
+    double rearRight = getRearRightWallDistance();
     double result = 0;
     
-    if (front < CompetitionDriveConstants.kTrenchRunWallDistance && rear < CompetitionDriveConstants.kTrenchRunWallDistance){
+    if (frontRight < CompetitionDriveConstants.kTrenchRunWallDistance && rearRight < CompetitionDriveConstants.kTrenchRunWallDistance){
       //we are too close to the wall need to turn left
-      result =Math.max(Math.min(front, rear)/CompetitionDriveConstants.kTrenchRunWallDistance * CompetitionDriveConstants.kMaxTrenchTurn, getAngleToWall());
-    } else if (front > CompetitionDriveConstants.kTrenchRunWallDistance && rear > CompetitionDriveConstants.kTrenchRunWallDistance){
-      result = Math.min((Math.min(front, rear)-CompetitionDriveConstants.kTrenchRunWallDistance)/CompetitionDriveConstants.kTrenchRunWallDistance * -CompetitionDriveConstants.kMaxTrenchTurn,getAngleToWall());
+      result =Math.max(Math.min(frontRight, rearRight)/CompetitionDriveConstants.kTrenchRunWallDistance * CompetitionDriveConstants.kMaxTrenchTurn, getAngleToWall());
+    } else if (frontRight > CompetitionDriveConstants.kTrenchRunWallDistance && rearRight > CompetitionDriveConstants.kTrenchRunWallDistance){
+      result = Math.min((Math.min(frontRight, rearRight)-CompetitionDriveConstants.kTrenchRunWallDistance)/CompetitionDriveConstants.kTrenchRunWallDistance * -CompetitionDriveConstants.kMaxTrenchTurn,getAngleToWall());
     } else {
       result = getAngleToWall();
     }
@@ -330,8 +329,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getAngleToWall(){
-    double front = getFrontWallDistance();
-    double rear = getRearWallDistance();
+    double front = getFrontRightWallDistance();
+    double rear = getRearRightWallDistance();
     double adjacent = CompetitionDriveConstants.kDistanceBetweenSensors;
     double opposite = rear-front; //may be negative
 

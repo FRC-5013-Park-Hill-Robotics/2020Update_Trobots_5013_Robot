@@ -27,6 +27,8 @@ import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.AutonoumousBackAndShootGroup;
 import frc.robot.commands.ConveyorCommand;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ResetDrivetrainEncoders;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.commands.TurnToTargetCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
@@ -39,6 +41,7 @@ import frc.robot.subsystems.Blinkin.BlinkinController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -203,6 +206,7 @@ public class RobotContainer {
         new AutoCenterBackAndShoot(m_driveTrain, m_Limelight, shooter, conveyor, intake));
     this.chooser.addOption("Left Back High",
         new AutoLeftBackAndShoot(m_driveTrain, m_Limelight, shooter, conveyor, intake));
+    this.chooser.addOption("Turn 90", new SequentialCommandGroup(new ResetDrivetrainEncoders(m_driveTrain),new TurnToAngle(90, m_driveTrain) ));
     // this.chooser.setDefaultOption("Rotate 90",
     // new TurnByAngle(new DoubleSupplier(()->90),m_driveTrain));
     SmartDashboard.putData("Auto Chooser", this.chooser);
