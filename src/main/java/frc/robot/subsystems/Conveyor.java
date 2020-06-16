@@ -103,7 +103,9 @@ public class Conveyor extends SubsystemBase {
   public void startOverride() {
     //SmartDashboard.putString("Last Conveyor Command", "start");
     override=true;
-    setPercentOutput(kSpeed, 0L);
+    if(isBallReadyToShoot()){
+      setPercentOutput(kSpeed, 0L);
+    }
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
