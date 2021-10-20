@@ -65,7 +65,7 @@ public class Shooter extends SubsystemBase {
 
   public void stopFiring(){
     firing = false;
-    setTargetVelocity(0.0);
+    setTargetVelocity(ShooterConstants.LOW_VELOCITY);
     m_conveyor.stop();
   }
 
@@ -89,8 +89,8 @@ public class Shooter extends SubsystemBase {
       bottomMotor.set(ControlMode.Velocity,getTargetVelocity());
       topMotor.set(ControlMode.Velocity,getTopTargetVelocity());
     } else {
-      bottomMotor.set(ControlMode.PercentOutput,0);
-      topMotor.set(ControlMode.PercentOutput,0);
+      bottomMotor.set(ControlMode.Velocity,ShooterConstants.LOW_VELOCITY);
+      topMotor.set(ControlMode.Velocity,ShooterConstants.LOW_VELOCITY);
     }
 
   }

@@ -159,7 +159,9 @@ public class RobotContainer {
     // Roll Climb Right
     new DirectionPadButton(operatorController, Direction.RIGHT).whileHeld(new InstantCommand(() -> climber.roll(-.30)))
         .whenReleased(new InstantCommand(() -> climber.hold()));
-
+    //Shooter Spin Up
+    new TriggerButton(operatorController, TriggerButton.Trigger.RIGHT, 0.5)
+        .whenPressed(new InstantCommand(() -> shooter.spinUp()));
     //shooter spped up
     new JoystickButton(operatorController, XboxController.Button.kX.value)
         .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(250)));
