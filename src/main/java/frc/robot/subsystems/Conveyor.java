@@ -20,6 +20,7 @@ import frc.robot.Constants.ConveyorConstants;
 public class Conveyor extends SubsystemBase {
   private WPI_TalonSRX leftMotor1 = new WPI_TalonSRX(ConveyorConstants.LEFT_CONVEYOR_MOTOR);
   private WPI_TalonSRX rightMotor1 = new WPI_TalonSRX(ConveyorConstants.RIGHT_CONVEYOR_MOTOR);
+  private WPI_TalonSRX nudge = new WPI_TalonSRX(ConveyorConstants.NUDGE);
   private DigitalInput lowerEye = new DigitalInput(ConveyorConstants.LOWER_EYE);
   private DigitalInput upperEye = new DigitalInput(ConveyorConstants.UPPER_EYE);
   private DigitalInput middleEye; 
@@ -41,6 +42,7 @@ public class Conveyor extends SubsystemBase {
     rightMotor1.setInverted(false);
     leftMotor1.setNeutralMode(NeutralMode.Brake);
     rightMotor1.setNeutralMode(NeutralMode.Brake);
+    nudge.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override
@@ -66,6 +68,12 @@ public class Conveyor extends SubsystemBase {
       //Don't set if you are delaying already.
       this.startTime = System.currentTimeMillis() + timeout;
     }
+
+    if (targetPercent > 0){ 
+      nudge.set(ControlMode.PercentOutput,1);
+    }else{
+      nudge.set(ControlMode.PercentOutput,0);
+    }
     //SmartDashboard.putNumber("Target timeout", startTime);
   }
 
@@ -76,6 +84,7 @@ public class Conveyor extends SubsystemBase {
     if (!isMoving()){
       setPercentOutput(kSpeed, timeout);
     }
+   
      //leftMotor1.set(ControlMode.PercentOutput, .6);
      //rightMotor1.set(ControlMode.PercentOutput, .6);
    }
@@ -83,6 +92,7 @@ public class Conveyor extends SubsystemBase {
     override=false;
     //SmartDashboard.putString("Last Conveyor Command", "start");
     setPercentOutput(kSpeed, 0L);
+   
     //leftMotor1.set(ControlMode.PercentOutput, .6);
     //rightMotor1.set(ControlMode.PercentOutput, .6);
   }
@@ -97,6 +107,7 @@ public class Conveyor extends SubsystemBase {
   public void reverse() {
     override = true;
     setPercentOutput(-kSpeed, 0L);
+
     //leftMotor1.set(ControlMode.PercentOutput, -0.6);
     //rightMotor1.set(ControlMode.PercentOutput,- 0.6);
   }
