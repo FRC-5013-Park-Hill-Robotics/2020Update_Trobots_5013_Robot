@@ -135,6 +135,7 @@ public final class Constants {
         public static final int RIGHT_CONVEYOR_MOTOR = 10;
         public static final int LOWER_EYE = 1;
         public static final int UPPER_EYE = 0;
+        public static final int NUDGE = 19;
     }
     public static final class LimelightConstants {
         public static final double CAMERA_ANGLE = 0;
