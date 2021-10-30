@@ -12,12 +12,15 @@ import com.ctre.phoenix.motorcontrol.Faults;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StickyFaults;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
@@ -27,6 +30,8 @@ public class Intake extends SubsystemBase {
   private Solenoid dropIntakeSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.DROP_INTAKE_SOLENOID_CHANNEL);
   private Solenoid raiseIntakeSolenoid = new Solenoid(Constants.PCM_ID,IntakeConstants.RAISE_INTAKE_SOLENOID_CHANNEL);
   private Conveyor m_conveyor;
+  private WPI_TalonSRX nudge = new WPI_TalonSRX(ConveyorConstants.NUDGE);
+ 
   /**
    * Creates a new Intake.
    */
@@ -36,6 +41,7 @@ public class Intake extends SubsystemBase {
     intakeMotor.setInverted(true);
     this.m_conveyor = conveyor;
     intakeMotor.setNeutralMode(NeutralMode.Brake);
+    nudge.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override
@@ -53,6 +59,17 @@ public class Intake extends SubsystemBase {
       SmartDashboard.putString("Intake Sticky Faults",stickyFaults.toString());
     } else {
       SmartDashboard.putString("IntakeSticky Faults", "none");
+    }
+
+    if (m_conveyor.isMoving() || isDown()){ 
+      if (m_conveyor.isReversed()){
+        nudge.set(ControlMode.PercentOutput,-1);
+      } else {
+        nudge.set(ControlMode.PercentOutput,1);
+      }
+     
+    }else{
+      nudge.set(ControlMode.PercentOutput,0);
     }
   }
 
