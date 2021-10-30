@@ -7,15 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
  * Add your docs here.
  */
 public class TriggerButton extends Button {
-    private XboxController m_controller;
+    private GenericHID m_controller;
     private Trigger m_trigger;
     private double m_deadband;
     public static enum Trigger {
@@ -27,7 +26,7 @@ public class TriggerButton extends Button {
             this.axis = axis;
         }
     }
-    public TriggerButton(XboxController joystick, Trigger trigger, double deadband) {
+    public TriggerButton(GenericHID joystick, Trigger trigger, double deadband) {
         this.m_controller = joystick;
         this.m_trigger = trigger;
         this.m_deadband = deadband;
