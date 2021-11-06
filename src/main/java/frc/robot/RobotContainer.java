@@ -54,8 +54,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private XboxController driverController = new XboxController(DriverControllerConstants.XBOX_ID);
-  private XboxController operatorController = new XboxController(DriverControllerConstants.OPERATOR_CONTROLLER);
+  private LogitechController driverController = new LogitechController(DriverControllerConstants.XBOX_ID);
+  private LogitechController operatorController = new LogitechController(DriverControllerConstants.OPERATOR_CONTROLLER);
   private final Drivetrain m_driveTrain = new Drivetrain();
   private final Conveyor conveyor = new Conveyor();
   private final Intake intake = new Intake(conveyor);
@@ -121,17 +121,17 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
     // Intake up down
-    new JoystickButton(driverController, XboxController.Button.kBumperRight.value)
+    new JoystickButton(driverController, LogitechController.Button.kBumperRight.value)
         .whenPressed(new InstantCommand(() -> intake.dropIntake()))
         .whenReleased(new InstantCommand(() -> intake.raiseIntake()));
 
     // Slow Turn
-    new JoystickButton(driverController, XboxController.Button.kBumperLeft.value)
+    new JoystickButton(driverController, LogitechController.Button.kBumperLeft.value)
         .whileHeld(new InstantCommand(() -> m_driveTrain.setDriveModeFine()))
         .whenReleased(new InstantCommand(() -> m_driveTrain.setDriveModeNormal()));
 
     // Flashlight
-    new JoystickButton(driverController, XboxController.Button.kY.value)
+    new JoystickButton(driverController, LogitechController.Button.kY.value)
         .whenReleased(new InstantCommand(() -> m_flashlight.toggle(), m_flashlight));
 
     // Extend Climber
@@ -164,24 +164,24 @@ public class RobotContainer {
     new TriggerButton(operatorController, TriggerButton.Trigger.RIGHT, 0.5)
         .whenPressed(new InstantCommand(() -> shooter.spinUp()));
     //shooter spped up
-    new JoystickButton(operatorController, XboxController.Button.kX.value)
+    new JoystickButton(operatorController, LogitechController.Button.kX.value)
         .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(250)));
     //shooter spped down
-    new JoystickButton(operatorController, XboxController.Button.kY.value)
+    new JoystickButton(operatorController, LogitechController.Button.kY.value)
         .whenPressed(new InstantCommand(() -> shooter.changeHighVelocity(-250)));
     //Shooter speed reset
-    new JoystickButton(operatorController, XboxController.Button.kStart.value)
+    new JoystickButton(operatorController, LogitechController.Button.kStart.value)
         .whenPressed(new InstantCommand(() -> shooter.resetHighVelocity()));
 
-    new JoystickButton(driverController, XboxController.Button.kA.value)
+    new JoystickButton(driverController, LogitechController.Button.kA.value)
         .whenPressed(new InstantCommand(() -> conveyor.startOverride(), conveyor))
         .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
-    new JoystickButton(driverController, XboxController.Button.kB.value)
+    new JoystickButton(driverController, LogitechController.Button.kB.value)
         .whenPressed(new InstantCommand(() -> conveyor.reverse()))
         .whenReleased(new InstantCommand(() -> conveyor.stop()));
 
-    new JoystickButton(operatorController, XboxController.Button.kBumperRight.value)
+    new JoystickButton(operatorController, LogitechController.Button.kBumperRight.value)
         .whenPressed(new InstantCommand(() -> shooter.fireLow()))
         .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
 
