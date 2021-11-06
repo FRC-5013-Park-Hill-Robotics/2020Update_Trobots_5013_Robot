@@ -44,7 +44,7 @@ public class ConveyorCommand extends CommandBase {
       {
       if (m_intake.isDown() && m_conveyor.isBallReadyForIntake() && !m_conveyor.isBallReadyToShoot()){
         //SmartDashboard.putString("Conveyor Command ", "Trying to STart");
-        m_conveyor.start(250);
+        m_conveyor.start(100);
       } else {
       // SmartDashboard.putString("Conveyor Command ", "Trying to Stop");
         m_conveyor.stop();
