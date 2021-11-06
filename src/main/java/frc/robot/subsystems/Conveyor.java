@@ -25,7 +25,7 @@ public class Conveyor extends SubsystemBase {
   private DigitalInput middleEye; 
   private long startTime=0;
   private double percentOutput;
-  public static final double kSpeed = 0.3;//percent output
+  public static final double kSpeed = 0.4;//percent output
   public static final double kSpeedForShooter = 0.6;//percent output
   private boolean override = false;
   private boolean autoIndexing = true;
