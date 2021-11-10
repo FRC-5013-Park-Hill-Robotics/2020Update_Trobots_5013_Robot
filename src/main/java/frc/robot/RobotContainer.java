@@ -162,6 +162,9 @@ public class RobotContainer {
         .whenReleased(new InstantCommand(() -> climber.hold()));
     //Shooter Spin Up
     new TriggerButton(operatorController, TriggerButton.Trigger.RIGHT, 0.5)
+    .whileHeld(new InstantCommand(() -> shooter.fire(), shooter, conveyor))
+    .whenReleased(new InstantCommand(() -> shooter.stopFiring(), shooter, conveyor));
+    new TriggerButton(operatorController, TriggerButton.Trigger.LEFT, 0.5)
         .whenPressed(new InstantCommand(() -> shooter.spinUp()));
     //shooter spped up
     new JoystickButton(operatorController, XboxController.Button.kX.value)
@@ -172,6 +175,15 @@ public class RobotContainer {
     //Shooter speed reset
     new JoystickButton(operatorController, XboxController.Button.kStart.value)
         .whenPressed(new InstantCommand(() -> shooter.resetHighVelocity()));
+
+    new JoystickButton(operatorController, XboxController.Button.kA.value)
+        .whenPressed(new InstantCommand(() -> conveyor.startOverride(), conveyor))
+        .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
+    new JoystickButton(operatorController, XboxController.Button.kB.value)
+        .whenPressed(new InstantCommand(() -> conveyor.reverse()))
+        .whenReleased(new InstantCommand(() -> conveyor.stop()));
+
 
     new JoystickButton(driverController, XboxController.Button.kA.value)
         .whenPressed(new InstantCommand(() -> conveyor.startOverride(), conveyor))
